@@ -1,0 +1,36 @@
+# write a gitignore for latex projects
+# LaTeX auxiliary files
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.nav
+*.snm
+*.dvi
+*.ps
+
+# Temporary files
+*.tmp
+*.temp
+# Backup files
+*~
+# Editor-specific files
+*.swp
+# MacOS specific files
+.DS_Store
+# Windows specific files
+Thumbs.db
+
+# Generated files
+*.pdfsync
+# LaTeX build directories
+_build/
+# LaTeX project files
+*.latexmkrc

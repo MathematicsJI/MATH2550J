@@ -1,0 +1,498 @@
+\documentclass{beamer}
+\usepackage{math214}
+\usepackage{babel}
+%\usepackage{enumitem}
+% Then, after \begin{document}, you can begin your frames/slides
+
+\title{\LARGE 255RCs}
+\author{ Li Mingrui, Xia Yiwei, Zhang Haoran, Huang Jiayue}
+\date{Summer 2024}
+
+\definecolor{darkblue}{HTML}{6666dd} 
+\colortheme{green!30!black}
+%\colortheme{orange!85!black}
+%\colortheme{darkblue}
+%\colortheme{blue!100!black}
+%\colortheme{orange!85!white!90!black}
+\begin{document}
+
+\maketitle
+\begin{frame}
+\begin{center}
+\Large
+    Sincerest appreciation dedicated to \\
+    2023 VV255 TAs\\
+    Jiani Jin, Dayong Wang and  Yishen Zhou,\\
+    as well as all previous VV255 TAs.
+    \normalsize
+\end{center}
+    
+\end{frame}
+
+%\begin{frame}
+ %  \frametitle{}
+  %  \tableofcontents     % 生成目录
+%\end{frame}
+
+
+
+\begin{section}{Matrix Basics}
+
+\begin{frame}{Contents}
+    \begin{enumerate}
+        \item \hyperlink{1}{Linear System of Equations}
+        \item \hyperlink{2}{Norm of a Vector}
+        \item \hyperlink{3}{Matrix Algebra}
+        \item \hyperlink{4}{Identity Matrix and Zero Matrix}
+        \item \hyperlink{5}{Trace}
+        \item  \hyperlink{7}{Inverse Matrix}
+        \item \hyperlink{6}{Reduced Row-Echelon Form}
+        \item \hyperlink{10}{Augmented Matrix}
+        %\item  \hyperlink{8}{Exercise}
+        \item \hyperlink{9}{Gauss-Jordan Elimination}
+    \end{enumerate}
+       
+\end{frame}
+
+    % Example frame
+\begin{frame}[label=1]{Linear System of Equations}
+    \frametitle{Linear System of Equations}
+    \begin{block}{Definition}
+        A {linear system} of $m$ equations in $n$ unknowns $x_1,x_2,\cdots,x_n \in V$ is a set of equations 
+        \begin{equation*}
+            \left\{ 
+                \begin{aligned}
+                    & a_{11}x_{1} + a_{12}x_{2} + \cdots + a_{1 n}x_n = b_1, \\
+                    & a_{21}x_{1} + a_{22}x_{2} + \cdots + a_{1 n}x_n = b_2, \\
+                    & \cdots \\
+                    & a_{m1}x_{1} + a_{m2}x_{2} + \cdots + a_{m n}x_n = b_m. \\
+                \end{aligned}
+            \right.
+        \end{equation*}
+        \par It can also be represented in matrix form 
+        \begin{equation*}
+            \left[ 
+                \begin{array}{cccc}
+                    a_{11} & a_{12} & \cdots & a_{1n} \\ 
+                    a_{21} & a_{12} & \cdots & a_{2n} \\ 
+                    \vdots & \vdots & \ddots & \vdots \\ 
+                    a_{m1} & a_{m2} & \cdots & a_{mn} \\
+                \end{array}
+            \right] \left[
+                \begin{array}{c} 
+                    x_{1} \\
+                    x_{2} \\
+                    \vdots \\
+                    x_{n} \\ 
+                \end{array}
+            \right] = \left[ 
+                \begin{array}{c} 
+                    b_{1} \\
+                    b_{2} \\
+                    \vdots \\
+                    b_{m} \\
+                \end{array}
+            \right].
+        \end{equation*}
+    \end{block}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Linear System of Equations}
+    \begin{block}{Definition}
+        If $b_1 = b_2 = \cdots = b_m = 0$, then it is called a \textbf{homogeneous system}.\\
+        Otherwise, it is called an \textbf{inhomogeneous system}.
+    \end{block}
+\end{frame}
+
+\begin{frame}[label=2]{Norm of a Vector}
+        \begin{block}{Definition}
+        Let $\bar{v} = (v_1,\cdots,v_n) \in \mathbb{R}^n$. The \textbf{norm} of $\bar{v}$ is given by 
+        \begin{equation*}
+            ||\bar{v}|| = \sqrt{v \cdot v} = \sqrt{\sum\limits_{i=1}^{n} v_i^2}
+        \end{equation*}
+        \end{block}
+\end{frame}
+    
+\begin{frame}[label=3]{Matrix Algebra}
+        \frametitle{Matrix Algebra}
+        \begin{enumerate}
+            \item The \textbf{sum} of two matrices $A_{n\times m}$ and $B_{n \times m}$ is the matrix $C_{n \times m}$ such that 
+            \begin{equation*}
+                c_{ij} = a_{ij} + b_{ij}, \ i = \overline{1,n}, \ j = \overline{1,m}.
+            \end{equation*}
+            
+            \item The \textbf{scalar product} $\alpha A_{n \times m}= (\alpha a_{ij}), \ i = \overline{1,n}, \ j = \overline{1,m}$. 
+            
+            \item The \textbf{product} of a row-matrix $\left[a_1 \ \cdots \ a_n \right]$ and a column matrix $\left[ \begin{array}{c} b_1 \\ \vdots \\ b_n \end{array}\right]$ is 
+            \begin{equation*}
+                \left[a_1 \ \cdots \ a_n \right] \left[ \begin{array}{c} b_1 \\ \vdots \\ b_n \end{array}\right] = a_1b_1 + \cdots + a_n b_n.
+            \end{equation*}
+            It is the \textbf{inner product} of vectors $\bar{a} = (a_1,\cdots,a_n), \bar{b} = (b_1,\cdots,b_n) \in \mathbb{R}^n$. 
+        \end{enumerate}
+    \end{frame}
+    
+\begin{frame}
+        \frametitle{Matrix Algebra}
+        \begin{enumerate}\setcounter {enumi} {3}
+            \item The product of a matrix $A_{n \times m}$ and a vector $\bar{x} \in \mathbb{R}^m$ is 
+            \begin{equation*}
+                \begin{gathered}
+                    A_{n \times m} \bar{x}=\left[\begin{array}{c}
+                    \bar{w}_{1} \\
+                    \bar{w}_{2} \\
+                    \vdots \\
+                    \bar{w}_{n}
+                    \end{array}\right] \bar{x}
+                    =(\operatorname{def})\left[\begin{array}{c}
+                    \left(\bar{w}_{1}, \bar{x}\right) \\
+                    \left(\bar{w}_{2}, \bar{x}\right) \\
+                    \vdots \\
+                    \left(\bar{w}_{n}, \bar{x}\right)
+                    \end{array}\right] \\
+                    =(\operatorname{prop})\left(\bar{a}_{1} \quad \bar{a}_{2} \ldots \bar{a}_{m}\right) \bar{x}=x_{1} \bar{a}_{1}+x_{2} \bar{a}_{2}+\ldots+x_{m} \bar{a}_{m}
+                \end{gathered}
+            \end{equation*} 
+
+            \item The product of a matrix $A_{n \times k}$ and a matrix $B_{k \times m}$ is 
+            \begin{equation*}  
+                AB = \left[ A\bar{b}_1 \ A\bar{b}_2 \ \cdots A\bar{b}_m \right]_{n \times m}.
+            \end{equation*}
+
+            \item Properties.  
+            \begin{itemize}
+                \item $A+B = B+A$. $AB \neq BA$!
+                \item $A(B+C) = AB + AC$, $(A+B)C = AC + BC$. 
+            \end{itemize} 
+        \end{enumerate}
+    \end{frame}
+
+    
+
+\begin{frame}[label=4]{Identity Matrix and Zero Matrix}
+        \begin{block}{Definition} 
+        \textbf{Identity matrix} and \textbf{zero matrix}
+        \begin{equation*}
+            I_n = \left[ 
+                \begin{array}{cccc}
+                    1 & 0 & \cdots & 0 \\ 
+                    0 & 1 & \cdots & 0 \\ 
+                    0 & 0 & \ddots & 0 \\ 
+                    0 & 0 & \cdots & 1 \\
+                \end{array}
+            \right], \ O_n = \left[ 
+                \begin{array}{cccc}
+                    0 & 0 & \cdots & 0 \\ 
+                    0 & 0 & \cdots & 0 \\ 
+                    0 & 0 & \ddots & 0 \\ 
+                    0 & 0 & \cdots & 0 \\
+                \end{array}
+            \right]
+        \end{equation*}
+        \end{block}
+        
+        \begin{block}{Properties} 
+        $A + O = O + A = A$, $AI = IA = A$. 
+        \end{block}
+\end{frame}
+    
+\begin{frame}[label=5]{Trace}
+        \frametitle{Trace}
+        \begin{block}{Definition} 
+        Let $A_{n\times n} = (a_{ij})$ be a square matrix. The \textbf{trace} of $A$ is defined as 
+        \begin{equation*}
+            \operatorname{tr}(A) = \sum\limits_{i=1}^{n} a_{ii}.
+        \end{equation*}
+        
+        \end{block}
+
+        \begin{block}{Theorem} 
+        Let $A_{m \times n} = (a_{ij})$ and $B_{n \times m} = (b_{ij})$ be two matrices. \\
+        Then $\operatorname{tr}(AB) = \operatorname{tr}(BA)$. 
+        \end{block}
+        \pause 
+        \textbf{Proof.} 
+        \begin{align*}
+            \operatorname{tr}(AB) &= \sum\limits_{k=1}^{m} (AB)_{kk} = \sum\limits_{k=1}^{m} \sum\limits_{l=1}^{n} a_{kl} b_{lk} = \sum\limits_{k=1}^{m} \sum\limits_{l=1}^{n} b_{lk} a_{kl} \\
+            & = \sum\limits_{l=1}^{n} (BA)_{ll} = \operatorname{tr}(BA). 
+        \end{align*}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Trace}
+    \begin{block}{Properties}
+        \begin{itemize}
+            \item $tr(A)=tr(A^T)$,     \quad $A_{n\times n} = (a_{ij})$
+            \item $tr(kA)=k\cdot tr(A)$,     \quad $A_{n\times n} = (a_{ij})$, k is a scalar
+            \item $tr(A+B) = tr(A)+tr(B)$, \quad $A_{n\times n} = (a_{ij}), B_{n\times n} = (b_{ij})$
+            \item $tr(ABC)=tr(BCA)=tr(CAB)$
+        \end{itemize}
+        
+    \end{block}
+    
+\end{frame}
+
+\begin{frame}[label=7]{Inverse Matrix}
+        \begin{block}{Definition.} The \textbf{inverse} of $A$ is $A^{-1}$ only when 
+        \begin{equation*}
+            AA^{-1} = A^{-1}A = I.
+        \end{equation*}
+        In this case, we call matrix $A$ \textbf{invertible}.
+
+        \end{block}
+
+        \textbf{Theorems}
+        \begin{itemize}
+            \item If matrix $A$ is invertible, then $|A| \neq 0$. 
+            \item If $|A| \neq 0$, then $A$ is invertible and $A^{-1} = \dfrac{1}{|A|} A^{*}$. 
+        \end{itemize}
+
+        \par For now, you only need to know 
+        \begin{equation*}
+            A = \left[\begin{array}{cc} a & b \\ c & d \\ \end{array} \right] \Rightarrow A^{-1} = \frac{1}{ad - bc} \left[ \begin{array}{cc} d & -b \\ -c & a \\ \end{array} \right]. 
+        \end{equation*}
+\end{frame}
+
+\begin{frame}[label=6]{Reduced Row-Echelon Form}
+        \begin{block}{Definition} 
+        A matrix is in \textbf{reduced row-echelom form} ($\operatorname{rref}$) if it satisfies all of the following conditions: 
+        \begin{itemize}
+            \item If a row has nonzero entries, then the first nonzero entry is a 1, called the \textbf{leading 1} in this row. 
+            \item If a column contains a leading 1, then all the other entries in that column are 0. 
+            \item If a row contains a leading 1, then each row above it contains a leading 1 further to the left. That means, rows of 0's, if any, appear at the bottom of the matrix. 
+        \end{itemize}
+        \end{block}
+
+        \begin{block}{Definition} The number of leading 1's in the  $\operatorname{rref}$ of a matrix $A$ is called the \textbf{rank} of $A$.
+        \end{block}
+\end{frame}
+
+\begin{frame}
+ \frametitle{Reduced Row-Echelon Form}
+  How to find rref?
+  \pause
+  \begin{block}{Elementary Row Operations}
+    \begin{enumerate}
+        \item $r_1 \leftrightarrow r_2$, swap two rows
+        \item  $r_1 \rightarrow kr_1$, $k\in \mathbb{R},k\neq0$, multiplying a row by a non-zero scalar.
+        \item  $r_1 \rightarrow r_1+kr_2$, $k\in \mathbb{R},k\neq0$, add a multiple of a row to another row.
+    \end{enumerate}   
+  \end{block}
+\end{frame}
+
+\begin{frame}{Exercise1.1}
+        \par \textbf{Exercise 1.1} Find $\operatorname{rref}$ of matrix $$A = \left[ \begin{array}{cccc} 0&-3&-6&4 \\ -1&-2&-1&3 \\ -2&-3&0&3 \\ 1&4&5&-9 \end{array}\right].$$
+
+        \pause 
+        \par \textbf{Solution 1.1}
+        \begin{equation*}
+            \begin{aligned}
+                & \begin{gathered}
+                    A \sim\left[\begin{array}{cccc}
+                    1 & 4 & 5 & -9 \\
+                    0 & 2 & 4 & -6 \\
+                    0 & 5 & 10 &-15\\
+                    0 & -3 &-6 &4
+                    \end{array}\right] \sim\left[\begin{array}{cccc}
+                     1 & 4 & 5 & -9 \\
+                    0 & 2 & 4 & -6 \\
+                    0 & 0 & 0 & -5\\
+                    0 & 0 & 0 & 0
+                    \end{array}\right] \sim\left[\begin{array}{cccc}
+                    1 & 4 & 5 & -9 \\
+                    0 & 1 & 2 & -3 \\
+                    0 & 0 & 0 & 1\\
+                    0 & 0 & 0 & 0
+                    \end{array}\right] \\
+                \end{gathered} \\
+            %\Rightarrow & \operatorname{rref} A=\left[\begin{array}{ccc}
+            %   1 & 0 & -1 \\
+            %  0 & 1 & 2 \\
+            %   0 & 0 & 0
+            %    \end{array}\right] 
+            &\Rightarrow \operatorname{rank} A=3.
+            \end{aligned}
+        \end{equation*}
+\end{frame}
+
+\begin{frame}[label=10]{Augmented Matrix}
+    \begin{block}{Definition}
+        An augmented matrix is a matrix obtained by adjoining a row or column vector, or sometimes another matrix with the same vertical dimension.
+    \end{block}
+
+    \begin{block}{Application}
+        \begin{itemize}
+            \item Solve a system of linear equations.
+            \item Find the inverse of a matrix.
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}{Exercise1.2}
+        \par \textbf{Exercise 1.2} Find $\operatorname{Inverse}$ of matrix $$A = \left[ \begin{array}{ccc} 1&0&-2 \\ -3&4&-1 \\ 2&1&3\end{array}\right].$$
+
+        \pause 
+        \par \textbf{Solution 1.2}
+        \begin{equation*}
+            \begin{aligned}
+                & \begin{gathered}
+                    \left[\begin{array}{ccc|ccc}
+                    1&0&-2 &1 & 0& 0\\ -3&4&-1 & 0&1&0 \\ 2&1&3&0&0&1 
+                    \end{array}\right]
+                    \sim\left[\begin{array}{ccc|ccc}
+                    1&0&0 &\frac{13}{35} & -\frac{2}{35} & \frac{8}{35} \\ 0&1&0 & \frac{1}{5}&\frac{1}{5}&\frac{1}{5} \\ 0&0&1 & -\frac{11}{35}& -\frac{1}{35} & \frac{4}{35} 
+                    \end{array}\right] \\
+                \end{gathered} \\
+            %\Rightarrow & \operatorname{rref} A=\left[\begin{array}{ccc}
+            %   1 & 0 & -1 \\
+            %  0 & 1 & 2 \\
+            %   0 & 0 & 0
+            %    \end{array}\right] 
+            % &\Rightarrow \operatorname{rank} A=3.
+            \end{aligned}
+        \end{equation*}
+\end{frame}
+
+\begin{frame}[label=9]{Gauss(-Jordan) Elimination}
+    \par \begin{block}{Definition} 
+    The process for finding the solution of $Ax=b$.
+    \end{block}
+
+    \pause
+    \par
+    \begin{block}{Steps}
+        \begin{enumerate}
+            \item Find the augmented matrix $\LARGE[A\Large | b\LARGE]$.
+            \item Find the rref of the augmented matrix.
+            \item Get the solution(s).
+        \end{enumerate}
+    \end{block}
+\end{frame}
+
+\begin{frame}
+    \par \begin{block}{Theorem}  
+        \begin{itemize}
+            \item Appearing as 0 = d (d is not zero) and the original system of equations has no solution, 
+            \item If the number of non-zero rows = the number of unknowns, the original equation has a unique solution.
+            \item If the number of non-zero rows $<$ the number of unknowns, the original equation can be written with a general solution.
+        \end{itemize}
+        \end{block}
+
+\end{frame}
+
+
+
+
+
+
+% \begin{frame}{Exercise}
+%         \par \textbf{Exercise 1.2} Find $\operatorname{Inverse}$ of matrix $$A = \left[ \begin{array}{ccc} 1&0&-2 \\ -3&4&-1 \\ 2&1&3\end{array}\right].$$
+
+%         \pause 
+%         \par \textbf{Solution 1.2}
+%         \begin{equation*}
+%             \begin{aligned}
+%                 & \begin{gathered}
+%                     \left[\begin{array}{ccc|ccc}
+%                     1&0&-2 &1 & 0& 0\\ -3&4&-1 & 0&1&0 \\ 2&1&3&0&0&1 
+%                     \end{array}\right]
+%                     \sim\left[\begin{array}{ccc|ccc}
+%                     1&0&0 &\frac{13}{35} & -\frac{2}{35} & \frac{8}{35} \\ 0&1&0 & \frac{1}{5}&\frac{1}{5}&\frac{1}{5} \\ 0&0&1 & -\frac{11}{35}& -\frac{1}{35} & \frac{4}{35} 
+%                     \end{array}\right] \\
+%                 \end{gathered} \\
+%             %\Rightarrow & \operatorname{rref} A=\left[\begin{array}{ccc}
+%             %   1 & 0 & -1 \\
+%             %  0 & 1 & 2 \\
+%             %   0 & 0 & 0
+%             %    \end{array}\right] 
+%             % &\Rightarrow \operatorname{rank} A=3.
+%             \end{aligned}
+%         \end{equation*}
+% \end{frame}
+
+\begin{frame}{Exercise1.3}
+    \textbf{Exercise 1.3.1} 
+    Solving linear system of equations,
+        \begin{equation*}
+         \begin{cases}
+         x_{1}  - x_{2}  + x_{3} = 1 \\
+         x_{1}  - x_{2}  - x_{3} = 3 \\ 
+         2x_{1} - 2x_{2} - x_{3} = 3 
+        \end{cases}
+        \end{equation*}
+
+    \textbf{Exercise 1.3.2} 
+        Solving linear system of equations,
+        \begin{equation*}
+        \begin{cases}
+             x_{1}  - 3x_{2}  -2x_{3} - x_{4} = 6 \\
+             3x_{1}  - 8x_{2}  + x_{3} + 5x_{4}= 0 \\ 
+             -2x_{1} + x_{2} - 4x_{3} + x_{4}= -12\\
+             -x_{1} + 4x_{2} - x_{3} -3x_{4} = 2 
+        \end{cases}
+        \end{equation*}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Exercise1.3}
+    \textbf{Solution 1.3.1} No solution.
+    \par 
+    \textbf{Solution 1.3.2}
+    \begin{equation*}
+        x=\left(
+    \begin{array}{c}
+         2  \\
+         -1 \\
+         1 \\
+         -3
+    \end{array}
+        \right)
+    \end{equation*}
+    
+\end{frame}
+
+\begin{frame}{Exercise1.4}
+    \textbf{Exercise 1.4} 
+    Solve matrix equations AX=B where,
+            \begin{equation*}
+                A = \left[ \begin{array}{ccc} 
+                    1 & 0 & -2 \\
+                    -3& 4 & -1\\
+                    2&1&3\\
+                \end{array} \right].
+            \end{equation*}
+            \begin{equation*}
+                B = \left[ \begin{array}{cc} 
+                    5 & -1 \\
+                    -2&3 \\ 
+                    1&4\\
+        \end{array} \right].
+    \end{equation*}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Exercise1.4}
+    \textbf{Solution 1.4} 
+        \begin{equation*}
+            x=\left(
+            \begin{array}{cc}
+                \frac{11}{5} & \frac{13}{35}  \\[6pt]
+                \frac{4}{5}  & \frac{6}{5} \\[6pt]
+                -\frac{7}{5} & \frac{24}{35} \\
+            \end{array}
+            \right)
+        \end{equation*}    
+    
+\end{frame}
+
+\begin{frame}{\textcolor{green!30!black}{end}}
+    \begin{center}
+        \LARGE Thank you!
+    \end{center}
+\end{frame}
+
+
+\end{section}
+
+
+\end{document}
