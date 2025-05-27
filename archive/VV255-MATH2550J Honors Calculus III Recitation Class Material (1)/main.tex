@@ -1,0 +1,300 @@
+\documentclass[11pt,aspectratio=169]{beamer}
+
+\mode<presentation> {
+    \usetheme[reversetitle,notitle,noauthor]{Wien}
+}
+
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{wrapfig} 
+\usepackage{subfiles}
+\graphicspath{{./}{./figures/}}
+\usepackage{appendixnumberbeamer}
+\usepackage{setspace}
+
+\pdfstringdefDisableCommands{%
+    \def\translate{}%
+}
+
+\definecolor{yy}{HTML}{0070AF}
+\setbeamertemplate{itemize items}{\color{yy}$\blacktriangleright$}
+\setbeamertemplate{itemize subitems}{\color{yy}$\circ$}
+\setbeamercolor{enumerate subitem}{fg=yy}
+\setbeamertemplate{enumerate items}[default]
+\setbeamertemplate{section in toc}{\inserttocsectionnumber.~\inserttocsection}
+
+\title{\\ VV255/MATH2550J Honors Calculus III \\Recitation Class Material}
+ 
+\author{Zhang Fan}
+
+\institute[UM-JI]{University of Michigan and Shanghai Jiao Tong University Joint Institute}
+
+\date{Fall Term 2021}
+
+\begin{document}
+    \begin{frame}[plain]
+        \centering 
+        \par \textcolor{yy}{\Large 
+        VV255/MATH2550J Honors Calculus III}
+        \vspace{.2cm}
+        \par \textcolor{yy}{\Large Recitation Class 1}
+        \vspace{.5cm}
+        \par \textcolor{yy}{\large Jiani Jin}
+        \vspace{.3cm}
+        \par \textcolor{yy}{\large jinjiani@sjtu.edu.cn}
+        \vspace{.3cm}
+        \par \textcolor{yy}{\small University of Michigan - Shanghai Jiao Tong University Joint Institute}
+        \vspace{.5cm} 
+        \par \textcolor{yy}{Summer Term 2023}
+    \end{frame}
+
+\setcounter{section}{0}
+
+% \begin{frame}[t]{Table of Contents}
+% 	\tableofcontents
+% \end{frame}
+
+\section{Linear Systems and Matrices}
+    % \begin{frame}[t]{Table of Contents}
+    %     \tableofcontents[currentsection]
+    % \end{frame}
+    
+    \begin{frame}[t]{Linear System of Equations}
+        \par \textcolor{yy}{Definition.} A \textcolor{yy}{linear system} of $m$ equations in $n$ unknowns $x_1,x_2,\cdots,x_n \in V$ is a set of equations 
+        \begin{equation*}
+            \left\{ 
+                \begin{aligned}
+                    & a_{11}x_{1} + a_{12}x_{2} + \cdots + a_{1 n}x_n = b_1, \\
+                    & a_{21}x_{1} + a_{22}x_{2} + \cdots + a_{1 n}x_n = b_2, \\
+                    & \cdots \\
+                    & a_{m1}x_{1} + a_{m2}x_{2} + \cdots + a_{m n}x_n = b_m. \\
+                \end{aligned}
+            \right.
+        \end{equation*}
+        \par It can also be represented in matrix form 
+        \begin{equation*}
+            \left[ 
+                \begin{array}{cccc}
+                    a_{11} & a_{12} & \cdots & a_{1n} \\ 
+                    a_{21} & a_{12} & \cdots & a_{2n} \\ 
+                    \vdots & \vdots & \ddots & \vdots \\ 
+                    a_{m1} & a_{m2} & \cdots & a_{mn} \\
+                \end{array}
+            \right] \left[
+                \begin{array}{c} 
+                    x_{1} \\
+                    x_{2} \\
+                    \vdots \\
+                    x_{n} \\ 
+                \end{array}
+            \right] = \left[ 
+                \begin{array}{c} 
+                    b_{1} \\
+                    b_{2} \\
+                    \vdots \\
+                    b_{n} \\
+                \end{array}
+            \right].
+        \end{equation*}
+        
+        \par \textcolor{yy}{Definition.} If $b_1 = b_2 = \cdots = b_m = 0$, then it is called a \textcolor{yy}{homogeneous system}. Otherwise, it is called an \textcolor{yy}{inhomogeneous system}. 
+    \end{frame}
+
+    \begin{frame}[t]{Matrix Algebra}
+        \begin{enumerate}
+            \item The sum of two matrices $A_{n\times m}$ and $B_{n \times m}$ is the matrix $C_{n \times m}$ such that 
+            \begin{equation*}
+                c_{ij} = a_{ij} + b_{ij}, \ i = \overline{1,n}, \ j = \overline{1,m}.
+            \end{equation*}
+            
+            \item The scalar product $\alpha A_{n \times m}= (\alpha a_{ij}), \ i = \overline{1,n}, \ j = \overline{1,m}$. 
+            
+            \item The product of a row-matrix $\left[a_1 \ \cdots \ a_n \right]$ and a column matrix $\left[ \begin{array}{c} b_1 \\ \vdots \\ b_n \end{array}\right]$ is 
+            \begin{equation*}
+                \left[a_1 \ \cdots \ a_n \right] \left[ \begin{array}{c} b_1 \\ \vdots \\ b_n \end{array}\right] = a_1b_1 + \cdots + a_n b_n.
+            \end{equation*}
+            It is the \textcolor{yy}{inner product} of vectors $\bar{a} = (a_1,\cdots,a_n), \bar{b} = (b_1,\cdots,b_n) \in \mathbb{R}^n$. 
+        \end{enumerate}
+    \end{frame}
+
+    \begin{frame}[t]{Matrix Algebra}
+        \begin{enumerate}[4.]
+            \item The product of a matrix $A_{n \times m}$ and a vector $\bar{x} \in \mathbb{R}^m$ is 
+            \begin{equation*}
+                \begin{gathered}
+                    A_{n \times m} \bar{x}=\left[\begin{array}{c}
+                    \bar{w}_{1} \\
+                    \bar{w}_{2} \\
+                    \vdots \\
+                    \bar{w}_{n}
+                    \end{array}\right] \bar{x}=(\operatorname{def})\left[\begin{array}{c}
+                    \left(\bar{w}_{1}, \bar{x}\right) \\
+                    \left(\bar{w}_{2}, \bar{x}\right) \\
+                    \vdots \\
+                    \left(\bar{w}_{n}, \bar{x}\right)
+                    \end{array}\right] \\
+                    =(\operatorname{prop})\left(\bar{a}_{1} \quad \bar{a}_{2} \ldots \bar{a}_{m}\right) \bar{x}=x_{1} \bar{a}_{1}+x_{2} \bar{a}_{2}+\ldots+x_{m} \bar{a}_{m}
+                \end{gathered}
+            \end{equation*} 
+
+            \item[5.] The product of a matrix $A_{n \times k}$ and a matrix $B_{k \times m}$ is 
+            \begin{equation*}  
+                AB = \left[ A\bar{b}_1 \ A\bar{b}_2 \ \cdots A\bar{b}_m \right]_{n \times m}.
+            \end{equation*}
+
+            \item[6.] Properties.  
+            \begin{itemize}
+                \item $A+B = B+A$. $AB \neq BA$!
+                \item $A(B+C) = AB + AC$, $(A+B)C = AC + BC$. 
+            \end{itemize} 
+        \end{enumerate}
+    \end{frame}
+
+    \begin{frame}[t]{Norm, Identity Matrix and Zero Matrix}
+        \par \textcolor{yy}{Definition.} Let $\bar{v} = (v_1,\cdots,v_n) \in \mathbb{R}^n$. The \textcolor{yy}{norm} of $\bar{v}$ is given by 
+        \begin{equation*}
+            ||\bar{v}|| = \sqrt{v \cdot v} = \sqrt{\sum\limits_{i=1}^{n} v_i^2}
+        \end{equation*}
+
+        \phantom{yy} 
+
+        \par \textcolor{yy}{Definition.} \textcolor{yy}{Identity matrix} and \textcolor{yy}{zero matrix}
+        \begin{equation*}
+            I_n = \left[ 
+                \begin{array}{cccc}
+                    1 & 0 & \cdots & 0 \\ 
+                    0 & 1 & \cdots & 0 \\ 
+                    0 & 0 & \ddots & 0 \\ 
+                    0 & 0 & \cdots & 1 \\
+                \end{array}
+            \right], \ O_n = \left[ 
+                \begin{array}{cccc}
+                    0 & 0 & \cdots & 0 \\ 
+                    0 & 0 & \cdots & 0 \\ 
+                    0 & 0 & \ddots & 0 \\ 
+                    0 & 0 & \cdots & 0 \\
+                \end{array}
+            \right]
+        \end{equation*}
+    
+    \phantom{yy} 
+    
+    \par \textcolor{yy}{Properties.} $A + O = O + A = A$, $AI = IA = A$. 
+    \end{frame}
+    
+    \begin{frame}[t]{Trace}
+        \par \textcolor{yy}{Definition.} Let $A_{n\times n} = (a_{ij})$ be a square matrix. The \textcolor{yy}{trace} of $A$ is defined as 
+        \begin{equation*}
+            \operatorname{tr}(A) = \sum\limits_{i=1}^{n} a_{ii}.
+        \end{equation*}
+        
+        \phantom{yy}
+
+        \par \textcolor{yy}{Theorem.} Let $A_{m \times n} = (a_{ij})$ and $B_{n \times m} = (b_{ij})$ be two matrices. Then $\operatorname{tr}(AB) = \operatorname{tr}(BA)$. 
+        \pause 
+        \par \textcolor{yy}{Proof.} 
+        \begin{equation*}
+            \operatorname{tr}(AB) = \sum\limits_{k=1}^{m} (AB)_{kk} = \sum\limits_{k=1}^{m} \sum\limits_{l=1}^{n} a_{kl} b_{lk} = \sum\limits_{k=1}^{m} \sum\limits_{l=1}^{n} b_{lk} a_{kl} = \sum\limits_{l=1}^{n} (BA)_{ll} = \operatorname{tr}(BA). 
+        \end{equation*}
+    \end{frame}
+
+    \begin{frame}[t]{Reduced Row-Echelom Form}
+        \par \textcolor{yy}{Definition.} A matrix is in \textcolor{yy}{reduced row-echelom form} ($\operatorname{rref}$) if it satisfies all of the following conditions: 
+        \begin{itemize}
+            \item If a row has nonzero entries, then the first nonzero entry is a 1, called the \textcolor{yy}{leading 1} in this row. 
+            \item If a column contains a leading 1, then all the other entries in that column are 0. 
+            \item If a row contains a leading 1, then each row above it contains a leading 1 further to the left. That means, rows of 0's, if any, appear at the bottom of the matrix. 
+        \end{itemize}
+
+        \phantom{yy}
+
+        \par \textcolor{yy}{Definition.} The number of leading 1's in the  $\operatorname{rref}$ of a matrix $A$ is called the \textcolor{yy}{rank} of $A$.
+    \end{frame}
+
+    \begin{frame}[t]{Inverse Matrix}
+        \par \textcolor{yy}{Definition.} The \textcolor{yy}{inverse} of $A$ is $A^{-1}$ only when 
+        \begin{equation*}
+            AA^{-1} = A^{-1}A = I.
+        \end{equation*}
+        In this case, we call matrix $A$ \textcolor{yy}{invertible}.
+
+        \phantom{yy}
+
+        \textcolor{yy}{Theorems.}
+        \begin{itemize}
+            \item If matrix $A$ is invertible, then $|A| \neq 0$. 
+            \item If $|A| \neq 0$, then $A$ is invertible and $A^{-1} = \dfrac{1}{|A|} A^{*}$. 
+        \end{itemize}
+
+        \phantom{yy} 
+
+        \par For now, you only need to know 
+        \begin{equation*}
+            A = \left[\begin{array}{cc} a & b \\ c & d \\ \end{array} \right] \Rightarrow A^{-1} = \frac{1}{ad - bc} \left[ \begin{array}{cc} d & -b \\ -c & a \\ \end{array} \right]. 
+        \end{equation*}
+    \end{frame}
+
+    \begin{frame}[t]{Exercise}
+        \par \textcolor{yy}{Exercise 1.01} Find $\operatorname{rref}$ of matrix $$A = \left[ \begin{array}{ccc} 1&2&3 \\ 4&5&6 \\ 7&8&9 \\ \end{array}\right].$$
+
+        \phantom{yy}
+
+        \pause 
+        \par \textcolor{yy}{Solution 1.01}
+        \begin{equation*}
+            \begin{aligned}
+                & \begin{gathered}
+                    A \sim\left[\begin{array}{ccc}
+                    1 & 2 & 3 \\
+                    0 & -3 & -6 \\
+                    0 & -6 & -12
+                    \end{array}\right] \sim\left[\begin{array}{ccc}
+                    1 & 2 & 3 \\
+                    0 & 1 & 2 \\
+                    0 & 0 & 0
+                    \end{array}\right] \sim\left[\begin{array}{ccc}
+                    1 & 0 & -1 \\
+                    0 & 1 & 2 \\
+                    0 & 0 & 0
+                    \end{array}\right] \\
+                \end{gathered} \\
+            \Rightarrow & \operatorname{rref} A=\left[\begin{array}{ccc}
+                1 & 0 & -1 \\
+                0 & 1 & 2 \\
+                0 & 0 & 0
+                \end{array}\right] \Rightarrow \operatorname{rank} A=2.
+            \end{aligned}
+        \end{equation*}
+    \end{frame}
+
+    % \begin{frame}[t]{Exercise}
+    %     \par \textcolor{yy}{Exercise 1.02} Solve the linear system 
+    %     \begin{equation*}
+    %         \left\{ \begin{aligned} 
+    %             & x_1 - 2x_2 + 3x_3 - x_4 = 1, \\
+    %             & 3x_1 - x_2 + 5x_3 - 3x_4 = 2,\\
+    %             & 2x_1 + x_2 + 2x_3 - 2x_4 = 3. 
+    %         \end{aligned} \right.
+    %     \end{equation*}
+
+    %     \phantom{yy}
+
+    %     \par \textcolor{yy}{Solution 1.02} Consider the matrix 
+    %     \begin{equation*}
+    %         B = [A \mid \bar{b}] = \left[ \begin{array}{ccccc} 
+    %             1 & -2 & 3 & -1 & 1 \\
+    %             3 & -1 & 5 & -3 & 2 \\
+    %             2 &  1 & 2 & -2 & 3 \\
+    %         \end{array} \right] \Rightarrow \operatorname{rref}(B) = 
+    %     \end{equation*}
+    % \end{frame}
+
+\appendix
+\begin{frame}{}
+    \centering\Huge
+	Thank you! \\ 
+    \vspace{2cm}
+	?` Q \& A ?
+\end{frame}
+
+\end{document}

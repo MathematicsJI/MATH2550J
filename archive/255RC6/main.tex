@@ -1,0 +1,293 @@
+\documentclass{beamer}
+\usepackage{math214}
+\usepackage{babel}
+
+%\usepackage{enumitem}
+% Then, after \begin{document}, you can begin your frames/slides
+
+\title{\LARGE 255RC6}
+\author{ Li Mingrui, Xia Yiwei, Zhang Haoran, Huang Jiayue}
+\date{Summer 2024}
+
+\definecolor{darkblue}{HTML}{6666dd} 
+\colortheme{green!30!black}
+%\colortheme{orange!85!black}
+%\colortheme{darkblue}
+%\colortheme{blue!100!black}
+%\colortheme{orange!85!white!90!black}
+\begin{document}
+
+\maketitle
+
+%\begin{frame}
+ %  \frametitle{}
+  %  \tableofcontents     % 生成目录
+%\end{frame}
+
+
+\begin{frame}{Contents}
+    \begin{enumerate}
+        \item \hyperlink{1}{Double Integrals}
+        \item \hyperlink{2}{Triple Integrals}
+        \item \hyperlink{3}{Vector Field}
+    \end{enumerate}
+       
+\end{frame}
+
+    
+
+\section{Double Integrals}
+\begin{frame}[label=1]{Double Integrals}
+    \frametitle{Double Integrals}
+    \begin{block}{Definition}
+        The \textbf{double integral} of $f$ over the rectangle $R$ is
+        \begin{equation*}
+            \iint_Rf(x,y)dA=\lim_{m,n\rightarrow\infty}\sum_{i=1}^m\sum_{j=1}^nf(x_i,y_j)\Delta A
+        \end{equation*}
+    \end{block}
+    \begin{block}{Remark}
+        A function $f$ is called \textbf{integrable} if the limit in the above Definition exists, which means $\forall \varepsilon>0$ there is an integer $N$ such that 
+        \begin{equation*}
+            \Big|\iint_Rf(x,y)dA-\sum_{i=1}^m\sum_{j=1}^nf(x_i,y_j)\Delta A\Big |<\varepsilon,\quad \forall m>N, \forall n>N
+        \end{equation*}
+    \end{block}
+\end{frame}
+\begin{frame}
+    \frametitle{Double Integrals}
+    \begin{block}{Properties}
+        \begin{enumerate}
+            \item $\iint_R[f(x,y)+g(x,y)]dA=\iint_Rf(x,y)dA+\iint_Rg(x,y)dA$
+            \item $\iint_Rcf(x,y)dA=c\iint_Rf(x,y)dA$, c is a constant
+            \item $f(x,y)\geq g(x,y)$ for all $(x,y)$ in $R$, then $\iint_Rf(x,y)dA\geq \iint_Rg(x,y)dA$
+            \item $\Big|\iint_Rf(x,y)dA\Big|\leq\iint_R|f(x,y)|dA$
+        \end{enumerate}
+    \end{block}
+    
+\end{frame}
+\begin{frame}{Iterated Integral}
+    \begin{block}{Definition}
+        The \textbf{iterated integral}
+        \begin{equation*}
+            \int_a^b\int_c^df(x,y)dydx=\int_a^b\Big[\int_c^df(x,y)dy\Big]dx
+        \end{equation*}
+        is the integral of $\Big[\int_c^df(x,y)dy\Big]$ between $x=a$ and $x=b$.
+    \end{block}
+    \begin{block}{Fubini's Theorem}
+        If $f$ is continuous on the rectangle $R=\{(x,y)|a\leq x\leq b,c\leq y\leq d\}$, then
+        \begin{equation*}
+            \iint_Rf(x,y)dA=\int_a^b\int_c^df(x,y)dydx=\int_c^d\int_a^bf(x,y)dxdy
+        \end{equation*}
+    \end{block}
+\end{frame}
+\begin{frame}{Types of Plane}
+    \begin{block}{Definition}
+        A plane region is said to be of \textbf{type I} if it lies between the graphs of two continuous functions of $x$ , that is
+        \begin{equation*}
+            D=\{(x,y)|a\leq x\leq b, g_1(x)\leq y\leq g_2(x)\}
+        \end{equation*}
+        If $f$ is continuous on a type I region D, then
+        \begin{equation*}
+            \iint_Df(x,y)dA=\int_a^b\int_{g_1(x)}^{g_2(x)}f(x,y)dydx
+        \end{equation*}
+        A plane region is said to be of \textbf{type II} if
+        \begin{equation*}
+            D=\{(x,y)|c\leq y\leq d, h_1(y)\leq x\leq h_2(y)\}
+        \end{equation*}
+        \begin{equation*}
+            \iint_Df(x,y)dA=\int_c^d\int_{h_1(y)}^{h_2(y)}f(x,y)dxdy
+        \end{equation*}
+    \end{block}
+\end{frame}
+\begin{frame}{Change of Variables}
+    \begin{block}{Definition}
+        The \textbf{Jacobian} of the transformation $T$ given by $x=g(u,v)$ and $y=h(u,v)$ is 
+        \begin{equation*}
+            \dfrac{\partial(x,y)}{\partial(u,v)}=
+            \left|\begin{array}{cc}
+                \frac{\partial x}{\partial u} & \frac{\partial x}{\partial v} \\
+                \frac{\partial y}{\partial u} & \frac{\partial y}{\partial v}
+            \end{array}\right|
+            =\frac{\partial x}{\partial u}\frac{\partial y}{\partial v}-\frac{\partial x}{\partial v}\frac{\partial y}{\partial u}
+        \end{equation*}
+        Suppose that $T$ is a transformation whose \textbf{Jacobian} is \textbf{nonzero} and that maps a region $S$in the uv-plane onto a region $R$ in the xy-plane. $f$ is continuous on $R$ and that $R$ and $S$ are type I or type II plane regions. Suppose also that $T$ is one-to-one, except perhaps on the
+boundary of $S$. Then
+        \begin{equation*}
+            \iint_Rf(x,y)dA=\iint_Sf\big[x(u,v),y(u,v)\big]\Big| \dfrac{\partial(x,y)}{\partial(u,v)}\Big|dudv
+        \end{equation*}
+    \end{block}
+\end{frame}
+\begin{frame}{Exercise}
+    \textbf{Ex 6.1 }Evaluate$\iint_R(5-x)dA$, $R=\{(x,y)|0\leq x
+    \leq 8,0\leq y\leq2\}$\\
+    \par
+    \textbf{Ex 6.2 }Evaluate $\iint_DxydA$, where $D$ is the region bounded by the line $y=x-1$ and the parabola $y^2=2x+6$.\\
+    \textbf{Ex 6.3 }Express $D$ as a union of regions of type I or type II and evaluate the integral$\iint_D ydA$., where $D$ is the region bounded by the line $x=-1,y=-1,y=(x+1)^2,x=y-y^3$.\\
+    \textbf{Ex 6.4} Use polar coordinates to combine the sum
+    $\int_{1/\sqrt{2}}^1\int_{\sqrt{1-x^2}}^xxydydx+\int_1^{\sqrt{2}}\int_0^xxydydx+\int_{\sqrt{2}}^2\int_0^{\sqrt{4-x^2}}xydydx$ into one double integral. Then evaluate the double integral.\\
+    \textbf{Ex 6.5} Evaluate $\iint_R(x+y)e^{x^2-y^2}dA$ by making an appropriate change of variables. $R$ is enclosed by the lines $x-y=0,x-y=2,x+y=0,x+y=3$.
+\end{frame}
+\begin{frame}{Answers}
+    \textbf{6.1} 16\\
+    \textbf{6.2} 36\\
+    \textbf{6.3} $-\frac{2}{15}$\\
+    \textbf{6.4} $\frac{15}{16}$\\
+    \textbf{6.5} $\frac{1}{4}(e^6-7)$
+\end{frame}
+
+
+\section{Triple Integrals}
+\begin{frame}[label=2]{Triple Integrals}
+    \begin{enumerate}
+  \item \textbf{Domain:}
+  $$\mathcal{R} = [a, b] \times [c, d] \times [r,s].$$
+
+  \item \textbf{Partial Integral:}
+  $$\int_a^b f(x, y, z) \, dx$$
+
+  \item \textbf{Iterated Integral:}
+  $$\int_a^b \int_c^d \int_r^s f(x, y, z) \, dz \, dy \, dx = \int_a^b \left(\int_c^d \left(\int_r^s f(x, y, z) \, dz\right) \, dy\right) \, dx.$$
+
+  \item \textbf{Theorem (Fubini’s Theorem):} The order of integration can be rearranged if $f$ is integrable over the region $\mathcal{R}$:
+  $$\int \int \int_{\mathcal{R}} f \, dV = \int_a^b \int_c^d \int_r^s f(x, y, z) \, dz \, dy \, dx.$$
+
+\end{enumerate}
+
+\end{frame}
+
+
+
+
+
+\begin{frame}{Change of Variables}
+    \begin{block}{Theorem}
+        Let $\mathcal{R}$ and $\mathcal{S}$ be bounded regions in $\mathbb{R}^3$ that contain all of their boundary points. Let $T : \mathcal{D} \rightarrow \mathbb{R}^3$ where $\mathcal{D} \subset \mathbb{R}^3$ be an injective map that is onto and maps $\mathcal{S}$ in the $uvw$-plane to $\mathcal{R}$ in the $xyz$-plane. If $f(x, y, z)$ is continuous on $\mathcal{R}$, all of the components of $T$ have continuous partial derivatives and the Jacobian $JT(u, v, w)$ is never $0$ on $\mathcal{S}$, then
+\[
+\iiint_{\mathcal{R}} f(x, y, z) \, dx \, dy \, dz = \iiint_{\mathcal{S}} f(T(u, v, w)) \, \left| JT(u, v, w) \right| \, du \, dv \, dw.
+\]
+    \end{block}
+\end{frame}
+\begin{frame}{Frame Title}
+    The transformation \(T\) from cylindrical coordinates to rectangular coordinates is given by:
+\[ T(r, \theta,s) = \begin{bmatrix} r \cos \theta \\ r \sin \theta \\ s \end{bmatrix}^T. \]
+
+The transformation \(T\) from spherical coordinates to rectangular coordinates is given by:
+\[ T(\rho, \theta, \phi) = \begin{bmatrix} \rho \sin \phi \cos \theta \\ \rho \sin \phi \sin \theta \\ \rho \cos \phi \end{bmatrix}^T. \]
+\end{frame}
+
+\begin{frame}{Remark}
+    The Jacobian \( J \) of the transformation from cylindrical to rectangular coordinates is:
+\[ J(r, \theta, s) = r. \]
+
+The Jacobian \( J \) of the transformation from spherical to rectangular coordinates is:
+\[ J(\rho, \theta, \phi) = -\rho^2 \sin \phi. \]
+\end{frame}
+\begin{frame}{Exercise}
+    \textbf{Exercise 6.6} Find the mass of the pyramid with base in the plane $z = -6$ and sides
+formed by the three planes $y = 0$, $y - x = 4$ and $2x + y + z = 4$
+if the density of the solid is given by $\delta(x, y, z) = y$.
+    \textbf{Exercise 6.7} Find the volume of the region bounded by $z = x + y$, $x + y = 5$,
+where $(x, y) \in [0, 5] \times [0, 5]$, and the planes $x = 0$, $y = 0$, and $z = 0$.
+
+    \textbf{Exercise 6.8} Evaluate the integral
+\[
+\int_{-\sqrt{3}}^{\sqrt{3}} \int_{-\sqrt{3-x^2}}^{\sqrt{3-x^2}} \int_{1}^{4-x^2-y^2} \frac{1}{z^2} \, dz \, dy \, dx.
+\]
+\end{frame}
+\begin{frame}{Answers - 6.6}
+    We calculate the triple integral by
+\[
+\int_{0}^{6} \int_{y-4}^{5-\frac{y}{2}} \int_{-6}^{4-2x-y} y \, dz \, dx \, dy = 243.
+\]
+\end{frame}
+\begin{frame}{Answers - 6.7}
+    Here we calculate the volume $V$ of the region $E$ using a triple integral:
+\[
+V = \iiint_E \, dV = \int_0^5 \int_0^{5-x} \int_0^{x+y} \, dz \, dy \, dx = \frac{125}{3}.
+\]
+
+\end{frame}
+\begin{frame}{Answers - 6.8}
+    Use cylindrical coordinates. The transformation is given by:
+\begin{align*}
+\begin{cases}
+x = r \cos \theta \\
+y = r \sin \theta \\
+z = z
+\end{cases}
+\Rightarrow
+\begin{cases}
+0 \leq r \leq \sqrt{3} \\
+0 \leq \theta \leq 2\pi \\
+1 \leq z \leq 4 - r^2
+\end{cases}
+\end{align*}
+and $|J(r, \theta, z)| = r$.
+
+Therefore, the integral
+\[
+\int_{-\sqrt{3}}^{\sqrt{3}} \int_{-\sqrt{3-x^2}}^{\sqrt{3-x^2}} \int_{1}^{4-x^2-y^2} \frac{1}{z^2} \, dz \, dy \, dx
+\]
+becomes
+\[
+\int_{0}^{2\pi} \int_{0}^{\sqrt{3}} \int_{1}^{4-r^2} \frac{1}{z^2} r \, dz \, dr \, d\theta 
+\]
+\[ 
+= 2\pi \int_{0}^{\sqrt{3}} \left( r - \frac{r}{4 - r^2} \right) dr =(3-ln 4) \pi.
+\]
+\end{frame}
+\section{Vector Field}
+    
+\begin{frame}[label=3]{Vector Field}
+    \begin{block}{Definition}
+        A vector field on two (or three) dimensional space is a function $\boldsymbol{F}$ that assigns to each point $(x, y)$ (or $(x, y, z)$) a two (or three) dimensional vector given by $\boldsymbol{F}(x, y)$ (or $\boldsymbol{F}(x, y, z)$).
+    \end{block}
+    The standard notation for the function $\boldsymbol{F}$ is,
+\[
+\boldsymbol{F}(x, y) = P(x, y) \boldsymbol{i} + Q(x, y) \boldsymbol{j}
+\]
+\[
+\boldsymbol{F}(x, y, z) = P(x, y, z) \boldsymbol{i} + Q(x, y, z) \boldsymbol{j} + R(x, y, z) \boldsymbol{k}
+\]
+\end{frame}
+\begin{frame}{Gradient Fields}
+\begin{block}{Definition}
+    If $f$ is a scalar function of two variables, then its gradient $\nabla f$(or grad $f$) is defined by
+    \begin{equation*}
+        \nabla f(x,y)=f_x(x,y)\boldsymbol{i}+f_y(x,y)\boldsymbol{j}
+    \end{equation*}
+\end{block}
+    
+\end{frame}
+
+\begin{frame}{Exercise}
+    \textbf{Ex 6.9} Find the gradient vector field of following functions.
+    \begin{enumerate}
+        \item $f(x,y,z)=\sqrt{x^2+y^2+z^2}$
+        \item $f(x,y)=ln(1+x^2+y^2)$
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{\textcolor{green!30!black}{end}}
+    \begin{center}
+        \LARGE Thank you!
+    \end{center}
+\end{frame}
+
+
+
+\end{document}
+
+\begin{frame}{Integral Domain}
+    \begin{block}{Definition}
+         Let $\mathcal{R} = [a, b] \times [c, d]$ and $u_1 : \mathcal{R} \rightarrow \mathbb{R}$, $u_2 : \mathcal{R} \rightarrow \mathbb{R}$ be continuous functions. Let $D$ be a region in $\mathbb{R}^2$ that is contained in $\mathcal{R}$ ($D \subset \mathcal{R}$). Let $\mathcal{R}$ be the solid region whose projection onto the $xy$-plane is $D$ and that is bounded on the $z$-axis by functions $u_1(x, y)$ and $u_2(x, y)$, i.e., 
+\[
+\mathcal{R} = \{(x, y, z) \in \mathbb{R}^3 \mid (x, y) \in D \text{ and } u_1(x, y) \leq z \leq u_2(x, y)\}.
+\]
+A region of this form is said to be a \emph{Type I solid region}.
+    \end{block}
+    Let $\mathcal{R} = [a, b] \times [c, d]$ and $u_1 : \mathcal{R} \rightarrow \mathbb{R}$, $u_2 : \mathcal{R} \rightarrow \mathbb{R}$ be continuous functions. Let $D$ be a region in $\mathbb{R}^2$ that is contained in $\mathcal{R}$ ($D \subset \mathcal{R}$). Let $\mathcal{R}$ be the solid region whose projection onto the $xy$-plane is $D$ and that is bounded on the $z$-axis by functions $u_1(x, y)$ and $u_2(x, y)$, i.e., 
+\[
+\mathcal{R} = \{(x, y, z) \in \mathbb{R}^3 \mid (x, y) \in D \text{ and } u_1(x, y) \leq z \leq u_2(x, y)\}.
+\]
+A region of this form is said to be a \emph{Type I solid region}.
+\end{frame}

@@ -1,0 +1,646 @@
+\documentclass{beamer}
+\usepackage{math214}
+\usepackage{babel}
+%\usepackage{enumitem}
+% Then, after \begin{document}, you can begin your frames/slides
+
+\title{\LARGE 255RC4}
+\author{ Li Mingrui, Xia Yiwei, Zhang Haoran, Huang Jiayue}
+\date{Summer 2024}
+
+\definecolor{darkblue}{HTML}{6666dd} 
+\colortheme{green!30!black}
+%\colortheme{orange!85!black}
+%\colortheme{darkblue}
+%\colortheme{blue!100!black}
+%\colortheme{orange!85!white!90!black}
+\begin{document}
+
+\maketitle
+
+%\begin{frame}
+ %  \frametitle{}
+  %  \tableofcontents     % 生成目录
+%\end{frame}
+
+\begin{frame}[t]{Table of Contents}
+        \tableofcontents
+    \end{frame}
+
+
+
+    \section{Arc Length}
+    
+    \subsection{Arc Length}
+    \begin{frame}[t]{Arc Length}
+        \begin{block}
+            \par \textcolor{yy}{Thinking.}Let's recast an old formula into terms of vector functions. We want to determine the length of a vector function,
+            \begin{equation*}
+                 \bar{r} (t) = <f(t) , g(t)  , h(t) >
+            \end{equation*}
+             
+    So, the length of the curve  $\bar{r} (t) $  on the interval $ a \le t \le b $  is
+    \begin{equation*}
+        L = \int_{a}^{b}{\sqrt{(\dot{f}(t))^2 + (\dot{g}(t))^2 + (\dot{h}(t))^2}dt}
+    \end{equation*}
+   
+        \end{block}
+    Think: what if the curve is 2D?
+            
+        
+    \end{frame}
+    
+    \begin{frame}{Arc Length}
+        \begin{block}
+        \par Notice that the integrand (the function we’re integrating) is nothing more than the magnitude of the tangent vector,
+    \begin{equation*}
+        ||\dot{\bar{r}}(t)|| = \sqrt{(\dot{f}(t))^2 + (\dot{g}(t))^2 + (\dot{h}(t))^2}
+    \end{equation*}
+    Therefore, the arc length can be written as,
+    \begin{equation*}
+        L = \int_{a}^{b}{||\dot{\bar{r}}(t)||dt}
+    \end{equation*}
+        \end{block}
+    \par \textcolor{yy}{EX1.1.}
+       Determine the length of the curve $\bar{r} (t) =⟨2t,3sin(2t),3cos(2t)⟩$ on the interval  $0 \le t \le 2\pi$
+    \end{frame}
+    
+
+    \subsection{Arc Length function}
+    \begin{frame}[t]{Arc length function}
+        \begin{block}{Arc length function and reparametrize}
+            We need to take a quick look at another concept here. We define the arc length function as,
+            \begin{equation*}
+                s(t) = \int_{0}^{t}{||\dot{\bar{r}}(u)||du}
+            \end{equation*}
+            Okay, just why would we want to do this? Well let’s take the result of the arc length function above and solve it for t (t(s)).\\
+            Now, taking expression for t with respect to s (t(s)) and plugging it into the original vector function and we can \textcolor{yy}{reparametrize} the function into the form, $\bar{r}(t(s))$
+        \end{block}
+        \par \textcolor{yy}{Example.}Determine the arc length function for $\bar{r}(t)=⟨2t,3sin(2t),3cos(2t)⟩$and Reparametrize it.\\
+        \par \textcolor{yy}{Thinking} Where on the curve $\bar{r}(t)=⟨2t,3sin(2t),3cos(2t)⟩$are we after traveling for a distance of $\frac{\pi\sqrt{10}}{3}$?
+    \end{frame}
+
+    
+\subsection{Exercise}
+    \begin{frame}[t]{Exercise}
+    \par \textcolor{yy}{Ex1.1}Find the arc length function for $\bar{r}(t) = <4t,-2t,\sqrt{5}t^2>$
+    \par \textcolor{yy}{Ex1.2}Determine where on the curve given by $\bar{r}(t) = <t^2,2t^3,1-t^3>$ we are after traveling a distance of 20.
+       
+    \end{frame}
+
+
+
+\section{Curvature}
+    
+\subsection{Tangent, Normal And Binormal Vectors}
+
+\begin{frame}[t]{Tangent vector}
+    \begin{block}{Tangent vector}
+    Given the vector function $\bar{r}(t)$,we call $\bar{r}'(t)$ the \textcolor{yy}{tangent vector} provided it exists and provided $\bar{r}'(t) \neq \bar{0}$
+    Also,the\textcolor{yy}{unit tangent vector}  to the curve is given by,
+    \begin{equation*}
+        \bar{T}(t) = \frac{\bar{r}'(t)}{||\bar{r}'(t)||}
+    \end{equation*}
+    
+    The tangent line to $\bar{r}(t)$ at P
+is then the line that passes through the point P and is parallel to the tangent vector.
+    \end{block}
+\end{frame}
+
+\begin{frame}[t]{TBN Frame}
+        \begin{block}
+            \par \textcolor{yy}{Definition.} The plane orthogonal to the (unit) tangent vector $\bar{T}$ of the curve at the point $P$ is called the \textcolor{yy}{normal plane} of the curve at the point $P$.
+
+            \phantom{zjy}
+
+            \par \textcolor{yy}{Definition.} The plane that comes closest to containing the part of the curve near $P$ is called the \textcolor{yy}{osculating plane} of the curve at the point $P$. 
+        \end{block}
+
+        \phantom{zjy}
+
+        \par The osculating plane contains the tangent vector $\bar{T}$ at the point $P$ and the unit vector $\bar{N} (t) = \bar{T}'(t) / |\bar{T}'(t)|$ which indicates the direction in which the curve is turning at the point $P$.
+    \end{frame}
+
+    \begin{frame}[t]{TBN Frame}
+        \begin{block}
+            \par \textcolor{yy}{Definition.} The unit vector $$\bar{N} (t) = \bar{T}'(t) / |\bar{T}'(t)|$$ which indicates the direction in which the curve is turning at the point $P$ is called the \textcolor{yy}{principal unit normal vector}.
+            The binormal vector is defined to be
+            \begin{equation*}
+                \bar{B}(t) = \bar{T}(t) \times \bar{N}(t)
+            \end{equation*}
+        \end{block}
+
+        \begin{block}
+            \par \textcolor{yy}{Definition.} The set of vectors $\bar{T}$, $\bar{B}$ and $\bar{N}$ which start at various points of the curve is called the \textcolor{yy}{TBN Frame}.
+        \end{block}
+    \end{frame}
+
+\begin{frame}[t]{Exercise}
+    \par \textcolor{yy}{Ex2.1}Find the vector equation of the tangent line to the curve given by $\bar{r}(t) = t^2\bar{i}+2sin(t)\bar{j}+2cos(t)\bar{k}$ at $t = \frac{\pi}{3}$
+    \par \textcolor{yy}{Ex2.2} Find the normal and binormal vectors for $\bar{r}(t) = <t, 3sint, 3cost>$
+\end{frame}
+
+    \subsection{Curvature} 
+
+       \begin{frame}[t]{Curvature}
+        \begin{block}
+            \par \textcolor{yy}{Definition.} Let $A \subseteq \mathbb{R}$. We say that a vector function $\bar{r}: A \to \mathbb{R}^3$ is \textcolor{yy}{smooth} on an interval $I \subseteq A$ if $\bar{r}'$ is continuous on $I$ and for all $t \in I$, $\bar{r}'(t) \neq 0$. We say that a curve $\mathcal{C}$ is \textcolor{yy}{smooth} if $\mathcal{C}$ can be described by a smooth vector function.
+        \end{block}
+
+        \begin{block}
+            \par \textcolor{yy}{Definition.} Let $\bar{R}: A \to \mathbb{R}$ be a vector function that is smooth on the interval $I$. The \textcolor{yy}{curvature} of the curve $\mathcal{C}$ described by $\bar{r}$ is the function defined by 
+            \begin{equation*}
+                \kappa (t) = \left| \dfrac{d}{ds} \left[ \widehat{ \bar{r}'(t) } \right] \right| = ||\frac{d\bar{T}}{ds}||.
+            \end{equation*}
+            \par It measures the rate at which the direction of the vector function $\bar{r}$ is changing.
+            \end{block}
+    \end{frame}
+
+    \begin{frame}[t]{Curvature}
+        \begin{block}
+            \par \textcolor{yy}{Theorem.} Let $\bar{r}: A \to \mathbb{R}^3$ be a vector function that is smooth on the interval $I$ and such that $\bar{r}'$ is differentiable on $I$. Then for all $t \in I$, 
+            \begin{equation*}
+                \kappa (t) = \dfrac{\left| \bar{r}'(t) \times \bar{r}''(t)\right|}{\left| \bar{r}'(t) \right|^3} = ||\frac{\bar{T}'(t)}{\bar{r}'(t)}||.
+            \end{equation*}
+        \end{block}
+        \par For a plane curve $\mathcal{C}: y = f(x)$, we can choose $x$ as the parameter and write $\bar{r}(x) = x \bar{i} + f(x) \bar{j}$. Then $\bar{r}'(x) = \bar{i} + f'(x) \bar{j},\ \bar{r}''(x) = f''(x) \bar{j} \Rightarrow \bar{r}'(x) \times \bar{r}''(x) = f''(x) \bar{k}$.
+        
+        \begin{block}
+            \par \textcolor{yy}{Theorem.} Let $\mathcal{C}: y = f(x)$ where $f: D \to \mathbb{R}$. be a plane curve. Then for all $x \in D$
+            \begin{equation*}
+                \kappa(x) = \dfrac{|f''(x)|}{\left[1 + \left(f'(x)\right)^2\right]^{\frac{3}{2}}}      
+            \end{equation*}
+        \end{block}
+    \end{frame}
+    
+    \begin{frame}[t]{Exercise}
+        \par \textcolor{yy}{Ex2.3} Find the curvature of $\bar{r}(t)=<cos(2t),-sin(2t),4t>$\\
+        \par \textcolor{yy}{Ex2.4} Find the curvature of $\bar{r}(t)=<4t,-t^{2},2t^3>$\\
+    \end{frame}
+
+ 
+\section{Surfaces}
+    
+    
+    \begin{frame}{Surfaces}
+    \par \textcolor{yy}{Quadratic Surfaces}
+    \begin{equation*}
+        \begin{Bmatrix}
+        {(x,y,z) | Ax^2 + By^2 + Cz^2 + Dxy + Exz + Fyz + Gx + Hy + Jz + K = 0}
+        \end{Bmatrix}\\
+        where A to K are all constants and x, y, z being variables.
+    \end{equation*}
+    \par Please see the file "Surface.pdf".
+    \end{frame}
+ 
+\section{Indefinite Integrals}
+    
+
+    \subsection{Indefinite Integral}
+    \begin{frame}[t]{Indefinite Integral}
+        \begin{block}
+            \par \textcolor{yy}{Definition.} The set of all antiderivatives of the function $f(x)$ is called the \textcolor{yy}{indefinite integral} of $f(x)$ and is denoted by $$\int f(x) \mathrm{d}x=F(x) \Leftrightarrow F^{\prime}(x)=f(x)$$
+        \end{block}
+    \end{frame}
+
+    \subsection{Common Antiderivatives}
+    \begin{frame}[t]{Common Antiderivatives}
+        \begin{columns}[c]
+            \column{.45\textwidth} % Left column and width
+            \begin{itemize}
+                \item $\int x^{\mu} \mathrm{d}x=\dfrac{x^{\mu+1}}{\mu+1}+C, \mu \neq-1$
+                \item $\int \dfrac{\mathrm{d}x}{x}=\ln |x|+C$
+                \item $\int \sin x\ \mathrm{d}x=-\cos x+C$
+                \item $\int \cos x\ \mathrm{d}x=\sin x+C$
+                \item $\int e^{x}\ \mathrm{d}x=e^{x}+C$
+                \item $\int a^{x}\ \mathrm{d}x=\dfrac{a^x}{\ln a}+C$
+                \item $\int \dfrac{\mathrm{d}x}{\sqrt{1-x^{2}}}=\arcsin x+C$
+            \end{itemize}
+        
+            \column{.5\textwidth} % Right column and width
+            \begin{itemize}
+                \item $\int \dfrac{\mathrm{d}x}{1+x^{2}}=\arctan x+C$
+                \item $\int \tan x\ \mathrm{d}x=-\ln\left| \cos x \right|+C$
+                \item $\int \tan^2 x\ \mathrm{d}x=\tan x\ -x+C$
+                \item $\int \sec x\ \mathrm{d}x=\ln\left|\sec x +\tan x\right|+C$
+                \item $\int \sec^2 x\ \mathrm{d}x=\tan x+C$
+                \item $\int \cot x\ \mathrm{d}x=\ln\left| \sin x\right| +C$ 
+                \item $\int \cot^2 x\ \mathrm{d}x=-x-\cot x +C$  
+                \item $\int \csc x \ \mathrm{d}x=-\ln\left|\cot x+ \csc x\right|+C$
+                \item $\int \csc^2 x\ \mathrm{d}x=-\cot x+C$
+            \end{itemize}
+        \end{columns}
+    \end{frame}
+
+    \subsection{Rules of Integration}
+    \begin{frame}[t]{Rules of Integration}
+        \begin{block}{Addition}
+            $$\int\left(f_{1}(x)+f_{2}(x)\right) \mathrm{d}x=\int f_{1}(x) \mathrm{d}x+\int f_{2}(x) \mathrm{d}x$$
+        \end{block}
+        \par \textcolor{yy}{Example.} $$\int \tan^2 x\mathrm{d}x = \int \left(\dfrac{1}{\cos^2 x} - 1\right)\mathrm{d}x = \int \dfrac{1}{\cos^2x}\mathrm{d}x - \int \mathrm{d}x = \tan x - x + C.$$
+
+        \begin{block}{Multiplied by a Constant}
+            $$\int (C\cdot f(x))\mathrm{d}x = C\int f(x)\mathrm{d}x,\ C = \text{const}$$
+        \end{block}
+        \par \textcolor{yy}{Example.} $$\int \dfrac{2\mathrm{d}x}{\sqrt{1-x^2}} = 2\int\dfrac{\mathrm{d}x}{\sqrt{1-x^2}} = 2\arcsin x + C.$$
+    \end{frame}
+
+    \begin{frame}[t]{Rules of Integration}
+        \begin{block}{Integration by Parts}
+            \par Let $u(x),v(x)$ be differentiable on $\left\langle a, b\right\rangle$ and $H(x)$ be the antiderivative of $u'(x)\cdot v(x)$ on $\left\langle a, b\right\rangle$. Then $u(x)v(x) - H(x)$ is the antiderivative of $u'(x)\cdot v(x)$ on $\left\langle a, b\right\rangle$: $$\int u'(x)v(x)\mathrm{d}x = u(x)v(x) - \int u(x)v'(x)\mathrm{d}x$$
+        \end{block}
+        \par \textcolor{yy}{Remark.} Set the part with ``friendilier derivative'' to be $f(x)$.
+        \par \textcolor{yy}{Example.}
+        \begin{equation*}
+            \int xe^x\mathrm{d}x = \left[\begin{array}{l}
+                u(x) = e^x \\ v(x) = x
+            \end{array}\right] = \int u'(x)v(x) \mathrm{d}x = xe^x - \int e^x\mathrm{d}x = xe^x - e^x + C.
+        \end{equation*}
+    \end{frame}
+
+    \begin{frame}[t]{Rules of Integration}
+        \begin{block}{Composition}
+            \par Let $g(t): \left\langle\alpha,\beta\right\rangle \mapsto \left\langle a, b\right\rangle$ be differentiable on $\left\langle\alpha,\beta\right\rangle$ and $F(x)$ be the antiderivative of $f(x)$ on $\left\langle a, b\right\rangle$. Then $$\int f(g(t))\cdot g'(t)\mathrm{d}t = \int f(g(t))\mathrm{d}(g(t)) = F(g(t)) + C.$$
+        \end{block}
+        \par \textcolor{yy}{Example.}
+        \begin{equation*}
+            \begin{aligned}
+                & \int x e^{x^2} \mathrm{d}x = \dfrac{1}{2}\int e^{x^2} (2x\mathrm{d}x) = \dfrac{1}{2}\int e^{x^2}\mathrm{d}(x^2) = \dfrac{1}{2}e^{x^2} + C, \\
+                & b\int\dfrac{1}{x^2}\sin\dfrac{1}{x}\mathrm{d}x = -\int \sin \dfrac{1}{x}\mathrm{d}\left(\dfrac{1}{x}\right) = \cos \dfrac{1}{x} + C.
+            \end{aligned}
+        \end{equation*}
+    \end{frame}
+
+    \begin{frame}[t]{Rules of Integration}
+        \begin{block}{Substitution}
+            \par Let $g(t): \left\langle\alpha,\beta\right\rangle\mapsto \left\langle a, b\right\rangle$ be differentiable on $\left\langle\alpha,\beta\right\rangle$ and invertible with the inverse $t = t(x)$. If $H(x)$ if the antiderivative of $f(g(t))\cdot g'(t)$ on $\left\langle\alpha,\beta\right\rangle$, then $H(t(x))$ is the antiderivative of $f(x)$ on $\left\langle a, b\right\rangle$: $$\int f(x)\mathrm{d}x = \left[\begin{array}{c}
+                x = g(t) \\ \mathrm{d}x = g'(t)\mathrm{d}t
+            \end{array}\right] = \int f(g(t))\cdot g'(t)\mathrm{d}t = H(t(x)) + C$$
+        \end{block}
+        \par \textcolor{yy}{Example.} 
+        \begin{equation*}
+            \begin{aligned}
+                \int \sqrt{1-x^2}\mathrm{d}x & = \left[\begin{array}{c} x = \sin t\\\mathrm{d}x = \cos t \mathrm{d}t \\ -\dfrac{\pi}{2} \leqslant t \leqslant \dfrac{\pi}{2}\end{array}\right] = \int \cos t \cos t \mathrm{d}t = \int \dfrac{1+\cos 2t}{2}\mathrm{d}t
+            \end{aligned}
+        \end{equation*}
+    \end{frame}
+    \begin{frame}[t]
+        \par (Continued.)
+        \par \textcolor{yy}{Example.} 
+        \begin{equation*}
+            \begin{aligned}
+                \int \sqrt{1-x^2}\mathrm{d}x & = \left[\begin{array}{c} x = \sin t\\\mathrm{d}x = \cos t \mathrm{d}t \\ -\dfrac{\pi}{2} \leqslant t \leqslant \dfrac{\pi}{2}\end{array}\right] = \int \cos t \cos t \mathrm{d}t = \int \dfrac{1+\cos 2t}{2}\mathrm{d}t \\
+                & = \int \dfrac{1}{2}\mathrm{d}t + \dfrac{1}{2}\int \cos 2t \mathrm{d}t = \left.\left(\dfrac{t}{2} + \dfrac{1}{2}\cdot\dfrac{1}{2}\sin 2t + C\right)\right|_{t = \arcsin x} \\
+                & = \dfrac{1}{2}\arcsin x + \dfrac{1}{2}x\sqrt{1-x^2} + C
+            \end{aligned}
+        \end{equation*}
+    \end{frame}
+
+    \begin{frame}[t]{Substitution}
+        \begin{block}{Method 1: Trigonometric Substitution}
+            \par \textcolor{yy}{Keys.}
+            \begin{equation*}
+                \sin^2\alpha + \cos^2\alpha = 1 \text{ and } 
+                \sec^2\alpha - \tan^2\alpha = 1
+            \end{equation*}
+            \par \textcolor{yy}{Detailed Substitution.}
+            \begin{itemize}
+                \item $\sqrt{a^2-x^2}\Rightarrow x=a\sin \alpha\Rightarrow \sqrt{a^2-x^2}=a\cos \alpha;\ \mathrm{d}x=a\cos\alpha\ \mathrm{d}\alpha$
+                \item $\sqrt{a^2+x^2}\Rightarrow x=a\tan \alpha\Rightarrow \sqrt{a^2+x^2}=a\sec \alpha;\ \mathrm{d}x=a\sec^2\alpha\ \mathrm{d}\alpha$
+                \item $\sqrt{x^2-a^2}\Rightarrow x=a\sec \alpha\Rightarrow \sqrt{x^2-a^2}=a\tan \alpha;\ \mathrm{d}x=a\sec\alpha\tan\alpha\ \mathrm{d}\alpha$
+            \end{itemize}
+        \end{block}
+    \end{frame}
+
+    \begin{frame}[t]{Substitution}
+        \begin{block}{Method 2: Rational Functions: $\frac{p}{q}$}
+            \par \textcolor{yy}{Important Integrals.}
+            \begin{itemize}
+                \item $\int \dfrac{\mathrm{d}x}{1+x^2}=\arctan x+C$
+                \item $\int \dfrac{\mathrm{d}x}{a+bx}=\dfrac{1}{b}\ln\left|a+bx\right|+C$
+                \item $\int \dfrac{2ax+b}{ax^2+bx+c}\mathrm{d}x=\ln\left|ax^2+bx+c\right|+C$
+            \end{itemize}
+        \end{block}
+        \par \textcolor{yy}{Remark.} Actually, using these three 
+        formulas, you can solve all the questions that you are required to solve.
+    \end{frame}
+
+    \begin{frame}[t]{Substitution: Usual Steps to Calculate Integrals of $\frac{p}{q}$}
+        \begin{block}{Step 1: Change $f$ into proper form ($\deg(p) < \deg(q)$)}
+            \textcolor{yy}{Example.} $$f(x)=\dfrac{x^2}{(x-1)^2}=1+\dfrac{2x-1}{(x-1)^2}$$
+        \end{block}
+        \begin{block}{Step 2: Partial fraction decomposition}
+            \par Transfer $f(x)$ into the sum of following four classes of partial fractions
+            \begin{itemize}
+                \item $\dfrac{1}{x-a}$, $\dfrac{1}{(x-a)^{n}}$, $\dfrac{px+q}{ax^{2}+bx+c}$ or $\dfrac{px+q}{(ax^{2}+bx+c)^n}$.
+            \end{itemize}
+        \end{block}
+        \par \textcolor{yy}{Remark.} For the first two fractions, their integral is easy to obtain. Here we mainly focus on the integral of the third fraction.
+    \end{frame}
+
+    \begin{frame}[t]{Substitution: Usual Steps to Calculate Integrals of $\frac{p}{q}$}
+        \begin{block}{Calculate the Integral of $\dfrac{px+q}{ax^{2}+bx+c}$}
+            \begin{itemize}
+                \item Step 1: Take out the part which can be expressed as the derivative of denominator.\\
+                $$
+                \dfrac{px+q}{ax^2+bx+c}=\dfrac{p}{2a}\cdot\dfrac{2ax+b}{ax^2+bx+c}+\dfrac{q-\dfrac{pb}{2a}}{ax^2+bx+c}
+                $$ \pause 
+                Then the integral of the first part can be calculated using the formula at the beginning of this section. \pause Then we are going to explore the method to calculate the integral of $$\dfrac{1}{ax^{2}+bx+c}$$
+            \end{itemize}
+        \end{block}
+    \end{frame}
+
+    \begin{frame}[t]{Substitution: Usual Steps to Calculate Integrals of $\frac{p}{q}$}
+        \begin{block}{Calculate the Integral of $\dfrac{px+q}{ax^{2}+bx+c}$ (Continued.)}
+            \begin{itemize}
+                \item Step 2: If $\Delta\geq 0$, then $$\dfrac{1}{ax^{2}+bx+c}$$ can be expressed into the form $$\dfrac{1}{a}(\dfrac{c_1}{x-x_1}+\dfrac{c_2}{x-x_2})$$ whose integral is easy to compute.
+            \end{itemize}
+        \end{block}
+    \end{frame}
+
+    \begin{frame}[t]{Substitution: Usual Steps to Calculate Integrals of $\frac{p}{q}$}
+        \begin{block}{Calculate the Integral of $\dfrac{px+q}{ax^{2}+bx+c}$ (Continued.)}
+            \par If $\Delta< 0$, then the integral of $\dfrac{1}{ax^{2}+bx+c}$ can be expressed in the form of related to $f(x) = \arctan x$.
+        \end{block}
+
+        \par \textcolor{yy}{Example.}
+        \begin{equation*}
+            \begin{aligned}
+                \int \dfrac{\mathrm{d} x}{x^{2}+x+1} &= \int \dfrac{1}{\left(x+\dfrac{1}{2}\right)^{2}+\left(\dfrac{\sqrt{3}}{2}\right)^{2}} \mathrm{d} x = \left(\dfrac{2}{\sqrt{3}}\right)^{2} \int \dfrac{1}{\left[\dfrac{2}{\sqrt{3}}\left(x+\dfrac{1}{2}\right)\right]^{2}+1}\mathrm{d}x \\
+                &=\left(\dfrac{2}{\sqrt{3}}\right)^{2} \cdot \dfrac{\sqrt{3}}{2} \arctan \left[\dfrac{2}{\sqrt{3}}\left(x+\dfrac{1}{2}\right)\right]+C.
+            \end{aligned}
+        \end{equation*}
+    \end{frame}
+
+
+    \begin{frame}[t]{Substitution}
+        \begin{block}{Method 3: Substitute the Root}
+            \par Generally, the steps of this method are
+            \begin{enumerate}
+                \item Rationalize the numerator or denominator.
+                \item Let $t=\sqrt[n]{a x+b} \text { or } t=\sqrt[n]{\dfrac{a x+b}{c x+d}}$ and see what happens.
+            \end{enumerate}
+        \end{block}
+        \textcolor{yy}{Example.} 
+        \begin{equation*}
+            \begin{aligned}
+                \int \dfrac{1}{\sqrt{1+x}+\sqrt[3]{1+x}} \mathrm{d} x & = \left[\begin{array}{c} 1+x=t^6 \\ \mathrm{d}x=6t^5\mathrm{d}t \end{array}\right] =\int \dfrac{6t^5}{t^3+t^2}\mathrm{d}t =\int\dfrac{6t^3}{t+1}\mathrm{d}t \\
+                & =\int 6t^2-6t+6-\dfrac{6}{t+1}\mathrm{d}t\\
+                & =2t^3-3t^2+6t-6\ln \left|t+1\right|+C\\
+                & =2 \sqrt{1+x}-3 \sqrt[3]{1+x}+6 \sqrt[6]{1+x}-6 \ln |\sqrt[6]{1+x}+1|+C
+            \end{aligned}
+        \end{equation*}
+    \end{frame}
+
+    \begin{frame}[t]{Substitution}
+        \begin{block}{Method 4: Substitute $t = \frac{1}{x}$}
+            \par When the order of the denominator is much more greater than that of the numerator, we can try to apply the substitution $t = \dfrac{1}{x} \Rightarrow \mathrm{d}x = - \dfrac{\mathrm{d}t}{t^2}$.
+        \end{block}
+        \par \textcolor{yy}{Example.} $$\int \dfrac{\mathrm{d}x}{x^{4}\left(1+x^{2}\right)} =\dfrac{3 x^{2}-1}{3 x^{3}}-\arctan \dfrac{1}{x}+C$$
+    \end{frame}
+
+    \begin{frame}[t]{Special Topic: Trigonometric Functions}
+        \begin{block}{Case 1: The Integration of $\sin^n x$ or $\cos^nx$}
+        \begin{equation*}
+            \begin{aligned}
+                & \int \sin ^{n} x \mathrm{d} x=-\dfrac{1}{n} \sin ^{n-1} x \cos x+\dfrac{n-1}{n} \int \sin ^{n-2} x \mathrm{d} x \\
+                & \int \cos ^{n} x \mathrm{d} x=\dfrac{1}{n} \cos ^{n-1} x \sin x+\dfrac{n-1}{n} \int \cos ^{n-2} x \mathrm{d} x
+            \end{aligned}
+        \end{equation*}
+        \end{block}
+
+        \begin{block}{Case 2: The Integration of $\sin^mx\cdot\cos^nx$}
+            \begin{itemize}
+                \item At least one of $m,n$ is {odd}.\\
+                    If both of $m$ and $n$ are odd, then substitute either $\sin x$ or $\cos x$ with $t$. Otherwise, substitute the one of even power with $t$.
+                \item Both of $m,n$ are {even}.\\
+                    Use $\sin^2 x+\cos^2 x=1$ to transfer the integration into the form of $\sin^n x$ or $\cos^n x$.
+            \end{itemize}
+        \end{block}
+    \end{frame}
+
+    \begin{frame}[t]{Special Topic: Trigonometric Functions}
+        \textcolor{yy}{Examples.}
+        \begin{equation*}
+            \begin{aligned}
+                \int \sin^3 x\cos^2 x\ \mathrm{d}x &= \left[\begin{array}{c} t = \cos x \\ \mathrm{d}t = -\sin x \mathrm{d}x \end{array}\right] =\int -(1-t^2)t^2\ \mathrm{d}t, \\
+                \int \sin ^{2} x \cos ^{4} x \mathrm{d}x & =\int (1-\cos^2 x)\cos ^{4} x \mathrm{d}x=\int \cos^4 x \mathrm{d}x-\int \cos^6 x \mathrm{d}x\\
+                & = \dfrac{x}{16}+\dfrac{1}{32} \sin 2 x-\dfrac{1}{6} \sin x \cos ^{5}x+\dfrac{1}{24} \sin x \cos ^{3}x+C.
+            \end{aligned}
+        \end{equation*}
+    \end{frame}
+
+    \begin{frame}[t]{Special Topic: Trigonometric Functions}
+        \begin{block}{Case 3: The Integration of $\sin nx \cdot \cos mx$}
+            \par Use Sum-to-Product identities:
+            \begin{itemize}
+                \item $\sin nx\cos mx=\dfrac{1}{2}[\sin(n+m)x+\sin(n-m)x]$
+                \item $\sin nx\sin mx={-}\dfrac{1}{2}[\cos(n+m)x-\cos(n-m)x]$
+                \item $\cos nx\cos mx=\dfrac{1}{2}[\cos(n+m)x+\cos(n-m)x]$
+            \end{itemize}
+        \end{block}
+        \par \textcolor{yy}{Example.} $$\int \sin 4 x \cos 2 x \cos 3 x \mathrm{d}x = -\dfrac{1}{36} \cos 9 x-\dfrac{1}{20} \cos 5 x-\dfrac{1}{12} \cos 3 x+\dfrac{1}{4} \cos x+C$$
+    \end{frame}
+
+    \begin{frame}[t]{Special Topic: Trigonometric Functions}
+        \begin{block}{Case 4: The Integration of $\tan^nx$ or $\sec^nx$}
+            \begin{equation*}\begin{aligned}
+                & \int \tan ^{n} x \mathrm{d} x=\dfrac{\tan ^{n-1} x}{n-1}-\int \tan ^{n-2} x \mathrm{d} x \\
+                & \int \sec ^{n} x \mathrm{d} x=\dfrac{\sec ^{n-2} x \tan x}{n-1}+\dfrac{n-2}{n-1} \int \sec ^{n-2} x \mathrm{d} x
+            \end{aligned}\end{equation*}
+        \end{block}
+        
+        \par \textcolor{yy}{Example.} $$\int \sec^3 x\mathrm{d}x = \dfrac{1}{2}\left(\sec x\tan x+\ln\left|\sec x+\tan x \right|\right)+C.$$
+    \end{frame}
+
+    \begin{frame}[t]{Special Topic: Trigonometric Functions}
+        \begin{block}{Case 5: Substitute $t = \tan \dfrac{\pi}{2}$}
+            \par Since  $$\sin x=\dfrac{2 \tan \dfrac{x}{2}}{1+\tan ^{2} \dfrac{x}{2}},\ \cos x=\dfrac{1-\tan ^{2} \dfrac{x}{2}}{1+\tan ^{2} \dfrac{x}{2}},\ \tan x=\dfrac{2 \tan \dfrac{x}{2}}{1-\tan ^{2} \dfrac{x}{2}}$$
+            \par Substitute $t=\tan \dfrac{x}{2}$, we have $$\sin x=\dfrac{2 t}{1+t^2},\ \cos x=\dfrac{1-t^2}{1+t^2},\ \tan x=\dfrac{2 t}{1-t^2},\ \mathrm{d}x=\dfrac{2}{t^2+1}\mathrm{d}t$$
+        \end{block}
+        \par \textcolor{yy}{Remark.} This method works nearly for all rational functions containing trigonometric functions. {However}, sometimes, this will make the question become {super} {complicated}.
+    \end{frame}
+ 
+    \begin{frame}[t]{Special Topic: Trigonometric Functions}
+        \par \textcolor{yy}{Example.} $$\int \dfrac{1}{4+\sin x} \mathrm{d} x =\dfrac{2}{\sqrt{15}} \arctan \dfrac{4 \tan \dfrac{x}{2}+1}{\sqrt{15}}+C$$
+    \end{frame}
+
+    \begin{frame}[t]{Special Topic: Trigonometric Functions}
+        \begin{block}{Case 5: The Integration of $\dfrac{A_{1} \cos \theta+A_{2} \sin \theta}{B_{1} \cos \theta+B_{2} \sin \theta}$}
+        \par Convert into the form of $$\dfrac{C\left(B_{1} \cos \theta+B_{2} \sin \theta\right)+D\left[B_{1}(\cos \theta)^{\prime}+B_{2}(\sin \theta)^{\prime}\right]}{B_{1} \cos \theta+B_{2} \sin \theta}$$
+        \end{block}
+        \par \textcolor{yy}{Example.}
+        \begin{equation*}\begin{aligned}
+            & \int \dfrac{\cos x}{2 \sin x+\cos x} \mathrm{d} x = \dfrac{2}{5} \ln |2 \tan x+1|-\dfrac{1}{5} \ln \left|1+\tan ^{2} x\right|+\dfrac{1}{5} x+C\\
+            & \int \dfrac{\sin x}{\sin x+\cos x} \mathrm{d} x = \dfrac{x}{2}-\dfrac{1}{2} \ln |\sin x+\cos x|+C
+        \end{aligned}\end{equation*}
+    \end{frame}
+
+    \begin{frame}[t]{Exercise}
+        \par Evaluate the following integrals:
+        \begin{columns}[c]
+            \column{.45\textwidth} % Left column and width
+            \begin{itemize}
+                \item $\int x e^{2 x} \mathrm{d}x$
+                \item $\int x^{2} e^{a x} \mathrm{d}x, \text {a is a constant. } $
+                \item $\int x\arctan x \mathrm{d}x$   
+                \item $\int \dfrac{\mathrm{d} x}{\sqrt{x^{2}-a^{2}}}$
+                \item $\int \dfrac{\mathrm{d} x}{x^{2} \sqrt{x^{2}+1}}$
+            \end{itemize}
+        
+            \column{.5\textwidth} % Right column and width
+            \begin{itemize}
+                \item $\int \dfrac{1}{\sqrt{1+e^{2 x}}} \mathrm{d} x$
+                \item $\int \dfrac{\mathrm{d} x}{(1+\sqrt[3]{x}) \sqrt{x}}$
+                \item $\int \dfrac{\mathrm{d} x}{\sqrt[3]{(x+1)^{2}(x-1)^{4}}}$
+                \item $\int \sin ^{2} x \cos ^{5} x \mathrm{d}x$
+            \end{itemize}
+        \end{columns}
+    \end{frame}  
+
+\section{Vector and Vector Functions}
+
+    \subsection{Vectors} 
+
+    \begin{frame}[t]{Vectors}
+        \begin{block}{Vector}
+            \par \textcolor{yy}{Definition.} A \textcolor{yy}{vector} is an object that captures a direction and a magnitude (length) in 2D/3D spaces. Geometrically, vectors are arrows in an arbitrary position in 2D/3D spaces.
+
+            \par \textcolor{yy}{Definition.} The \textcolor{yy}{tip} of the vector is the end with the arrow, while the \textcolor{yy}{tail} is the end without it.
+
+            \par \textcolor{yy}{Definition.} A vector drawn with its tail at the origin is called a \textcolor{yy}{position vector}.
+        \end{block}
+
+        \begin{itemize}
+            \item Basis of $\mathbb{R}^3$: $\bar{e}_1,\bar{e}_2,\bar{e}_3$.
+            \item Resolving a vector into components: $\bar{v} = v_1 \bar{i} + v_2 \bar{j} + v_3 \bar{k}$.
+            \item Magnitude: $\left| \bar{v} \right| = \sqrt{v_1^2 + v_2^2 + v_3^2}$.
+            \item $n$-dimensional vector $\bar{v} = (v_1,v_2,\cdots,v_n)$. $\left| \bar{v} \right| = \sqrt{\sum\limits_{k=1}^{n}v_k^2}$.
+        \end{itemize}
+    \end{frame}
+
+    \begin{frame}[t]{Properties of Vectors}
+        \par Let $\bar{a}$, $\bar{b}$ and $\bar{c}$ be $n$-dimensional vectors and $\alpha,\beta$ be real numbers (scalars). Then 
+        \begin{enumerate}
+            \item $\bar{a} + \bar{b} = \bar{b} + \bar{a}$.
+            \item $\bar{a} + (\bar{b} + \bar{c}) = (\bar{a} + \bar{b}) + \bar{c}$.
+            \item $\bar{a} + \bar{0} = \bar{a}$.
+            \item $\bar{a} + (-\bar{a}) = \bar{0}$.
+            \item $\alpha (\bar{a} + \bar{b}) = \alpha\bar{a} + \alpha\bar{b}$.
+            \item $(\alpha \beta)\bar{a} = \alpha (\beta \bar{a})$.
+            \item $(\alpha + \beta)\bar{a} = \alpha \bar{a} + \beta \bar{a}$.
+            \item $1 \cdot \bar{a} = \bar{a}$.
+        \end{enumerate}
+    \end{frame} 
+
+    \subsection{Vector Functions}
+    \begin{frame}[t]{Vector Functions}
+        \begin{block}
+            \par \textcolor{yy}{Definition.} A \textcolor{yy}{vector-valued function} pr \textcolor{yy}{vector function} is a function whose domain is a subset of the reals and range is a set of vectors, \textit{i.e.}, we say that $\bar{r}$ is a \textcolor{yy}{vector function} if $\bar{r}: A \to \mathbb{R}^3$ where $A \subseteq \mathbb{R}$.
+        \end{block}
+
+        \phantom{zjy}
+        
+        \par For $\bar{r} (t) = f(t) \bar{i} + g(t) \bar{j} + h(t) \bar{k}$, we introduce the parametric equations 
+        \begin{equation*}
+            x = f(t),\ y = g(t),\ z = h(t) 
+        \end{equation*}
+
+        \begin{block}{Limit of a Vector Function}
+            \par \textcolor{yy}{Definition.} Let $\bar{r}(t) = f(t) \bar{i} + g(t) \bar{j} + h(t) \bar{k}$ be a vector function and $a \in \mathbb{R}$. If the limits $\lim\limits_{t \to a}f(t)$, $\lim\limits_{t \to a}g(t)$ and $\lim\limits_{t \to a}h(t)$ exist, then $\lim\limits_{t \to a} \bar{r} (t)$ exists and 
+            \begin{equation*}
+                \lim _{t \rightarrow a} \bar{r}(t)=\left(\lim _{t \rightarrow a} f(t)\right) \bar{i}+\left(\lim _{t \rightarrow a} g(t)\right) \bar{j}+\left(\lim _{t \rightarrow a} h(t)\right) \bar{k} .
+            \end{equation*}
+        \end{block}
+    \end{frame}
+
+    \begin{frame}[t]{Vector Functions}
+        \begin{block}{Continuity of a Vector Function}
+            \par \textcolor{yy}{Definition.} Let $A \subseteq \mathbb{R}$. A vector function $\bar{r}: A \to \mathbb{R}^3$ is \textcolor{yy}{continuous} at a point $a \in \mathbb{R}$ if $a \in A$ and 
+            \begin{equation*}
+                \lim\limits_{t \to a}\bar{r} (t) = \bar{r} (a).
+            \end{equation*}
+
+            \phantom{zjy}
+
+            \par We say that $\bar{r}: A \to \mathbb{R}^3$ is \textcolor{yy}{continuous on an interval} $I$ if $\bar{r}$ is continuous at all points $a \in I$.
+            \par The continuity of $\bar{r}$ is equivalent to the continuity of $f(t)$, $g(t)$ and $h(t)$.
+        \end{block}
+    \end{frame}
+
+    \begin{frame}[t]{Vector Functions}
+        \begin{block}{Differentiability}
+            \par \textcolor{yy}{Definition.} Let $A \subseteq \mathbb{R}$ and $\bar{r}: A \to \mathbb{R}^3$. Let $t \in A$. If the limit
+            \begin{equation*}
+                \dfrac{d \bar{r}}{dt} = \bar{r}'(t) = \lim\limits_{h \to 0} \dfrac{\bar{r}(t+h) - \bar{r}(t)}{h}
+            \end{equation*}
+            exists, then we say that $\bar{r}$ is \textcolor{yy}{differentiable} at $t$.
+        \end{block}
+
+        \begin{block}{Criteria for Differentiability}
+            \par \textcolor{yy}{Theorem.} If $\bar{r} = f(t) \bar{i} + g(t) \bar{j} + h(t) \bar{k}$ where $f$, $g$ and $h$ are functions differentiable on an interval $I$, then $\bar{r}$ is differentiable at every point in $I$ and 
+            \begin{equation*}
+                \bar{r}'(t) = f'(t) \bar{i} + g'(t) \bar{j} + h'(t) \bar{k} .
+            \end{equation*}
+        \end{block}
+    \end{frame}
+
+    \begin{frame}[t]{Vector Functions}
+        \begin{block}{Integration}
+            \par \textcolor{yy}{Definition.} Let $\bar{r}(t) = f(t) \bar{i} + g(t) \bar{j} + h(t) \bar{k}$ where $f$, $g$ and $h$ are functions that are integrable on $[a,b]$. Then
+            \begin{equation*}
+                \int_{a}^{b} \bar{r}(t) d t=\left(\int_{a}^{b} f(t) d t\right) \bar{i}+\left(\int_{a}^{b} g(t) d t\right) \bar{j}+\left(\int_{a}^{b} h(t) d t\right) \bar{k}
+            \end{equation*}
+            \begin{equation*}
+                \int \bar{r}(t) d t=\left(\int f(t) d t\right) \bar{i}+\left(\int g(t) d t\right) \bar{j}+\left(\int h(t) d t\right) \bar{k}
+            \end{equation*}
+        \end{block}
+    \end{frame}
+
+    \begin{frame}[t]{Vector Functions}
+        \par Let $\bar{r}: A \to \mathbb{R}^3$ be a vector function and $t \in A$. Let $P$ be the point described by the vector $\bar{r}(t)$.
+        \begin{block}{Tangent Vector and Tangent Line}
+            \par \textcolor{yy}{Definition.} If $\bar{r}'(t)$ exists and $\bar{r}'(t) \neq 0$, then $\bar{r}'(t)$ is called the \textcolor{yy}{tangent vector} to the curve defined by $\bar{r}$ at the point $P$.
+
+            \phantom{zjy}
+            
+            \par \textcolor{yy}{Definition.} The \textcolor{yy}{tangent line} to the curve described by $\bar{r}$ at the point $P$ is the line that is parallel to the vector $\bar{r}'(t)$.
+        \end{block}
+
+        \par The \textcolor{yy}{unit tangent vector}, sometimes denoted $\bar{T}(t)$, is the unit vector of $\bar{r}'(t)$
+        \begin{equation*}
+            \bar{T} (t) = \dfrac{\bar{r}'(t)}{|\bar{r}'(t)|} .
+        \end{equation*}
+    \end{frame}
+
+    \begin{frame}[t]{Vector Functions}
+        \par Let $\bar{u}$ and $\bar{v}$ be differentiable vector functions. Let $c \in \mathbb{R}$ and $f: \mathbb{R} \to \mathbb{R}$ be a differentiable function.
+        \begin{block}{Properties of Differentiability}
+            \begin{enumerate}
+                \item $\dfrac{d}{dt} [\bar{u} (t) \pm \bar{v} (t)] = \bar{u}'(t) + \bar{v}'(t)$.
+                \item $\dfrac{d}{dt} [c \bar{u}(t)] = c \bar{u}'(t)$.
+                \item $\dfrac{d}{dt} [ f(t) \bar{u} (t)] = f'(t) \bar{u}(t) + f(t) \bar{u}'(t)$.
+                \item $\dfrac{d}{dt} [\bar{u} (t) \cdot \bar{v} (t)] = \bar{u}'(t) \cdot \bar{v}(t) + \bar{u} (t) \cdot \bar{v}'(t)$.
+                \item $\dfrac{d}{dt} [\bar{u} (t) \times \bar{v} (t)] = \bar{u}'(t) \times \bar{v}(t) + \bar{u} (t) \times \bar{v}'(t)$.
+                \item $\dfrac{d}{dt} [\bar{u} (f(t))] = \bar{u}'(f(t)) f'(t)$ (Chain Rule).
+            \end{enumerate}
+        \end{block}
+    \end{frame}
+
+    \begin{frame}[t]{Vector Functions}
+        \begin{block}{Property of the Tangent Vector}
+            \par \textcolor{yy}{Theorem.} Let $\bar{r} (t)$ be a vector function that is differentiable on an interval $I$. If for all $t \in I$, $|\bar{r} (t) |$ is constant, then for all $t \in I$, $\bar{r}(t)$ and $\bar{r}'(t)$ are perpendicular. 
+        \end{block}
+
+        \phantom{zjy}
+
+        \par \textcolor{yy}{Proof.} 
+        \par Suppose that for all $t \in I$, $|\bar{r} (t)| = c$. Therefore 
+        \begin{equation*}
+            2\left(\bar{r}^{\prime}(t) \cdot \bar{r}(t)\right)=\frac{d}{d t}[\bar{r}(t) \cdot \bar{r}(t)]=\frac{d}{d t}\left[|\bar{r}(t)|^{2}\right]=\frac{d}{d t}\left[c^{2}\right]=0 .
+        \end{equation*}
+    \end{frame}
+
+
+
+\end{document}

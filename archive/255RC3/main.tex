@@ -1,0 +1,411 @@
+\documentclass{beamer}
+\usepackage{math214}
+\usepackage{babel}
+%\usepackage{enumitem}
+% Then, after \begin{document}, you can begin your frames/slides
+
+\title{\LARGE 255RC3}
+\author{ Li Mingrui, Xia Yiwei, Zhang Haoran, Huang Jiayue}
+\date{Summer 2024}
+
+\definecolor{darkblue}{HTML}{6666dd} 
+\colortheme{green!30!black}
+%\colortheme{orange!85!black}
+%\colortheme{darkblue}
+%\colortheme{blue!100!black}
+%\colortheme{orange!85!white!90!black}
+\begin{document}
+
+\maketitle
+
+%\begin{frame}
+ %  \frametitle{}
+  %  \tableofcontents     % 生成目录
+%\end{frame}
+
+
+\begin{frame}{Contents}
+    \begin{enumerate}
+        \item \hyperlink{1}{Linear Independence}
+        \item \hyperlink{2}{Basis}
+        \item \hyperlink{3}{QR Decomposition}
+        \item \hyperlink{4}{Column Space and Null Space}
+        \item \hyperlink{5}{Orthogonal Projection Matrix}
+    \end{enumerate}
+       
+\end{frame}
+
+    
+
+\section{Linear Independence}
+\begin{frame}[label=1]{Linear Independence}
+    \frametitle{Linear Independence}
+    \begin{block}{Definition}
+        Given a vector space $V$, a finite set \{ $v_1,v_2,\dots,v_k$\} $\subset V$ is {linear independent} if 
+        \begin{equation*}
+            \alpha_1v_1+\alpha_2v_2+\dots+\alpha_kv_k=\mathbf{0}\Leftrightarrow\alpha_1=\alpha_2=\dots=\alpha_k=0.
+        \end{equation*}
+        A set of vectors is called \textbf{dependent} if it is not independent.
+    \end{block}
+    \begin{block}{Remark}
+        If \{ $v_1,v_2,\dots,v_k$\} $\in V$ is {linear independent}, then
+        \begin{align*}
+    \alpha_1v_1+\alpha_2v_2+\dots+\alpha_kv_k&=\beta_1v_1+\beta_2v_2+\dots+\beta_kv_k\\
+    \Leftrightarrow \forall i&=1,\dots,k,\alpha_i=\beta_i.
+        \end{align*}
+    \end{block}
+\end{frame}
+
+\begin{frame}{Exercise 3.1}
+    \textbf{Exercise 3.1} Prove that the vector set $\{ v_1, v_2,\dots v_n\}$ is linearly independent, where $v_i$s are n-dimensional unit vectors.
+    \pause
+    \par
+    \textbf{Solution 3.1} Suppose there exist $\alpha_1,\alpha_2,\dots\alpha_n$ such that
+    \begin{equation*}
+        \alpha_1v_1+\alpha_2v_2+\dots+\alpha_nv_n=\mathbf{0}
+    \end{equation*}
+    \begin{equation*}
+        \alpha_1\begin{pmatrix}
+                    1\\ 0\\\vdots\\0
+                \end{pmatrix}+\alpha_2\begin{pmatrix}
+                    0\\ 1\\\vdots\\0
+                \end{pmatrix}+\dots+\alpha_n\begin{pmatrix}
+                    0\\ 0\\\vdots\\1
+                \end{pmatrix}=\begin{pmatrix}
+                    \alpha_1\\ \alpha_2\\ \vdots\\ \alpha_n
+                \end{pmatrix}=\begin{pmatrix}
+                    0\\ 0\\\vdots\\0
+                \end{pmatrix}
+    \end{equation*}
+    We get 
+    \begin{equation*}
+        \alpha_1=\alpha_2=\dots=\alpha_n=0.
+    \end{equation*}
+    Therefore, vector set $\{ v_1, v_2,\dots v_n\}$ is linearly independent.
+\end{frame}
+
+\section{Basis}
+\begin{frame}[label=2]{Basis}
+        \begin{block}{Definition}
+        Given a vector space $V$, a vector set $B=\{v_1,v_2,\dots, v_n\}$ is a \textbf{basis} if it is linearly independent and spanning, that is, every $v\in V$ can be uniquely expressed as 
+        \begin{equation*}
+            v=\sum_{i=1}^n\alpha_iv_i,
+        \end{equation*}
+        where $\alpha_i$s are the $coordinates$ of $v$ with respect to the basis $\{v_1,v_2,\dots, v_n\}$
+        \end{block}
+
+        \begin{block}{Remark}
+            \begin{itemize}
+                \item The dimension of $V$ is denoted $dim V$.
+                \item $dim V$ equals to the length of the basis of $V$.
+            \end{itemize}
+        \end{block}
+\end{frame}
+
+\begin{frame}{Exercise 3.2}
+    \textbf{Exercise 3.2} In the space $\mathbb{R}^{2\times2}$, consisting of all second-order real square matrices, suppose
+    \begin{equation*}
+        E_{11}=\begin{pmatrix}
+            1&0\\0&0
+        \end{pmatrix},
+        E_{12}=\begin{pmatrix}
+            0&1\\0&0
+        \end{pmatrix},
+        E_{21}=\begin{pmatrix}
+            0&0\\1&0
+        \end{pmatrix},
+        E_{22}=\begin{pmatrix}
+            0&0\\0&1
+        \end{pmatrix}.
+    \end{equation*}
+    Prove that $\{E_{11},E_{12},E_{21},E_{22}\}$ is a basis of space $\mathbb{R}^{2\times2}$.
+\end{frame}
+
+\section{QR Decomposition}
+\begin{frame}[label=3]{QR Decomposition}
+    \begin{block}{Definition}
+        \textbf{QR decomposition}, also known as \textbf{QR factorization} or \textbf{QU factorization}, is a decomposition of a matrix A into a product 
+        \begin{equation*}
+            A=QR
+        \end{equation*} of an \textbf{orthogonal matrix Q} and an \textbf{upper triangular matrix R}[\href{https://en.wikipedia.org/wiki/QR_decomposition}{1}].
+    \end{block}
+
+    \pause
+    How to find the QR decomposition of a matrix?
+\end{frame}    
+    
+\begin{frame}{Gram-Schmidt procedure}
+    \begin{block}{Definition}
+            Consider the Gram-Schmidt procedure, with the vectors to be considered in the process as
+    columns of the matrix \(A\). That is,
+    \[
+    A = \begin{bmatrix}
+    \vert & \vert & & \vert \\
+    \mathbf{a}_1 & \mathbf{a}_2 & \cdots & \mathbf{a}_n \\
+    \vert & \vert & & \vert
+    \end{bmatrix}.
+    \]
+    Then, the orthonormal basis can be found as follows:
+    \begin{align*}
+    \mathbf{u}_1 &= \mathbf{a}_1, & \mathbf{e}_1 &= \frac{\mathbf{u}_1}{\|\mathbf{u}_1\|}, \\
+    \mathbf{u}_2 &= \mathbf{a}_2 - (\mathbf{a}_2 \cdot \mathbf{e}_1)\mathbf{e}_1, & \mathbf{e}_2 &= \frac{\mathbf{u}_2}{\|\mathbf{u}_2\|}. \\
+    \end{align*}
+    \end{block}
+\end{frame}
+\begin{frame}{Gram-Schmidt procedure}
+    \begin{block}{Definition}
+        In general, for \(k \geq 1\),
+\[
+\mathbf{u}_{k+1} = \mathbf{a}_{k+1} - \sum_{i=1}^k (\mathbf{a}_{k+1} \cdot \mathbf{e}_i)\mathbf{e}_i, \quad \mathbf{e}_{k+1} = \frac{\mathbf{u}_{k+1}}{\|\mathbf{u}_{k+1}\|}.
+\]
+Note that \(\| \cdot \|\) is the \(L_2\) norm.
+    \end{block}
+\end{frame}
+
+\begin{frame}{QR Decomposition}
+    \begin{block}{Definition}
+\begin{equation}
+\begin{aligned}
+A &= 
+\begin{bmatrix}
+\vert & \vert & & \vert \\
+\mathbf{a}_1 & \mathbf{a}_2 & \cdots & \mathbf{a}_n \\
+\vert & \vert & & \vert
+\end{bmatrix} \\
+&=
+\begin{bmatrix}
+\vert & \vert & & \vert \\
+\mathbf{e}_1 & \mathbf{e}_2 & \cdots & \mathbf{e}_n \\
+\vert & \vert & & \vert
+\end{bmatrix}
+\begin{bmatrix}
+\langle \mathbf{a}_1, \mathbf{e}_1 \rangle & \langle \mathbf{a}_2, \mathbf{e}_1 \rangle & \cdots & \langle \mathbf{a}_n, \mathbf{e}_1 \rangle \\
+0 & \langle \mathbf{a}_2, \mathbf{e}_2 \rangle & \cdots & \langle \mathbf{a}_n, \mathbf{e}_2 \rangle \\
+\vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \cdots & \langle \mathbf{a}_n, \mathbf{e}_n \rangle
+\end{bmatrix} \\
+&= QR.
+\end{aligned}
+\end{equation}
+Note that once we find \(\mathbf{e}_1, \ldots, \mathbf{e}_n\), it is not hard to write the QR factorization.
+    \end{block}
+\end{frame}
+
+\begin{frame}{Exercise 3.3}
+    \begin{block}{Exercises}
+        Consider the QR decomposition of matrix
+\[
+A = \begin{bmatrix}
+  1 & 1 & 0 \\
+  1 & 0 & 1 \\
+  0 & 1 & 1
+\end{bmatrix}.
+\]
+    \end{block}    
+\end{frame}
+
+\begin{frame}
+    \frametitle{Exercises 3.3}
+    \begin{block}{Answer}
+        Let's consider the matrix
+\[
+A = \begin{bmatrix}
+1 & 1 & 0 \\
+1 & 0 & 1 \\
+0 & 1 & 1 \\
+\end{bmatrix}.
+\]
+Using the Gram-Schmidt process, we obtain the orthonormal vectors \( \mathbf{e}_1, \mathbf{e}_2, \mathbf{e}_3 \) as follows:
+
+\[
+\mathbf{u}_1 = \mathbf{a}_1 = \begin{pmatrix} 1 \\ 1 \\ 0 \end{pmatrix},
+\quad
+\mathbf{e}_1 = \frac{\mathbf{u}_1}{\|\mathbf{u}_1\|} = \frac{1}{\sqrt{2}} \begin{pmatrix} 1 \\ 1 \\ 0 \end{pmatrix} = \begin{pmatrix} \frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}} \\ 0 \end{pmatrix},
+\]
+
+\[
+\mathbf{u}_2 = \mathbf{a}_2 - (\mathbf{a}_2 \cdot \mathbf{e}_1)\mathbf{e}_1 = \begin{pmatrix} 1 \\ 0 \\ 1 \end{pmatrix} - \frac{1}{\sqrt{2}}\begin{pmatrix} \frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}} \\ 0 \end{pmatrix} = \begin{pmatrix} \frac{1}{2} \\ -\frac{1}{2} \\ 1 \end{pmatrix},
+\]
+\end{block}
+\end{frame}
+\begin{frame}
+    \frametitle{Exercise 3.3}
+    \begin{block}{Answer}
+
+\[
+\mathbf{e}_2 = \frac{\mathbf{u}_2}{\|\mathbf{u}_2\|} = \frac{1}{\sqrt{\frac{3}{2}}} \begin{pmatrix} \frac{1}{2} \\ -\frac{1}{2} \\ 1 \end{pmatrix} = \begin{pmatrix} \frac{1}{\sqrt{6}} \\ -\frac{1}{\sqrt{6}} \\ \frac{2}{\sqrt{6}} \end{pmatrix},
+\]
+
+\[
+\mathbf{u}_3 = \mathbf{a}_3 - (\mathbf{a}_3 \cdot \mathbf{e}_1)\mathbf{e}_1 - (\mathbf{a}_3 \cdot \mathbf{e}_2)\mathbf{e}_2 =\]
+        \[
+\begin{pmatrix} 0 \\ 1 \\ 1 \end{pmatrix} - \frac{1}{\sqrt{2}} \begin{pmatrix} \frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}} \\ 0 \end{pmatrix} - \frac{1}{\sqrt{6}} \begin{pmatrix} \frac{1}{\sqrt{6}} \\ -\frac{1}{\sqrt{6}} \\ \frac{2}{\sqrt{6}} \end{pmatrix}
+= \begin{pmatrix} -\frac{1}{\sqrt{3}} \\ \frac{1}{\sqrt{3}} \\ \frac{1}{\sqrt{3}} \end{pmatrix},
+\]
+
+\[
+\mathbf{e}_3 = \frac{\mathbf{u}_3}{\|\mathbf{u}_3\|} = \begin{pmatrix} -\frac{1}{\sqrt{3}} \\ \frac{1}{\sqrt{3}} \\ \frac{1}{\sqrt{3}} \end{pmatrix}.
+\]
+    \end{block}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Exercise 3.3}
+    \begin{block}{Answer}
+        Thus, we obtain the orthogonal matrix \( Q \) as:
+
+\[
+Q = \begin{bmatrix}
+\frac{1}{\sqrt{2}} & \frac{1}{\sqrt{6}} & -\frac{1}{\sqrt{3}} \\
+\frac{1}{\sqrt{2}} & -\frac{1}{\sqrt{6}} & \frac{1}{\sqrt{3}} \\
+0 & \frac{2}{\sqrt{6}} & \frac{1}{\sqrt{3}} \\
+\end{bmatrix},
+\]
+
+and the upper triangular matrix \( R \) as:
+
+\[
+R = \begin{bmatrix}
+\sqrt{2} & \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} \\
+0 & \sqrt{\frac{3}{2}} & \frac{1}{\sqrt{6}} \\
+0 & 0 & \sqrt{\frac{2}{3}}
+\end{bmatrix}.
+\]
+    \end{block}
+\end{frame}
+
+\begin{frame}{Exercise 3.4}
+    \begin{block}{Exercise}
+        Consider the QR decomposition of matrix
+\[
+A = \begin{bmatrix}
+0 & 1 & 0 \\
+0 & 1 & 2 \\
+-1 & 0 & 1 \\
+0 & -1 & 1 \\
+\end{bmatrix}.
+\]
+    \end{block}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Exercise 3.4}
+    \begin{block}{Answer}
+        $$A=QR= \begin{bmatrix}
+0 & \frac{1}{\sqrt{3}} & -\frac{1}{\sqrt{42}} \\
+0 & \frac{1}{\sqrt{3}} & \frac{5}{\sqrt{42}} \\
+-1 & 0 & 0 \\
+0 & -\frac{1}{\sqrt{3}} & -\frac{4}{\sqrt{42}} \\
+\end{bmatrix}
+\begin{bmatrix}
+1 & 0 & -1 \\
+0 & \sqrt{3} & \frac{1}{\sqrt{3}} \\
+0 & 0 & \sqrt{\frac{14}{3}} \\
+\end{bmatrix}
+.
+$$
+    \end{block}
+    
+\end{frame}
+
+\section{Column Space and Null Space}    
+\begin{frame}[label=4]{Column Space} 
+    \begin{block}{Definition}
+        Given a matrix $A_{m\times n}$, the set of all linear combinations of columns of $A$
+        \begin{equation*}
+            \{y\in\mathbb{R}^m|y=Ax, \text{for some } x\in\mathbb{R}^n\}
+        \end{equation*}
+        is called \textbf{image} or \textbf{column space} of $A$, denoted by $im(A)$ or $C(A)$.
+    \end{block}
+    \begin{block}{How to find column space}
+        \begin{itemize}
+            \item Find the rref of $A$.
+            \item For each non-zero row, find the column in which the first non-zero (pivot) number in the row resides.
+            \item The columns found in the previous step correspond to the columns in the original matrix, which are the bases of the column space.
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}{Null Space}
+    \begin{block}{Definition}
+        Set of solutions to the linear equations $Ax=0$,
+        \begin{equation*}
+            \{x\in\mathbb{R}^n|Ax=0\} 
+        \end{equation*}
+        is called the \textbf{kernel} or \textbf{null space} of matrix $A$, denoted by $ker(A)$ or $N(A)$.
+    \end{block}
+    \begin{block}{How to find null space}
+        \begin{itemize}
+            \item Use Gauss-Jordan Elimination to solve the equation $Av=0$.
+        \end{itemize}
+    \end{block}
+\end{frame}
+\begin{frame}{Exercise 3.5}
+    \textbf{Exercise 4.1} Find C(A) and N(A) of A
+    \begin{equation*}
+        A=\begin{pmatrix}
+            1&4&8&-3&-7\\
+            -1&2&7&3&4\\
+            -2&2&9&5&5\\
+            3&6&9&-5&2
+        \end{pmatrix}
+    \end{equation*}
+\end{frame}
+\begin{frame}
+    \frametitle{Exercise 3.5}
+    \textbf{Solution}
+    \begin{equation*}
+        rref(A)=\begin{pmatrix}
+            1&0&-2&0&-3\\
+            0&1&5/2&0&-1/2\\
+            0&0&0&1&4\\
+            0&0&0&0&0
+        \end{pmatrix}
+    \end{equation*}
+    \begin{equation*}
+        C(A)=span(\begin{pmatrix}
+            1\\-1\\-2\\3
+        \end{pmatrix},\begin{pmatrix}
+            4\\2\\2\\6
+        \end{pmatrix},\begin{pmatrix}
+            -3\\3\\5\\-5
+        \end{pmatrix}), N(A)=span(\begin{pmatrix}
+            2\\-5/2\\1\\0\\0
+        \end{pmatrix},\begin{pmatrix}
+            3\\1/2\\0\\-4\\1
+        \end{pmatrix})
+    \end{equation*}
+\end{frame}
+    
+\section{Orthogonal Projection Matrix}
+\begin{frame}[label=5]{Orthogonal Projection Matrix}
+        \begin{block}{Definition} 
+        Project a vector $v$ from space $V$ to its subspace. The subspace has a group of basis
+        \begin{equation*}
+            A=(\alpha_1,\alpha_2,\dots\alpha_n)
+        \end{equation*}
+        The orthogonal projection matrix is:
+        \begin{equation*}
+            P=A(A^TA)^{-1}A^T
+        \end{equation*}
+        \end{block}
+        \begin{block}{Remark}
+            \begin{itemize}
+                \item v's projection is $Pv$
+                \item properties: $P^2=P,P^T=P$
+            \end{itemize}
+        \end{block}
+\end{frame}
+    
+
+
+\begin{frame}{\textcolor{green!30!black}{end}}
+    \begin{center}
+        \LARGE Thank you!
+    \end{center}
+\end{frame}
+
+
+
+\end{document}

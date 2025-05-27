@@ -1,0 +1,117 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{geometry,verbatim, proof}
+\usepackage{amsmath}
+\usepackage{prooftrees}
+ 
+
+\title{RC}
+\author{24SU255 final }
+\date{Aug 2024}
+
+\geometry{left=2cm, right=2cm, top=1.5cm,bottom=1.5cm}
+
+
+\begin{document}
+
+\begin{center}
+    \Large 255 Final RC \\
+    \Large Part II \\
+    
+\end{center}
+
+
+\section{Vector Field}
+
+\begin{itemize}
+    \item \textbf{Definition: }$\boldsymbol{F}(x,y,z)=P(x,y,z)\boldsymbol{i}+Q(x,y,z)\boldsymbol{i}+R(x,y,z)\boldsymbol{i}$
+        \begin{itemize}
+            \item [a.] $P$,$Q$,$R$: component functions/scalar fields.
+            \item [b.] example: gravitational field, electric field, gradient vector field
+        \end{itemize}
+    \item \textbf{Conservative Vector Field} 
+        \begin{itemize}
+            \item [a.] $\boldsymbol{F}=\nabla f$ $\Rightarrow$ $\boldsymbol{F}$ is conservative. ($f$ is a \textbf{potential function} for $\boldsymbol{F}$.)
+            \item [b.] $\oint_C \boldsymbol{F}\cdot d\boldsymbol{r} = 0$ $\Rightarrow$ $\boldsymbol{F}$ is conservative.
+            \item [c.] $\frac{\partial P}{\partial y}=\frac{\partial Q}{\partial x}$ $\Longleftrightarrow$ $\boldsymbol{F}$ is conservative. (\textbf{continuous} partial derivatives) 
+            ($\frac{\partial P}{\partial y}=\frac{\partial Q}{\partial x}$,$\frac{\partial P}{\partial z}=\frac{\partial R}{\partial x}$, $\frac{\partial Q}{\partial z}=\frac{\partial R}{\partial y}$)
+            \item [d.] $\nabla \times\boldsymbol{F}=\boldsymbol{0}$ $\Rightarrow$ $\boldsymbol{F}$ is conservative. (\textbf{continuous} partial derivatives)\\
+        \end{itemize}
+\end{itemize}
+
+
+\section{Line Integrals}
+
+\subsection*{Scalar}
+    \begin{equation}
+        \int_C f(x,y)ds = \int^b_a f[x(t),y(t)]\sqrt{(\frac{dx}{dt})^2+(\frac{dy}{dt})^2}dt
+    \end{equation}
+    \begin{align}
+        &\int_C f(x,y)dx = \int^b_a f[x(t),y(t)]x'(t)dt\\
+        &\int_C f(x,y)dy = \int^b_a f[x(t),y(t)]y'(t)dt
+    \end{align}
+
+\subsection*{Vector Field}
+    \begin{equation}
+        \int_C \boldsymbol{F}\cdot d\boldsymbol{r}=\int^b_a\boldsymbol{F}[\boldsymbol{r}(t)]\cdot\boldsymbol{r}'(t)dt
+    \end{equation}
+    \begin{equation}
+        \int_C\boldsymbol{F}\cdot d\boldsymbol{r}=\int_CPdx+Qdy+Rdz
+    \end{equation}
+     \vspace{0.5pt}
+
+\section{The Fundamental Theorem for Line Integrals}
+
+    \begin{enumerate}
+        \item
+            
+            \begin{equation}
+                \int_C\nabla f\cdot d\boldsymbol{r}=f(\boldsymbol{r}(b))-f(\boldsymbol{r}(a)) \text{ (independent of path)}
+            \end{equation}
+            $\boldsymbol{r}(t)$ is smooth curve, $f$ differentiable, $\nabla f$ continuous on $C$.
+
+        \item 
+            \begin{equation*}
+                \int_C \boldsymbol{F}\cdot d\boldsymbol{r} \text{ independent of path }\Longleftrightarrow \oint_C \boldsymbol{F}\cdot d\boldsymbol{r} = 0 
+            \end{equation*}
+            \text{ C is any closed path.}
+    \end{enumerate}
+    \vspace{0.5pt}
+
+\section{* Green Theorem}
+    \begin{equation*}
+        \int_C Pdx+Qdy = \iint_D (\frac{\partial{Q}}{\partial{x}}-\frac{\partial{P}}{\partial{y}})dA
+    \end{equation*}
+    (continuous partial derivatives)
+     \vspace{0.5pt}
+
+\section{Exercises}
+    \begin{enumerate}
+        \item (hw8.6)
+            \begin{itemize}
+                \item $F(x,y,z)=(x+y,y-z,z^2)$,$r(t)=(t^2,t^3,t^2)$, $0\leq t\leq 1$.
+                 \item $F(x,y,z)=(x,y,xy)$,$r(t)=(\cos{t},\sin{t},t)$, $0\leq t\leq \pi$.
+            \end{itemize}
+        \item (hw8.7) $x^2+y^2=1$,$y\geq 0$,$\rho(x,y)=k(1-y)$. Evaluate the \textbf{moments of inertia}
+            \begin{equation*}
+                I_x=\int_Cy^2\rho(x,y)ds, \qquad I_y=\int_Cx^2\rho(x,y)ds
+            \end{equation*}        
+        \item (hw8.8) Show that 
+            \begin{equation*}
+                \int_C \frac{-ydx+xdy}{x^2+y^2} 
+            \end{equation*}
+            is \textbf{NOT} independent of path.
+        \item (hw8.9) Show that the line integral is independent of path and evaluate the integral.
+            \begin{itemize}
+                \item $\int_C2xe^{-y}dx+(2y-x^2e^{-y})dy$, $C$ is any path from (1,0) to (2,1).\\
+                \item $\int_C\sin{y}dx+(x\cos{y}-\sin{y})dy$, $C$ is any path from (2,0) to (1,$\pi$).\\
+            \end{itemize}
+        \item Evaluate $\int_c<\boldsymbol{F},d\boldsymbol{r}>$, where
+        \begin{align*}
+            &\boldsymbol{F}(x,y)=(\frac{1}{1+x^2}+2xye^{x^4y^2},x^2e^{x^4y^2}+\frac{2y}{1+y^2})\\
+            &\boldsymbol{r}(t)=(\sin(7\pi t),t^8-t^5+t^3+\cos{(8\pi t)}-1),\qquad 0\leq t\leq 1
+        \end{align*}
+         \item $\int_C (x^2+y^2+z^2)ds$. $C$ is the intersection of the surface $x^2+y^2+z^2=4$ and the plane $x+z=2$.
+    \end{enumerate}
+      
+\end{document}
