@@ -1,4 +1,4 @@
-\documentclass{beamer}
+\documentclass[aspectratio=169, UTF8]{ctexbeamer}
 \usepackage{math214}
 \usepackage{babel}
 %\usepackage{enumitem}
@@ -8,6 +8,7 @@
 \author{ Li Mingrui, Xia Yiwei, Zhang Haoran, Huang Jiayue}
 \date{Summer 2024}
 
+\definecolor{yy}{RGB}{10,100,50} % <--- 添加这一行
 \definecolor{darkblue}{HTML}{6666dd} 
 \colortheme{green!30!black}
 %\colortheme{orange!85!black}
@@ -46,8 +47,6 @@
    
         \end{block}
     Think: what if the curve is 2D?
-            
-        
     \end{frame}
     
     \begin{frame}{Arc Length}
@@ -187,9 +186,9 @@ is then the line that passes through the point P and is parallel to the tangent 
     \begin{equation*}
         \begin{Bmatrix}
         {(x,y,z) | Ax^2 + By^2 + Cz^2 + Dxy + Exz + Fyz + Gx + Hy + Jz + K = 0}
-        \end{Bmatrix}\\
-        where A to K are all constants and x, y, z being variables.
+        \end{Bmatrix}
     \end{equation*}
+    where A to K are all constants and x, y, z being variables.
     \par Please see the file "Surface.pdf".
     \end{frame}
  
@@ -238,7 +237,10 @@ is then the line that passes through the point P and is parallel to the tangent 
             $$\int\left(f_{1}(x)+f_{2}(x)\right) \mathrm{d}x=\int f_{1}(x) \mathrm{d}x+\int f_{2}(x) \mathrm{d}x$$
         \end{block}
         \par \textcolor{yy}{Example.} $$\int \tan^2 x\mathrm{d}x = \int \left(\dfrac{1}{\cos^2 x} - 1\right)\mathrm{d}x = \int \dfrac{1}{\cos^2x}\mathrm{d}x - \int \mathrm{d}x = \tan x - x + C.$$
+    \end{frame}
 
+    \subsection{Rules of Integration}
+    \begin{frame}[t]{Rules of Integration}
         \begin{block}{Multiplied by a Constant}
             $$\int (C\cdot f(x))\mathrm{d}x = C\int f(x)\mathrm{d}x,\ C = \text{const}$$
         \end{block}
