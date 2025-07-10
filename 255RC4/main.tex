@@ -94,12 +94,27 @@ Geometrically, this means you're looking for the extreme values of $f$ not just 
 \begin{frame}{Two Constraints}
     \frametitle{Two Constraints}
     \begin{block}{Solution}
-        $f(x, y, z) = x^2 + y^2 + z^2$, $g(x, y, z) = x - y = 1$, $h(x, y, z) = y^2 - z^2 = 1$ $\Rightarrow$ $\nabla f = \langle 2x, 2y, 2z \rangle$, $\lambda \nabla g = \langle \lambda, -\lambda, 0 \rangle$, and $\mu \nabla h = \langle 0, 2\mu y, -2\mu z \rangle$. Then $2x = \lambda$, $2y = -\lambda + 2\mu y$, and $2z = -2\mu z$ $\Rightarrow$ $z = 0$ or $\mu = -1$.
-If $z = 0$ then $y^2 - z^2 = 1$ implies $y^2 = 1$ $\Rightarrow$ $y = \pm 1$. If $y = 1$, $x - y = 1$ implies $x = 2$, and if $y = -1$ we have $x = 0$, so possible points are $(2, 1, 0)$ and $(0, -1, 0)$. If $\mu = -1$ then $2y = -\lambda + 2\mu y$ implies $4y = -\lambda$, but $\lambda = 2x$ so $4y = -2x$ $\Rightarrow$ $x = -2y$ and $x - y = 1$ implies $-3y = 1$ $\Rightarrow$ $y = -\frac{1}{3}$. But then $y^2 - z^2 = 1$ implies $z^2 = -\frac{8}{9}$, an impossibility. Thus the maximum value of $f$ subject to the constraints is $f(2, 1, 0) = 5$ and the minimum is $f(0, -1, 0) = 1$.
+        $f(x, y, z) = x^2 + y^2 + z^2$, $g(x, y, z) = x - y = 1$, $h(x, y, z) = y^2 - z^2 = 1$
 
-\vspace{1em} % Adds a bit of vertical space
+        \vspace*{1em} $\Rightarrow$ $\nabla f = \langle 2x, 2y, 2z \rangle$, $\lambda \nabla g = \langle \lambda, -\lambda, 0 \rangle$, and $\mu \nabla h = \langle 0, 2\mu y, -2\mu z \rangle$. 
 
-\textbf{Note:} Since $x - y = 1 \Rightarrow x = y + 1$ is one of the constraints we could have solved the problem by solving $f(y, z) = (y + 1)^2 + y^2 + z^2$ subject to $y^2 - z^2 = 1$.
+        \vspace*{1em} Then $2x = \lambda$, $2y = -\lambda + 2\mu y$, and $2z = -2\mu z$ $\Rightarrow$ $z = 0$ or $\mu = -1$.
+
+        \vspace*{1em}
+        If $z = 0$, then $y^2 - z^2 = 1$ implies $y^2 = 1$ $\Rightarrow$ $y = \pm 1$. If $y = 1$, $x - y = 1$ implies $x = 2$, and if $y = -1$ we have $x = 0$, so possible points are $(2, 1, 0)$ and $(0, -1, 0)$. 
+        
+        \vspace*{1em}
+        If $\mu = -1$ then $2y = -\lambda + 2\mu y$ implies $4y = -\lambda$, but $\lambda = 2x$ so $4y = -2x$ $\Rightarrow$ $x = -2y$ and $x - y = 1$ implies $-3y = 1$ $\Rightarrow$ $y = -\frac{1}{3}$. But then $y^2 - z^2 = 1$ implies $z^2 = -\frac{8}{9}$, an impossibility. 
+        
+        \vspace*{1em}
+        Thus the maximum value of $f$ subject to the constraints is $f(2, 1, 0) = 5$ and the minimum is $f(0, -1, 0) = 1$.
+
+    \end{block}
+\end{frame}
+\begin{frame}{Two Constraints}
+    \frametitle{Two Constraints}
+    \begin{block}{Solution}
+        \textbf{Note:} Since $x - y = 1 \Rightarrow x = y + 1$ is one of the constraints we could have solved the problem by solving $f(y, z) = (y + 1)^2 + y^2 + z^2$ subject to $y^2 - z^2 = 1$.
     \end{block}
 \end{frame}
 \begin{frame}{Bounded Region}
@@ -199,7 +214,7 @@ If $z = 0$ then $y^2 - z^2 = 1$ implies $y^2 = 1$ $\Rightarrow$ $y = \pm 1$. If 
     \begin{block}{Example}
         \begin{figure}
             \centering
-            \includegraphics[width=0.5\linewidth]{TypeI&II_example.png}
+            \includegraphics[width=0.75\linewidth]{TypeI&II_example.png}
             \label{fig:enter-label}
         \end{figure}
     \end{block}
@@ -210,6 +225,7 @@ If $z = 0$ then $y^2 - z^2 = 1$ implies $y^2 = 1$ $\Rightarrow$ $y = \pm 1$. If 
 
 The polar coordinate system is a two-dimensional coordinate system in which each point on a plane is determined by a distance from a reference point and an angle from a reference direction.
 
+\vspace*{1em}
 \begin{columns}
     \begin{column}{0.5\textwidth}
         \textbf{Conversion Formulas}
@@ -259,8 +275,8 @@ The differential element of area $dA$ changes when we switch coordinate systems.
             \draw[->] (-0.2,0) -- (2.2,0) node[right] {$x$};
             \draw[->] (0,-0.2) -- (0,2.2) node[above] {$y$};
             \fill[red!50!white, draw=red, thick] (0.5,0.5) rectangle (1,1);
-            \node[right, red] at (0.9, 0.8) {$\Delta y$};
-            \node[below, red] at (0.85, 0.65) {$\Delta x$};
+            \node[right, red] at (0.95, 0.75) {$\Delta y$};
+            \node[below, red] at (0.85, 0.55) {$\Delta x$};
         \end{tikzpicture}
         \end{center}
         
@@ -320,7 +336,7 @@ is called a \textbf{polar rectangle}.
     %\draw (1.1,0) arc (25:70:1);
     \node[right] at (25:0.6) {$\theta_1$};
     %\draw (1.1,0) arc (0:70:0.8);
-    \node[above] at (70:0.8) {$\theta_2$};
+    \node[above] at (67:0.6) {$\theta_2$};
     
     % 半径标签
     \node[below] at (25:2) {$r_2$};
@@ -352,11 +368,14 @@ $$ \iint_D f(x, y) \, dA = \int_{\theta_1}^{\theta_2} \int_{r_1}^{r_2} f(r\cos\t
 \begin{frame}{Exercise}
     \textbf{Ex 6.1 }Evaluate$\iint_R(5-x)dA$, $R=\{(x,y)|0\leq x
     \leq 8,0\leq y\leq2\}$\\
-    \par
+
     \textbf{Ex 6.2 }Evaluate $\iint_DxydA$, where $D$ is the region bounded by the line $y=x-1$ and the parabola $y^2=2x+6$.\\
+
     \textbf{Ex 6.3 }Express $D$ as a union of regions of type I or type II and evaluate the integral$\iint_D ydA$., where $D$ is the region bounded by the line $x=-1,y=-1,y=(x+1)^2,x=y-y^3$.\\
-     \textbf{Ex 6.4} Use polar coordinates to combine the sum
+
+     \textbf{Ex 6.4} Use polar coordinates to combine the sum:
      $\int_{1/\sqrt{2}}^1\int_{\sqrt{1-x^2}}^xxydydx+\int_1^{\sqrt{2}}\int_0^xxydydx+\int_{\sqrt{2}}^2\int_0^{\sqrt{4-x^2}}xydydx$ into one double integral. Then evaluate the double integral.\\
+
     \textbf{Ex 6.5} Evaluate $\iint_R(x+y)e^{x^2-y^2}dA$ by making an appropriate change of variables. $R$ is enclosed by the lines $x-y=0,x-y=2,x+y=0,x+y=3$.
 \end{frame}
 \begin{frame}{Answers}
