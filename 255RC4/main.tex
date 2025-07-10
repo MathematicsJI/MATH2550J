@@ -1,14 +1,19 @@
-\documentclass[aspectratio=169, UTF8]{ctexbeamer}
+\documentclass[aspectratio=169, UTF8]{beamer}
 \usepackage{math214}
 \usepackage{babel}
+\usepackage{tikz}
+\usepackage{tikz-3dplot}
+\usepackage{graphicx}
+\usepackage{amsmath}
+
+\usetheme{default}
 %\usepackage{enumitem}
 % Then, after \begin{document}, you can begin your frames/slides
 
 \title{\LARGE 255RC4}
-\author{ Li Mingrui, Xia Yiwei, Zhang Haoran, Huang Jiayue}
-\date{Summer 2024}
+\author{Chengyang Shi, Ruizhi Deng, Haoran Shen, Jingfan Tang}
+\date{Summer 2025}
 
-\definecolor{yy}{RGB}{10,100,50} % <--- 添加这一行
 \definecolor{darkblue}{HTML}{6666dd} 
 \colortheme{green!30!black}
 %\colortheme{orange!85!black}
@@ -24,625 +29,985 @@
   %  \tableofcontents     % 生成目录
 %\end{frame}
 
-\begin{frame}[t]{Table of Contents}
-        \tableofcontents
-    \end{frame}
 
-
-
-    \section{Arc Length}
-    
-    \subsection{Arc Length}
-    \begin{frame}[t]{Arc Length}
-        \begin{block}
-            \par \textcolor{yy}{Thinking.}Let's recast an old formula into terms of vector functions. We want to determine the length of a vector function,
-            \begin{equation*}
-                 \bar{r} (t) = <f(t) , g(t)  , h(t) >
-            \end{equation*}
-             
-    So, the length of the curve  $\bar{r} (t) $  on the interval $ a \le t \le b $  is
-    \begin{equation*}
-        L = \int_{a}^{b}{\sqrt{(\dot{f}(t))^2 + (\dot{g}(t))^2 + (\dot{h}(t))^2}dt}
-    \end{equation*}
-   
-        \end{block}
-    Think: what if the curve is 2D?
-    \end{frame}
-    
-    \begin{frame}{Arc Length}
-        \begin{block}
-        \par Notice that the integrand (the function we’re integrating) is nothing more than the magnitude of the tangent vector,
-    \begin{equation*}
-        ||\dot{\bar{r}}(t)|| = \sqrt{(\dot{f}(t))^2 + (\dot{g}(t))^2 + (\dot{h}(t))^2}
-    \end{equation*}
-    Therefore, the arc length can be written as,
-    \begin{equation*}
-        L = \int_{a}^{b}{||\dot{\bar{r}}(t)||dt}
-    \end{equation*}
-        \end{block}
-    \par \textcolor{yy}{EX1.1.}
-       Determine the length of the curve $\bar{r} (t) =⟨2t,3sin(2t),3cos(2t)⟩$ on the interval  $0 \le t \le 2\pi$
-    \end{frame}
-    
-
-    \subsection{Arc Length function}
-    \begin{frame}[t]{Arc length function}
-        \begin{block}{Arc length function and reparametrize}
-            We need to take a quick look at another concept here. We define the arc length function as,
-            \begin{equation*}
-                s(t) = \int_{0}^{t}{||\dot{\bar{r}}(u)||du}
-            \end{equation*}
-            Okay, just why would we want to do this? Well let’s take the result of the arc length function above and solve it for t (t(s)).\\
-            Now, taking expression for t with respect to s (t(s)) and plugging it into the original vector function and we can \textcolor{yy}{reparametrize} the function into the form, $\bar{r}(t(s))$
-        \end{block}
-        \par \textcolor{yy}{Example.}Determine the arc length function for $\bar{r}(t)=⟨2t,3sin(2t),3cos(2t)⟩$and Reparametrize it.\\
-        \par \textcolor{yy}{Thinking} Where on the curve $\bar{r}(t)=⟨2t,3sin(2t),3cos(2t)⟩$are we after traveling for a distance of $\frac{\pi\sqrt{10}}{3}$?
-    \end{frame}
-
-    
-\subsection{Exercise}
-    \begin{frame}[t]{Exercise}
-    \par \textcolor{yy}{Ex1.1}Find the arc length function for $\bar{r}(t) = <4t,-2t,\sqrt{5}t^2>$
-    \par \textcolor{yy}{Ex1.2}Determine where on the curve given by $\bar{r}(t) = <t^2,2t^3,1-t^3>$ we are after traveling a distance of 20.
+\begin{frame}{Contents}
+    \begin{enumerate}
+        \item \hyperlink{2}{Lagrange Multiplier}
+        \item \hyperlink{2}{Double Integrals}
+        \item \hyperlink{3}{Triple Integrals}
+        % \item \hyperlink{3}{Vector Field}
+    \end{enumerate}
        
-    \end{frame}
+\end{frame}
 
-
-
-\section{Curvature}
     
-\subsection{Tangent, Normal And Binormal Vectors}
 
-\begin{frame}[t]{Tangent vector}
-    \begin{block}{Tangent vector}
-    Given the vector function $\bar{r}(t)$,we call $\bar{r}'(t)$ the \textcolor{yy}{tangent vector} provided it exists and provided $\bar{r}'(t) \neq \bar{0}$
-    Also,the\textcolor{yy}{unit tangent vector}  to the curve is given by,
-    \begin{equation*}
-        \bar{T}(t) = \frac{\bar{r}'(t)}{||\bar{r}'(t)||}
-    \end{equation*}
+\section{Lagrange Multiplier}
+\begin{frame}{One Constraint}
+    \frametitle{One Constraint}
+    \begin{block}{Problem}
+        Let $f(x, y, z)$ be a differentiable function. Suppose that we wish to find the maximum or minimum value of $f(x, y, z)$ subject to the constraint $g(x, y, z) = k$ where $k = \text{const} \in \mathbb{R}$. In other words, we wish to find the \textbf{maximum} or \textbf{minimum value} of $f(x, y, z)$ that lies on the curve $C$ described by $g(x, y, z) = k$.
+    \end{block}
+    \begin{block}{Solution}
+        \begin{enumerate}
+            \item Find all values of $x, y, z$ and $\lambda$ such that
+        \[
+        \boxed{\nabla f(x, y, z) = \lambda \nabla g(x, y, z), \quad g(x, y, z) = k.}
+        \]
+            \item Evaluate $f$ at all the points $(x, y, z)$ that result from step (1). The largest of these values is the maximum value of $f$; the smallest is the minimum value of $f$.
+        \end{enumerate}
+        
+    \end{block}
+\end{frame}
+\begin{frame}{One Constraint}
+    \frametitle{One Constraint}
+    \textbf{Exercise} \\
+    If \(\frac{x^2}{a^2} + \frac{y^2}{b^2} + \frac{z^2}{c^2} = 1\), calculate the maximum of \(f(x, y, z) = 8xyz\)
+\end{frame}
+\begin{frame}{Two Constraints}
+    \frametitle{Two Constraints}
+    \begin{block}{Problem}
+        The goal is to find the \textbf{maximum and minimum values} of a three-variable function, $f(x, y, z)$, when the variables are subject to \textbf{two separate constraints}:
+
+\begin{enumerate}
+    \item $g(x, y, z) = k$
+    \item $h(x, y, z) = c$
+\end{enumerate}
+
+Geometrically, this means you're looking for the extreme values of $f$ not just on a surface, but on the \textbf{curve C} where the two constraint surfaces intersect.
+    \end{block}
+    \begin{block}{Solution}
+        \begin{enumerate}
+            \item $\nabla f(x_0, y_0, z_0) = \lambda \nabla g(x_0, y_0, z_0) + \mu \nabla h(x_0, y_0, z_0)$
+            \item $g(x, y, z) = k$
+            \item $h(x, y, z) = c$
+        \end{enumerate}
+    \end{block}
+\end{frame}
+\begin{frame}{Two Constraints}
+    \frametitle{Two Constraints}
+    \begin{block}{Exercises}
+        Find the maximum and minimum values of $f$ subject to the given constraints
+        $f(x, y, z) = x^2 + y^2 + z^2; \quad x - y = 1, \quad y^2 - z^2 = 1$
+    \end{block}
+\end{frame}
+\begin{frame}{Two Constraints}
+    \frametitle{Two Constraints}
+    \begin{block}{Solution}
+        $f(x, y, z) = x^2 + y^2 + z^2$, $g(x, y, z) = x - y = 1$, $h(x, y, z) = y^2 - z^2 = 1$ $\Rightarrow$ $\nabla f = \langle 2x, 2y, 2z \rangle$, $\lambda \nabla g = \langle \lambda, -\lambda, 0 \rangle$, and $\mu \nabla h = \langle 0, 2\mu y, -2\mu z \rangle$. Then $2x = \lambda$, $2y = -\lambda + 2\mu y$, and $2z = -2\mu z$ $\Rightarrow$ $z = 0$ or $\mu = -1$.
+If $z = 0$ then $y^2 - z^2 = 1$ implies $y^2 = 1$ $\Rightarrow$ $y = \pm 1$. If $y = 1$, $x - y = 1$ implies $x = 2$, and if $y = -1$ we have $x = 0$, so possible points are $(2, 1, 0)$ and $(0, -1, 0)$. If $\mu = -1$ then $2y = -\lambda + 2\mu y$ implies $4y = -\lambda$, but $\lambda = 2x$ so $4y = -2x$ $\Rightarrow$ $x = -2y$ and $x - y = 1$ implies $-3y = 1$ $\Rightarrow$ $y = -\frac{1}{3}$. But then $y^2 - z^2 = 1$ implies $z^2 = -\frac{8}{9}$, an impossibility. Thus the maximum value of $f$ subject to the constraints is $f(2, 1, 0) = 5$ and the minimum is $f(0, -1, 0) = 1$.
+
+\vspace{1em} % Adds a bit of vertical space
+
+\textbf{Note:} Since $x - y = 1 \Rightarrow x = y + 1$ is one of the constraints we could have solved the problem by solving $f(y, z) = (y + 1)^2 + y^2 + z^2$ subject to $y^2 - z^2 = 1$.
+    \end{block}
+\end{frame}
+\begin{frame}{Bounded Region}
+    \frametitle{Bounded Region}
+    \begin{block}{Problem}
+        Find the extreme values of $f$ on the region described by the inequality.
+    \end{block}
+    \begin{block}{Solution}
+        \begin{enumerate}
+            \item Solve the Lagrange Multiplier Equation for the \textbf{Boundaries}
+            \item Find the critical point of $f$ inside the boundary. i.e. $\nabla f(x_0, y_0, z_0) = 0$, $(x_0,y_0,z_0)$ inside the bounded region.
+            \item Evaluate all the candidate points.
+        \end{enumerate}
+    \end{block}
+\end{frame}
+\begin{frame}{Bounded Region}
+    \frametitle{Bounded Region}
+    \begin{block}{Exercises}
+        Find the extreme values of $f$ on the region described by the inequality.
+        \begin{enumerate}
+            \item $f(x, y) = 2x^2 + 3y^2 - 4x - 5, \quad x^2 + y^2 \le 16$
+            \item $f(x, y) = e^{-xy}, \quad x^2 + 4y^2 \le 1$
+        \end{enumerate}
+    \end{block}
+\end{frame}
+\begin{frame}{Bounded Region}
+    \frametitle{Solution}
+        \begin{enumerate}
+            \item $f(x, y) = 2x^2 + 3y^2 - 4x - 5 \Rightarrow \nabla f = \langle 4x - 4, 6y \rangle = \langle 0, 0 \rangle \Rightarrow x = 1, y = 0$. Thus $(1, 0)$ is the only critical point of $f$, and it lies in the region $x^2 + y^2 < 16$. On the boundary, $g(x, y) = x^2 + y^2 = 16 \Rightarrow \lambda \nabla g = \langle 2\lambda x, 2\lambda y \rangle$, so $6y = 2\lambda y \Rightarrow$ either $y = 0$ or $\lambda = 3$. If $y = 0$, then $x = \pm 4$; if $\lambda = 3$, then $4x - 4 = 2\lambda x \Rightarrow x = -2$ and $y = \pm 2\sqrt{3}$. Now $f(1, 0) = -7$, $f(4, 0) = 11$, $f(-4, 0) = 43$, and $f(-2, \pm 2\sqrt{3}) = 47$. Thus the maximum value of $f(x, y)$ on the disk $x^2 + y^2 \le 16$ is $f(-2, \pm 2\sqrt{3}) = 47$, and the minimum value is $f(1, 0) = -7$.
+            \item $f(x, y) = e^{-xy}$. For the interior of the region, we find the critical points: $f_x = -ye^{-xy}$, $f_y = -xe^{-xy}$, so the only critical point is $(0, 0)$, and $f(0, 0) = 1$. For the boundary, we use Lagrange multipliers. $g(x, y) = x^2 + 4y^2 = 1 \Rightarrow \lambda \nabla g = \langle 2\lambda x, 8\lambda y \rangle$, so setting $\nabla f = \lambda \nabla g$ we get $-ye^{-xy} = 2\lambda x$ and $-xe^{-xy} = 8\lambda y$. The first of these gives $e^{-xy} = -\frac{2\lambda x}{y}$, and then the second gives $-x(-\frac{2\lambda x}{y}) = 8\lambda y \Rightarrow x^2 = 4y^2$. Solving this last equation with the constraint $x^2 + 4y^2 = 1$ gives $x = \pm \frac{1}{\sqrt{2}}$ and $y = \pm \frac{1}{2\sqrt{2}}$. Now $f(\pm \frac{1}{\sqrt{2}}, \mp \frac{1}{2\sqrt{2}}) = e^{1/4} \approx 1.284$ and $f(\pm \frac{1}{\sqrt{2}}, \pm \frac{1}{2\sqrt{2}}) = e^{-1/4} \approx 0.779$. The former are the maxima on the region and the latter are the minima.
+        \end{enumerate}
+\end{frame}
+
+\section{Double Integrals}
+\begin{frame}[label=1]{Double Integrals}
+    \frametitle{Double Integrals}
+    \begin{block}{Definition}
+        The \textbf{double integral} of $f$ over the rectangle $R$ is
+        \begin{equation*}
+            \iint_Rf(x,y)dA=\lim_{m,n\rightarrow\infty}\sum_{i=1}^m\sum_{j=1}^nf(x_i,y_j)\Delta A
+        \end{equation*}
+    \end{block}
+    \begin{block}{Remark}
+        A function $f$ is called \textbf{integrable} if the limit in the above Definition exists, which means $\forall \varepsilon>0$ there is an integer $N$ such that 
+        \begin{equation*}
+            \Big|\iint_Rf(x,y)dA-\sum_{i=1}^m\sum_{j=1}^nf(x_i,y_j)\Delta A\Big |<\varepsilon,\quad \forall m>N, \forall n>N
+        \end{equation*}
+    \end{block}
+\end{frame}
+\begin{frame}
+    \frametitle{Double Integrals}
+    \begin{block}{Properties}
+        \begin{enumerate}
+            \item $\iint_R[f(x,y)+g(x,y)]dA=\iint_Rf(x,y)dA+\iint_Rg(x,y)dA$
+            \item $\iint_Rcf(x,y)dA=c\iint_Rf(x,y)dA$, c is a constant
+            \item $f(x,y)\geq g(x,y)$ for all $(x,y)$ in $R$, then $\iint_Rf(x,y)dA\geq \iint_Rg(x,y)dA$
+            \item $\Big|\iint_Rf(x,y)dA\Big|\leq\iint_R|f(x,y)|dA$
+        \end{enumerate}
+    \end{block}
     
-    The tangent line to $\bar{r}(t)$ at P
-is then the line that passes through the point P and is parallel to the tangent vector.
+\end{frame}
+\begin{frame}{Iterated Integral}
+    \begin{block}{Definition}
+        The \textbf{iterated integral}
+        \begin{equation*}
+            \int_a^b\int_c^df(x,y)dydx=\int_a^b\Big[\int_c^df(x,y)dy\Big]dx
+        \end{equation*}
+        is the integral of $\Big[\int_c^df(x,y)dy\Big]$ between $x=a$ and $x=b$.
+    \end{block}
+    \begin{block}{Fubini's Theorem}
+        If $f$ is continuous on the rectangle $R=\{(x,y)|a\leq x\leq b,c\leq y\leq d\}$, then
+        \begin{equation*}
+            \iint_Rf(x,y)dA=\int_a^b\int_c^df(x,y)dydx=\int_c^d\int_a^bf(x,y)dxdy
+        \end{equation*}
+    \end{block}
+\end{frame}
+\begin{frame}{Types of Plane}
+    \begin{block}{Definition}
+        A plane region is said to be of \textbf{type I} if it lies between the graphs of two continuous functions of $x$ , that is
+        \begin{equation*}
+            D=\{(x,y)|a\leq x\leq b, g_1(x)\leq y\leq g_2(x)\}
+        \end{equation*}
+        If $f$ is continuous on a type I region D, then
+        \begin{equation*}
+            \iint_Df(x,y)dA=\int_a^b\int_{g_1(x)}^{g_2(x)}f(x,y)dydx
+        \end{equation*}
+        A plane region is said to be of \textbf{type II} if
+        \begin{equation*}
+            D=\{(x,y)|c\leq y\leq d, h_1(y)\leq x\leq h_2(y)\}
+        \end{equation*}
+        \begin{equation*}
+            \iint_Df(x,y)dA=\int_c^d\int_{h_1(y)}^{h_2(y)}f(x,y)dxdy
+        \end{equation*}
+    \end{block}
+\end{frame}
+\begin{frame}{Types of Plane}
+    \begin{block}{Example}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.5\linewidth]{TypeI&II_example.png}
+            \label{fig:enter-label}
+        \end{figure}
     \end{block}
 \end{frame}
 
-\begin{frame}[t]{TBN Frame}
-        \begin{block}
-            \par \textcolor{yy}{Definition.} The plane orthogonal to the (unit) tangent vector $\bar{T}$ of the curve at the point $P$ is called the \textcolor{yy}{normal plane} of the curve at the point $P$.
+\begin{frame}{Polar Coordinates}
+\frametitle{Polar Coordinates}
 
-            \phantom{zjy}
+The polar coordinate system is a two-dimensional coordinate system in which each point on a plane is determined by a distance from a reference point and an angle from a reference direction.
 
-            \par \textcolor{yy}{Definition.} The plane that comes closest to containing the part of the curve near $P$ is called the \textcolor{yy}{osculating plane} of the curve at the point $P$. 
-        \end{block}
+\begin{columns}
+    \begin{column}{0.5\textwidth}
+        \textbf{Conversion Formulas}
+        \vspace{1em}
+        
+        The relationships between Cartesian coordinates $(x, y)$ and polar coordinates $(r, \theta)$ are given by:
+        
+        \begin{align*}
+            r^2 &= x^2 + y^2 \\
+            x &= r \cos\theta \\
+            y &= r \sin\theta
+        \end{align*}
+        
+        Typically, we consider $r \ge 0$ and $0 \le \theta < 2\pi$.
+        
+    \end{column}
+    \begin{column}{0.5\textwidth}
+        \begin{tikzpicture}[scale=1.5]
+            \draw[->] (-1.5,0) -- (1.5,0) node[right] {$x$};
+            \draw[->] (0,-1.5) -- (0,1.5) node[above] {$y$};
+            \draw[dashed] (0,0) -- (1,1);
+            \node[above right] at (1,1) {$(x,y)=(r\cos\theta, r\sin\theta)$};
+            \fill (1,1) circle (1pt);
+            \draw (0,0) -- (1,1);
+            \draw (0.3,0) arc (0:45:0.3);
+            \node at (0.5,0.1) {$\theta$};
+            \node[above, sloped] at (0.5,0.5) {$r$};
+        \end{tikzpicture}
+    \end{column}
+\end{columns}
 
-        \phantom{zjy}
+\end{frame}
+\begin{frame}{Area Element: Cartesian vs. Polar}
+\frametitle{Area Element: Cartesian vs. Polar}
 
-        \par The osculating plane contains the tangent vector $\bar{T}$ at the point $P$ and the unit vector $\bar{N} (t) = \bar{T}'(t) / |\bar{T}'(t)|$ which indicates the direction in which the curve is turning at the point $P$.
-    \end{frame}
+The differential element of area $dA$ changes when we switch coordinate systems.
 
-    \begin{frame}[t]{TBN Frame}
-        \begin{block}
-            \par \textcolor{yy}{Definition.} The unit vector $$\bar{N} (t) = \bar{T}'(t) / |\bar{T}'(t)|$$ which indicates the direction in which the curve is turning at the point $P$ is called the \textcolor{yy}{principal unit normal vector}.
-            The binormal vector is defined to be
-            \begin{equation*}
-                \bar{B}(t) = \bar{T}(t) \times \bar{N}(t)
-            \end{equation*}
-        \end{block}
+\begin{columns}
+    \begin{column}{0.5\textwidth}
+        \textbf{Cartesian Coordinates}
+        \vspace{1em}
+        The area element is a rectangle.
+        
+        \begin{center}
+        \begin{tikzpicture}[scale=1.2]
+            \draw[step=0.5, gray, very thin] (0,0) grid (2,2);
+            \draw[->] (-0.2,0) -- (2.2,0) node[right] {$x$};
+            \draw[->] (0,-0.2) -- (0,2.2) node[above] {$y$};
+            \fill[red!50!white, draw=red, thick] (0.5,0.5) rectangle (1,1);
+            \node[right, red] at (0.9, 0.8) {$\Delta y$};
+            \node[below, red] at (0.85, 0.65) {$\Delta x$};
+        \end{tikzpicture}
+        \end{center}
+        
+        As $\Delta x \to 0$ and $\Delta y \to 0$:
+        $$ dA = dx \, dy $$
+        
+    \end{column}
+    \begin{column}{0.5\textwidth}
+        \textbf{Polar Coordinates}
+        \vspace{1em}
+        The area element is a "polar rectangle".
+        
+        \begin{center}
+        \begin{tikzpicture}[scale=1.2]
+            \draw[gray, very thin] (0,0) circle (0.5);
+            \draw[gray, very thin] (0,0) circle (1);
+            \draw[gray, very thin] (0,0) circle (1.5);
+            \draw[gray, very thin] (0:2) -- (180:2);
+            \draw[gray, very thin] (30:2) -- (210:2);
+            \draw[gray, very thin] (60:2) -- (240:2);
+            \draw[gray, very thin] (120:2) -- (300:2);
+            \draw[gray, very thin] (150:2) -- (330:2);
+            \fill[red!50!white, draw=red, thick] (30:1) -- (60:1) arc (60:30:1) -- cycle;
+            \fill[red!50!white, draw=red, thick] (30:1) -- (30:1.5) arc (30:60:1.5) -- (60:1) arc (60:30:1);
+             %\draw[->, thick] (1.25,0.2) arc (20:40:1.25);
+             \node[right] at (50:1.6) {$r\Delta\theta$};
+             %\draw[->, thick] (45:1.05) -- (45:1.45);
+             \node[above, sloped] at (15:1.3) {$\Delta r$};
+        \end{tikzpicture}
+        \end{center}
+        
+        The area is approximately $A \approx (r \, \Delta\theta) \Delta r$. As differentials:
+        $ dA = r \, dr \, d\theta $
+    \end{column}
+\end{columns}
 
-        \begin{block}
-            \par \textcolor{yy}{Definition.} The set of vectors $\bar{T}$, $\bar{B}$ and $\bar{N}$ which start at various points of the curve is called the \textcolor{yy}{TBN Frame}.
-        \end{block}
-    \end{frame}
-
-\begin{frame}[t]{Exercise}
-    \par \textcolor{yy}{Ex2.1}Find the vector equation of the tangent line to the curve given by $\bar{r}(t) = t^2\bar{i}+2sin(t)\bar{j}+2cos(t)\bar{k}$ at $t = \frac{\pi}{3}$
-    \par \textcolor{yy}{Ex2.2} Find the normal and binormal vectors for $\bar{r}(t) = <t, 3sint, 3cost>$
 \end{frame}
 
-    \subsection{Curvature} 
+\begin{frame}{Integration in Polar Coordinates}
+\frametitle{Integration in Polar Coordinates}
 
-       \begin{frame}[t]{Curvature}
-        \begin{block}
-            \par \textcolor{yy}{Definition.} Let $A \subseteq \mathbb{R}$. We say that a vector function $\bar{r}: A \to \mathbb{R}^3$ is \textcolor{yy}{smooth} on an interval $I \subseteq A$ if $\bar{r}'$ is continuous on $I$ and for all $t \in I$, $\bar{r}'(t) \neq 0$. We say that a curve $\mathcal{C}$ is \textcolor{yy}{smooth} if $\mathcal{C}$ can be described by a smooth vector function.
-        \end{block}
+A region $D$ defined in polar coordinates as:
+$$ D = \{ (r, \theta) \mid r_1 \le r \le r_2, \, \theta_1 \le \theta \le \theta_2 \} $$
+is called a \textbf{polar rectangle}.
 
-        \begin{block}
-            \par \textcolor{yy}{Definition.} Let $\bar{R}: A \to \mathbb{R}$ be a vector function that is smooth on the interval $I$. The \textcolor{yy}{curvature} of the curve $\mathcal{C}$ described by $\bar{r}$ is the function defined by 
-            \begin{equation*}
-                \kappa (t) = \left| \dfrac{d}{ds} \left[ \widehat{ \bar{r}'(t) } \right] \right| = ||\frac{d\bar{T}}{ds}||.
-            \end{equation*}
-            \par It measures the rate at which the direction of the vector function $\bar{r}$ is changing.
-            \end{block}
-    \end{frame}
-
-    \begin{frame}[t]{Curvature}
-        \begin{block}
-            \par \textcolor{yy}{Theorem.} Let $\bar{r}: A \to \mathbb{R}^3$ be a vector function that is smooth on the interval $I$ and such that $\bar{r}'$ is differentiable on $I$. Then for all $t \in I$, 
-            \begin{equation*}
-                \kappa (t) = \dfrac{\left| \bar{r}'(t) \times \bar{r}''(t)\right|}{\left| \bar{r}'(t) \right|^3} = ||\frac{\bar{T}'(t)}{\bar{r}'(t)}||.
-            \end{equation*}
-        \end{block}
-        \par For a plane curve $\mathcal{C}: y = f(x)$, we can choose $x$ as the parameter and write $\bar{r}(x) = x \bar{i} + f(x) \bar{j}$. Then $\bar{r}'(x) = \bar{i} + f'(x) \bar{j},\ \bar{r}''(x) = f''(x) \bar{j} \Rightarrow \bar{r}'(x) \times \bar{r}''(x) = f''(x) \bar{k}$.
-        
-        \begin{block}
-            \par \textcolor{yy}{Theorem.} Let $\mathcal{C}: y = f(x)$ where $f: D \to \mathbb{R}$. be a plane curve. Then for all $x \in D$
-            \begin{equation*}
-                \kappa(x) = \dfrac{|f''(x)|}{\left[1 + \left(f'(x)\right)^2\right]^{\frac{3}{2}}}      
-            \end{equation*}
-        \end{block}
-    \end{frame}
+\begin{center}
+\begin{tikzpicture}[scale=1.2]
+    % 坐标轴
+    \draw[->, thick] (0,0) -- (3,0) node[below] {$x$};
+    \draw[->, thick] (0,0) -- (0,2.5) node[left] {$y$};
     
-    \begin{frame}[t]{Exercise}
-        \par \textcolor{yy}{Ex2.3} Find the curvature of $\bar{r}(t)=<cos(2t),-sin(2t),4t>$\\
-        \par \textcolor{yy}{Ex2.4} Find the curvature of $\bar{r}(t)=<4t,-t^{2},2t^3>$\\
-    \end{frame}
-
- 
-\section{Surfaces}
+    % 极坐标区域 D
+    \fill[blue!20, draw=black] (25:1) arc (25:70:1) -- (70:2) arc (70:25:2) -- cycle;
+    \node at (47.5:1.5) {$D$};
     
+    % 角度标签
+    %\draw (1.1,0) arc (25:70:1);
+    \node[right] at (25:0.6) {$\theta_1$};
+    %\draw (1.1,0) arc (0:70:0.8);
+    \node[above] at (70:0.8) {$\theta_2$};
     
-    \begin{frame}{Surfaces}
-    \par \textcolor{yy}{Quadratic Surfaces}
-    \begin{equation*}
-        \begin{Bmatrix}
-        {(x,y,z) | Ax^2 + By^2 + Cz^2 + Dxy + Exz + Fyz + Gx + Hy + Jz + K = 0}
-        \end{Bmatrix}
-    \end{equation*}
-    where A to K are all constants and x, y, z being variables.
-    \par Please see the file "Surface.pdf".
-    \end{frame}
- 
-\section{Indefinite Integrals}
-    
+    % 半径标签
+    \node[below] at (25:2) {$r_2$};
+    \node[above left] at (5:1.3) {$r_1$};
+\end{tikzpicture}
+\end{center}
 
-    \subsection{Indefinite Integral}
-    \begin{frame}[t]{Indefinite Integral}
-        \begin{block}
-            \par \textcolor{yy}{Definition.} The set of all antiderivatives of the function $f(x)$ is called the \textcolor{yy}{indefinite integral} of $f(x)$ and is denoted by $$\int f(x) \mathrm{d}x=F(x) \Leftrightarrow F^{\prime}(x)=f(x)$$
-        \end{block}
-    \end{frame}
+The integral over $D$ becomes:
+$$ \iint_D f(x, y) \, dA = \int_{\theta_1}^{\theta_2} \int_{r_1}^{r_2} f(r\cos\theta, r\sin\theta) \, r \, dr \, d\theta $$
+\end{frame}
+% \begin{frame}{Change of Variables}
+%     \begin{block}{Definition}
+%         The \textbf{Jacobian} of the transformation $T$ given by $x=g(u,v)$ and $y=h(u,v)$ is 
+%         \begin{equation*}
+%             \dfrac{\partial(x,y)}{\partial(u,v)}=
+%             \left|\begin{array}{cc}
+%                 \frac{\partial x}{\partial u} & \frac{\partial x}{\partial v} \\
+%                 \frac{\partial y}{\partial u} & \frac{\partial y}{\partial v}
+%             \end{array}\right|
+%             =\frac{\partial x}{\partial u}\frac{\partial y}{\partial v}-\frac{\partial x}{\partial v}\frac{\partial y}{\partial u}
+%         \end{equation*}
+%         Suppose that $T$ is a transformation whose \textbf{Jacobian} is \textbf{nonzero} and that maps a region $S$in the uv-plane onto a region $R$ in the xy-plane. $f$ is continuous on $R$ and that $R$ and $S$ are type I or type II plane regions. Suppose also that $T$ is one-to-one, except perhaps on the
+% boundary of $S$. Then
+%         \begin{equation*}
+%             \iint_Rf(x,y)dA=\iint_Sf\big[x(u,v),y(u,v)\big]\Big| \dfrac{\partial(x,y)}{\partial(u,v)}\Big|dudv
+%         \end{equation*}
+%     \end{block}
+% \end{frame}
+\begin{frame}{Exercise}
+    \textbf{Ex 6.1 }Evaluate$\iint_R(5-x)dA$, $R=\{(x,y)|0\leq x
+    \leq 8,0\leq y\leq2\}$\\
+    \par
+    \textbf{Ex 6.2 }Evaluate $\iint_DxydA$, where $D$ is the region bounded by the line $y=x-1$ and the parabola $y^2=2x+6$.\\
+    \textbf{Ex 6.3 }Express $D$ as a union of regions of type I or type II and evaluate the integral$\iint_D ydA$., where $D$ is the region bounded by the line $x=-1,y=-1,y=(x+1)^2,x=y-y^3$.\\
+     \textbf{Ex 6.4} Use polar coordinates to combine the sum
+     $\int_{1/\sqrt{2}}^1\int_{\sqrt{1-x^2}}^xxydydx+\int_1^{\sqrt{2}}\int_0^xxydydx+\int_{\sqrt{2}}^2\int_0^{\sqrt{4-x^2}}xydydx$ into one double integral. Then evaluate the double integral.\\
+    \textbf{Ex 6.5} Evaluate $\iint_R(x+y)e^{x^2-y^2}dA$ by making an appropriate change of variables. $R$ is enclosed by the lines $x-y=0,x-y=2,x+y=0,x+y=3$.
+\end{frame}
+\begin{frame}{Answers}
+    \textbf{6.1} 16\\
+    \textbf{6.2} 36\\
+    \textbf{6.3} $-\frac{2}{15}$\\
+    \textbf{6.4} $\frac{15}{16}$\\
+    \textbf{6.5} $\frac{1}{4}(e^6-7)$
+\end{frame}
 
-    \subsection{Common Antiderivatives}
-    \begin{frame}[t]{Common Antiderivatives}
-        \begin{columns}[c]
-            \column{.45\textwidth} % Left column and width
-            \begin{itemize}
-                \item $\int x^{\mu} \mathrm{d}x=\dfrac{x^{\mu+1}}{\mu+1}+C, \mu \neq-1$
-                \item $\int \dfrac{\mathrm{d}x}{x}=\ln |x|+C$
-                \item $\int \sin x\ \mathrm{d}x=-\cos x+C$
-                \item $\int \cos x\ \mathrm{d}x=\sin x+C$
-                \item $\int e^{x}\ \mathrm{d}x=e^{x}+C$
-                \item $\int a^{x}\ \mathrm{d}x=\dfrac{a^x}{\ln a}+C$
-                \item $\int \dfrac{\mathrm{d}x}{\sqrt{1-x^{2}}}=\arcsin x+C$
-            \end{itemize}
+
+\section{Triple Integrals}
+\begin{frame}[label=2]{Triple Integrals}
+    \begin{enumerate}
+  \item \textbf{Domain:}
+  $$\mathcal{R} = [a, b] \times [c, d] \times [r,s].$$
+
+  \item \textbf{Partial Integral:}
+  $$\int_a^b f(x, y, z) \, dx$$
+
+  \item \textbf{Iterated Integral:}
+  $$\int_a^b \int_c^d \int_r^s f(x, y, z) \, dz \, dy \, dx = \int_a^b \left(\int_c^d \left(\int_r^s f(x, y, z) \, dz\right) \, dy\right) \, dx.$$
+
+  \item \textbf{Theorem (Fubini’s Theorem):} The order of integration can be rearranged if $f$ is integrable over the region $\mathcal{R}$:
+  $$\int \int \int_{\mathcal{R}} f \, dV = \int_a^b \int_c^d \int_r^s f(x, y, z) \, dz \, dy \, dx.$$
+
+\end{enumerate}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Problem: Find the Volume of a Solid}
+
+% 使用 columns 环境来创建左右分栏
+% [T] 选项使得两栏内容从顶部对齐
+\begin{columns}[T]
+
+    % --- 左侧栏：放置文本描述 ---
+    \begin{column}{0.45\textwidth}
+        \textbf{Problem}: Find the volume of the tetrahedron bounded by the planes:
+        \vspace{1em}
         
-            \column{.5\textwidth} % Right column and width
-            \begin{itemize}
-                \item $\int \dfrac{\mathrm{d}x}{1+x^{2}}=\arctan x+C$
-                \item $\int \tan x\ \mathrm{d}x=-\ln\left| \cos x \right|+C$
-                \item $\int \tan^2 x\ \mathrm{d}x=\tan x\ -x+C$
-                \item $\int \sec x\ \mathrm{d}x=\ln\left|\sec x +\tan x\right|+C$
-                \item $\int \sec^2 x\ \mathrm{d}x=\tan x+C$
-                \item $\int \cot x\ \mathrm{d}x=\ln\left| \sin x\right| +C$ 
-                \item $\int \cot^2 x\ \mathrm{d}x=-x-\cot x +C$  
-                \item $\int \csc x \ \mathrm{d}x=-\ln\left|\cot x+ \csc x\right|+C$
-                \item $\int \csc^2 x\ \mathrm{d}x=-\cot x+C$
-            \end{itemize}
-        \end{columns}
-    \end{frame}
-
-    \subsection{Rules of Integration}
-    \begin{frame}[t]{Rules of Integration}
-        \begin{block}{Addition}
-            $$\int\left(f_{1}(x)+f_{2}(x)\right) \mathrm{d}x=\int f_{1}(x) \mathrm{d}x+\int f_{2}(x) \mathrm{d}x$$
-        \end{block}
-        \par \textcolor{yy}{Example.} $$\int \tan^2 x\mathrm{d}x = \int \left(\dfrac{1}{\cos^2 x} - 1\right)\mathrm{d}x = \int \dfrac{1}{\cos^2x}\mathrm{d}x - \int \mathrm{d}x = \tan x - x + C.$$
-    \end{frame}
-
-    \subsection{Rules of Integration}
-    \begin{frame}[t]{Rules of Integration}
-        \begin{block}{Multiplied by a Constant}
-            $$\int (C\cdot f(x))\mathrm{d}x = C\int f(x)\mathrm{d}x,\ C = \text{const}$$
-        \end{block}
-        \par \textcolor{yy}{Example.} $$\int \dfrac{2\mathrm{d}x}{\sqrt{1-x^2}} = 2\int\dfrac{\mathrm{d}x}{\sqrt{1-x^2}} = 2\arcsin x + C.$$
-    \end{frame}
-
-    \begin{frame}[t]{Rules of Integration}
-        \begin{block}{Integration by Parts}
-            \par Let $u(x),v(x)$ be differentiable on $\left\langle a, b\right\rangle$ and $H(x)$ be the antiderivative of $u'(x)\cdot v(x)$ on $\left\langle a, b\right\rangle$. Then $u(x)v(x) - H(x)$ is the antiderivative of $u'(x)\cdot v(x)$ on $\left\langle a, b\right\rangle$: $$\int u'(x)v(x)\mathrm{d}x = u(x)v(x) - \int u(x)v'(x)\mathrm{d}x$$
-        \end{block}
-        \par \textcolor{yy}{Remark.} Set the part with ``friendilier derivative'' to be $f(x)$.
-        \par \textcolor{yy}{Example.}
-        \begin{equation*}
-            \int xe^x\mathrm{d}x = \left[\begin{array}{l}
-                u(x) = e^x \\ v(x) = x
-            \end{array}\right] = \int u'(x)v(x) \mathrm{d}x = xe^x - \int e^x\mathrm{d}x = xe^x - e^x + C.
-        \end{equation*}
-    \end{frame}
-
-    \begin{frame}[t]{Rules of Integration}
-        \begin{block}{Composition}
-            \par Let $g(t): \left\langle\alpha,\beta\right\rangle \mapsto \left\langle a, b\right\rangle$ be differentiable on $\left\langle\alpha,\beta\right\rangle$ and $F(x)$ be the antiderivative of $f(x)$ on $\left\langle a, b\right\rangle$. Then $$\int f(g(t))\cdot g'(t)\mathrm{d}t = \int f(g(t))\mathrm{d}(g(t)) = F(g(t)) + C.$$
-        \end{block}
-        \par \textcolor{yy}{Example.}
-        \begin{equation*}
-            \begin{aligned}
-                & \int x e^{x^2} \mathrm{d}x = \dfrac{1}{2}\int e^{x^2} (2x\mathrm{d}x) = \dfrac{1}{2}\int e^{x^2}\mathrm{d}(x^2) = \dfrac{1}{2}e^{x^2} + C, \\
-                & b\int\dfrac{1}{x^2}\sin\dfrac{1}{x}\mathrm{d}x = -\int \sin \dfrac{1}{x}\mathrm{d}\left(\dfrac{1}{x}\right) = \cos \dfrac{1}{x} + C.
-            \end{aligned}
-        \end{equation*}
-    \end{frame}
-
-    \begin{frame}[t]{Rules of Integration}
-        \begin{block}{Substitution}
-            \par Let $g(t): \left\langle\alpha,\beta\right\rangle\mapsto \left\langle a, b\right\rangle$ be differentiable on $\left\langle\alpha,\beta\right\rangle$ and invertible with the inverse $t = t(x)$. If $H(x)$ if the antiderivative of $f(g(t))\cdot g'(t)$ on $\left\langle\alpha,\beta\right\rangle$, then $H(t(x))$ is the antiderivative of $f(x)$ on $\left\langle a, b\right\rangle$: $$\int f(x)\mathrm{d}x = \left[\begin{array}{c}
-                x = g(t) \\ \mathrm{d}x = g'(t)\mathrm{d}t
-            \end{array}\right] = \int f(g(t))\cdot g'(t)\mathrm{d}t = H(t(x)) + C$$
-        \end{block}
-        \par \textcolor{yy}{Example.} 
-        \begin{equation*}
-            \begin{aligned}
-                \int \sqrt{1-x^2}\mathrm{d}x & = \left[\begin{array}{c} x = \sin t\\\mathrm{d}x = \cos t \mathrm{d}t \\ -\dfrac{\pi}{2} \leqslant t \leqslant \dfrac{\pi}{2}\end{array}\right] = \int \cos t \cos t \mathrm{d}t = \int \dfrac{1+\cos 2t}{2}\mathrm{d}t
-            \end{aligned}
-        \end{equation*}
-    \end{frame}
-    \begin{frame}[t]
-        \par (Continued.)
-        \par \textcolor{yy}{Example.} 
-        \begin{equation*}
-            \begin{aligned}
-                \int \sqrt{1-x^2}\mathrm{d}x & = \left[\begin{array}{c} x = \sin t\\\mathrm{d}x = \cos t \mathrm{d}t \\ -\dfrac{\pi}{2} \leqslant t \leqslant \dfrac{\pi}{2}\end{array}\right] = \int \cos t \cos t \mathrm{d}t = \int \dfrac{1+\cos 2t}{2}\mathrm{d}t \\
-                & = \int \dfrac{1}{2}\mathrm{d}t + \dfrac{1}{2}\int \cos 2t \mathrm{d}t = \left.\left(\dfrac{t}{2} + \dfrac{1}{2}\cdot\dfrac{1}{2}\sin 2t + C\right)\right|_{t = \arcsin x} \\
-                & = \dfrac{1}{2}\arcsin x + \dfrac{1}{2}x\sqrt{1-x^2} + C
-            \end{aligned}
-        \end{equation*}
-    \end{frame}
-
-    \begin{frame}[t]{Substitution}
-        \begin{block}{Method 1: Trigonometric Substitution}
-            \par \textcolor{yy}{Keys.}
-            \begin{equation*}
-                \sin^2\alpha + \cos^2\alpha = 1 \text{ and } 
-                \sec^2\alpha - \tan^2\alpha = 1
-            \end{equation*}
-            \par \textcolor{yy}{Detailed Substitution.}
-            \begin{itemize}
-                \item $\sqrt{a^2-x^2}\Rightarrow x=a\sin \alpha\Rightarrow \sqrt{a^2-x^2}=a\cos \alpha;\ \mathrm{d}x=a\cos\alpha\ \mathrm{d}\alpha$
-                \item $\sqrt{a^2+x^2}\Rightarrow x=a\tan \alpha\Rightarrow \sqrt{a^2+x^2}=a\sec \alpha;\ \mathrm{d}x=a\sec^2\alpha\ \mathrm{d}\alpha$
-                \item $\sqrt{x^2-a^2}\Rightarrow x=a\sec \alpha\Rightarrow \sqrt{x^2-a^2}=a\tan \alpha;\ \mathrm{d}x=a\sec\alpha\tan\alpha\ \mathrm{d}\alpha$
-            \end{itemize}
-        \end{block}
-    \end{frame}
-
-    \begin{frame}[t]{Substitution}
-        \begin{block}{Method 2: Rational Functions: $\frac{p}{q}$}
-            \par \textcolor{yy}{Important Integrals.}
-            \begin{itemize}
-                \item $\int \dfrac{\mathrm{d}x}{1+x^2}=\arctan x+C$
-                \item $\int \dfrac{\mathrm{d}x}{a+bx}=\dfrac{1}{b}\ln\left|a+bx\right|+C$
-                \item $\int \dfrac{2ax+b}{ax^2+bx+c}\mathrm{d}x=\ln\left|ax^2+bx+c\right|+C$
-            \end{itemize}
-        \end{block}
-        \par \textcolor{yy}{Remark.} Actually, using these three 
-        formulas, you can solve all the questions that you are required to solve.
-    \end{frame}
-
-    \begin{frame}[t]{Substitution: Usual Steps to Calculate Integrals of $\frac{p}{q}$}
-        \begin{block}{Step 1: Change $f$ into proper form ($\deg(p) < \deg(q)$)}
-            \textcolor{yy}{Example.} $$f(x)=\dfrac{x^2}{(x-1)^2}=1+\dfrac{2x-1}{(x-1)^2}$$
-        \end{block}
-        \begin{block}{Step 2: Partial fraction decomposition}
-            \par Transfer $f(x)$ into the sum of following four classes of partial fractions
-            \begin{itemize}
-                \item $\dfrac{1}{x-a}$, $\dfrac{1}{(x-a)^{n}}$, $\dfrac{px+q}{ax^{2}+bx+c}$ or $\dfrac{px+q}{(ax^{2}+bx+c)^n}$.
-            \end{itemize}
-        \end{block}
-        \par \textcolor{yy}{Remark.} For the first two fractions, their integral is easy to obtain. Here we mainly focus on the integral of the third fraction.
-    \end{frame}
-
-    \begin{frame}[t]{Substitution: Usual Steps to Calculate Integrals of $\frac{p}{q}$}
-        \begin{block}{Calculate the Integral of $\dfrac{px+q}{ax^{2}+bx+c}$}
-            \begin{itemize}
-                \item Step 1: Take out the part which can be expressed as the derivative of denominator.\\
-                $$
-                \dfrac{px+q}{ax^2+bx+c}=\dfrac{p}{2a}\cdot\dfrac{2ax+b}{ax^2+bx+c}+\dfrac{q-\dfrac{pb}{2a}}{ax^2+bx+c}
-                $$ \pause 
-                Then the integral of the first part can be calculated using the formula at the beginning of this section. \pause Then we are going to explore the method to calculate the integral of $$\dfrac{1}{ax^{2}+bx+c}$$
-            \end{itemize}
-        \end{block}
-    \end{frame}
-
-    \begin{frame}[t]{Substitution: Usual Steps to Calculate Integrals of $\frac{p}{q}$}
-        \begin{block}{Calculate the Integral of $\dfrac{px+q}{ax^{2}+bx+c}$ (Continued.)}
-            \begin{itemize}
-                \item Step 2: If $\Delta\geq 0$, then $$\dfrac{1}{ax^{2}+bx+c}$$ can be expressed into the form $$\dfrac{1}{a}(\dfrac{c_1}{x-x_1}+\dfrac{c_2}{x-x_2})$$ whose integral is easy to compute.
-            \end{itemize}
-        \end{block}
-    \end{frame}
-
-    \begin{frame}[t]{Substitution: Usual Steps to Calculate Integrals of $\frac{p}{q}$}
-        \begin{block}{Calculate the Integral of $\dfrac{px+q}{ax^{2}+bx+c}$ (Continued.)}
-            \par If $\Delta< 0$, then the integral of $\dfrac{1}{ax^{2}+bx+c}$ can be expressed in the form of related to $f(x) = \arctan x$.
-        \end{block}
-
-        \par \textcolor{yy}{Example.}
-        \begin{equation*}
-            \begin{aligned}
-                \int \dfrac{\mathrm{d} x}{x^{2}+x+1} &= \int \dfrac{1}{\left(x+\dfrac{1}{2}\right)^{2}+\left(\dfrac{\sqrt{3}}{2}\right)^{2}} \mathrm{d} x = \left(\dfrac{2}{\sqrt{3}}\right)^{2} \int \dfrac{1}{\left[\dfrac{2}{\sqrt{3}}\left(x+\dfrac{1}{2}\right)\right]^{2}+1}\mathrm{d}x \\
-                &=\left(\dfrac{2}{\sqrt{3}}\right)^{2} \cdot \dfrac{\sqrt{3}}{2} \arctan \left[\dfrac{2}{\sqrt{3}}\left(x+\dfrac{1}{2}\right)\right]+C.
-            \end{aligned}
-        \end{equation*}
-    \end{frame}
-
-
-    \begin{frame}[t]{Substitution}
-        \begin{block}{Method 3: Substitute the Root}
-            \par Generally, the steps of this method are
-            \begin{enumerate}
-                \item Rationalize the numerator or denominator.
-                \item Let $t=\sqrt[n]{a x+b} \text { or } t=\sqrt[n]{\dfrac{a x+b}{c x+d}}$ and see what happens.
-            \end{enumerate}
-        \end{block}
-        \textcolor{yy}{Example.} 
-        \begin{equation*}
-            \begin{aligned}
-                \int \dfrac{1}{\sqrt{1+x}+\sqrt[3]{1+x}} \mathrm{d} x & = \left[\begin{array}{c} 1+x=t^6 \\ \mathrm{d}x=6t^5\mathrm{d}t \end{array}\right] =\int \dfrac{6t^5}{t^3+t^2}\mathrm{d}t =\int\dfrac{6t^3}{t+1}\mathrm{d}t \\
-                & =\int 6t^2-6t+6-\dfrac{6}{t+1}\mathrm{d}t\\
-                & =2t^3-3t^2+6t-6\ln \left|t+1\right|+C\\
-                & =2 \sqrt{1+x}-3 \sqrt[3]{1+x}+6 \sqrt[6]{1+x}-6 \ln |\sqrt[6]{1+x}+1|+C
-            \end{aligned}
-        \end{equation*}
-    \end{frame}
-
-    \begin{frame}[t]{Substitution}
-        \begin{block}{Method 4: Substitute $t = \frac{1}{x}$}
-            \par When the order of the denominator is much more greater than that of the numerator, we can try to apply the substitution $t = \dfrac{1}{x} \Rightarrow \mathrm{d}x = - \dfrac{\mathrm{d}t}{t^2}$.
-        \end{block}
-        \par \textcolor{yy}{Example.} $$\int \dfrac{\mathrm{d}x}{x^{4}\left(1+x^{2}\right)} =\dfrac{3 x^{2}-1}{3 x^{3}}-\arctan \dfrac{1}{x}+C$$
-    \end{frame}
-
-    \begin{frame}[t]{Special Topic: Trigonometric Functions}
-        \begin{block}{Case 1: The Integration of $\sin^n x$ or $\cos^nx$}
-        \begin{equation*}
-            \begin{aligned}
-                & \int \sin ^{n} x \mathrm{d} x=-\dfrac{1}{n} \sin ^{n-1} x \cos x+\dfrac{n-1}{n} \int \sin ^{n-2} x \mathrm{d} x \\
-                & \int \cos ^{n} x \mathrm{d} x=\dfrac{1}{n} \cos ^{n-1} x \sin x+\dfrac{n-1}{n} \int \cos ^{n-2} x \mathrm{d} x
-            \end{aligned}
-        \end{equation*}
-        \end{block}
-
-        \begin{block}{Case 2: The Integration of $\sin^mx\cdot\cos^nx$}
-            \begin{itemize}
-                \item At least one of $m,n$ is {odd}.\\
-                    If both of $m$ and $n$ are odd, then substitute either $\sin x$ or $\cos x$ with $t$. Otherwise, substitute the one of even power with $t$.
-                \item Both of $m,n$ are {even}.\\
-                    Use $\sin^2 x+\cos^2 x=1$ to transfer the integration into the form of $\sin^n x$ or $\cos^n x$.
-            \end{itemize}
-        \end{block}
-    \end{frame}
-
-    \begin{frame}[t]{Special Topic: Trigonometric Functions}
-        \textcolor{yy}{Examples.}
-        \begin{equation*}
-            \begin{aligned}
-                \int \sin^3 x\cos^2 x\ \mathrm{d}x &= \left[\begin{array}{c} t = \cos x \\ \mathrm{d}t = -\sin x \mathrm{d}x \end{array}\right] =\int -(1-t^2)t^2\ \mathrm{d}t, \\
-                \int \sin ^{2} x \cos ^{4} x \mathrm{d}x & =\int (1-\cos^2 x)\cos ^{4} x \mathrm{d}x=\int \cos^4 x \mathrm{d}x-\int \cos^6 x \mathrm{d}x\\
-                & = \dfrac{x}{16}+\dfrac{1}{32} \sin 2 x-\dfrac{1}{6} \sin x \cos ^{5}x+\dfrac{1}{24} \sin x \cos ^{3}x+C.
-            \end{aligned}
-        \end{equation*}
-    \end{frame}
-
-    \begin{frame}[t]{Special Topic: Trigonometric Functions}
-        \begin{block}{Case 3: The Integration of $\sin nx \cdot \cos mx$}
-            \par Use Sum-to-Product identities:
-            \begin{itemize}
-                \item $\sin nx\cos mx=\dfrac{1}{2}[\sin(n+m)x+\sin(n-m)x]$
-                \item $\sin nx\sin mx={-}\dfrac{1}{2}[\cos(n+m)x-\cos(n-m)x]$
-                \item $\cos nx\cos mx=\dfrac{1}{2}[\cos(n+m)x+\cos(n-m)x]$
-            \end{itemize}
-        \end{block}
-        \par \textcolor{yy}{Example.} $$\int \sin 4 x \cos 2 x \cos 3 x \mathrm{d}x = -\dfrac{1}{36} \cos 9 x-\dfrac{1}{20} \cos 5 x-\dfrac{1}{12} \cos 3 x+\dfrac{1}{4} \cos x+C$$
-    \end{frame}
-
-    \begin{frame}[t]{Special Topic: Trigonometric Functions}
-        \begin{block}{Case 4: The Integration of $\tan^nx$ or $\sec^nx$}
-            \begin{equation*}\begin{aligned}
-                & \int \tan ^{n} x \mathrm{d} x=\dfrac{\tan ^{n-1} x}{n-1}-\int \tan ^{n-2} x \mathrm{d} x \\
-                & \int \sec ^{n} x \mathrm{d} x=\dfrac{\sec ^{n-2} x \tan x}{n-1}+\dfrac{n-2}{n-1} \int \sec ^{n-2} x \mathrm{d} x
-            \end{aligned}\end{equation*}
-        \end{block}
-        
-        \par \textcolor{yy}{Example.} $$\int \sec^3 x\mathrm{d}x = \dfrac{1}{2}\left(\sec x\tan x+\ln\left|\sec x+\tan x \right|\right)+C.$$
-    \end{frame}
-
-    \begin{frame}[t]{Special Topic: Trigonometric Functions}
-        \begin{block}{Case 5: Substitute $t = \tan \dfrac{\pi}{2}$}
-            \par Since  $$\sin x=\dfrac{2 \tan \dfrac{x}{2}}{1+\tan ^{2} \dfrac{x}{2}},\ \cos x=\dfrac{1-\tan ^{2} \dfrac{x}{2}}{1+\tan ^{2} \dfrac{x}{2}},\ \tan x=\dfrac{2 \tan \dfrac{x}{2}}{1-\tan ^{2} \dfrac{x}{2}}$$
-            \par Substitute $t=\tan \dfrac{x}{2}$, we have $$\sin x=\dfrac{2 t}{1+t^2},\ \cos x=\dfrac{1-t^2}{1+t^2},\ \tan x=\dfrac{2 t}{1-t^2},\ \mathrm{d}x=\dfrac{2}{t^2+1}\mathrm{d}t$$
-        \end{block}
-        \par \textcolor{yy}{Remark.} This method works nearly for all rational functions containing trigonometric functions. {However}, sometimes, this will make the question become {super} {complicated}.
-    \end{frame}
- 
-    \begin{frame}[t]{Special Topic: Trigonometric Functions}
-        \par \textcolor{yy}{Example.} $$\int \dfrac{1}{4+\sin x} \mathrm{d} x =\dfrac{2}{\sqrt{15}} \arctan \dfrac{4 \tan \dfrac{x}{2}+1}{\sqrt{15}}+C$$
-    \end{frame}
-
-    \begin{frame}[t]{Special Topic: Trigonometric Functions}
-        \begin{block}{Case 5: The Integration of $\dfrac{A_{1} \cos \theta+A_{2} \sin \theta}{B_{1} \cos \theta+B_{2} \sin \theta}$}
-        \par Convert into the form of $$\dfrac{C\left(B_{1} \cos \theta+B_{2} \sin \theta\right)+D\left[B_{1}(\cos \theta)^{\prime}+B_{2}(\sin \theta)^{\prime}\right]}{B_{1} \cos \theta+B_{2} \sin \theta}$$
-        \end{block}
-        \par \textcolor{yy}{Example.}
-        \begin{equation*}\begin{aligned}
-            & \int \dfrac{\cos x}{2 \sin x+\cos x} \mathrm{d} x = \dfrac{2}{5} \ln |2 \tan x+1|-\dfrac{1}{5} \ln \left|1+\tan ^{2} x\right|+\dfrac{1}{5} x+C\\
-            & \int \dfrac{\sin x}{\sin x+\cos x} \mathrm{d} x = \dfrac{x}{2}-\dfrac{1}{2} \ln |\sin x+\cos x|+C
-        \end{aligned}\end{equation*}
-    \end{frame}
-
-    \begin{frame}[t]{Exercise}
-        \par Evaluate the following integrals:
-        \begin{columns}[c]
-            \column{.45\textwidth} % Left column and width
-            \begin{itemize}
-                \item $\int x e^{2 x} \mathrm{d}x$
-                \item $\int x^{2} e^{a x} \mathrm{d}x, \text {a is a constant. } $
-                \item $\int x\arctan x \mathrm{d}x$   
-                \item $\int \dfrac{\mathrm{d} x}{\sqrt{x^{2}-a^{2}}}$
-                \item $\int \dfrac{\mathrm{d} x}{x^{2} \sqrt{x^{2}+1}}$
-            \end{itemize}
-        
-            \column{.5\textwidth} % Right column and width
-            \begin{itemize}
-                \item $\int \dfrac{1}{\sqrt{1+e^{2 x}}} \mathrm{d} x$
-                \item $\int \dfrac{\mathrm{d} x}{(1+\sqrt[3]{x}) \sqrt{x}}$
-                \item $\int \dfrac{\mathrm{d} x}{\sqrt[3]{(x+1)^{2}(x-1)^{4}}}$
-                \item $\int \sin ^{2} x \cos ^{5} x \mathrm{d}x$
-            \end{itemize}
-        \end{columns}
-    \end{frame}  
-
-\section{Vector and Vector Functions}
-
-    \subsection{Vectors} 
-
-    \begin{frame}[t]{Vectors}
-        \begin{block}{Vector}
-            \par \textcolor{yy}{Definition.} A \textcolor{yy}{vector} is an object that captures a direction and a magnitude (length) in 2D/3D spaces. Geometrically, vectors are arrows in an arbitrary position in 2D/3D spaces.
-
-            \par \textcolor{yy}{Definition.} The \textcolor{yy}{tip} of the vector is the end with the arrow, while the \textcolor{yy}{tail} is the end without it.
-
-            \par \textcolor{yy}{Definition.} A vector drawn with its tail at the origin is called a \textcolor{yy}{position vector}.
-        \end{block}
-
         \begin{itemize}
-            \item Basis of $\mathbb{R}^3$: $\bar{e}_1,\bar{e}_2,\bar{e}_3$.
-            \item Resolving a vector into components: $\bar{v} = v_1 \bar{i} + v_2 \bar{j} + v_3 \bar{k}$.
-            \item Magnitude: $\left| \bar{v} \right| = \sqrt{v_1^2 + v_2^2 + v_3^2}$.
-            \item $n$-dimensional vector $\bar{v} = (v_1,v_2,\cdots,v_n)$. $\left| \bar{v} \right| = \sqrt{\sum\limits_{k=1}^{n}v_k^2}$.
+            \item $x + 2y + z = 2$
+            \item $x = 2y$
+            \item $x = 0$
+            \item $z = 0$
         \end{itemize}
-    \end{frame}
-
-    \begin{frame}[t]{Properties of Vectors}
-        \par Let $\bar{a}$, $\bar{b}$ and $\bar{c}$ be $n$-dimensional vectors and $\alpha,\beta$ be real numbers (scalars). Then 
-        \begin{enumerate}
-            \item $\bar{a} + \bar{b} = \bar{b} + \bar{a}$.
-            \item $\bar{a} + (\bar{b} + \bar{c}) = (\bar{a} + \bar{b}) + \bar{c}$.
-            \item $\bar{a} + \bar{0} = \bar{a}$.
-            \item $\bar{a} + (-\bar{a}) = \bar{0}$.
-            \item $\alpha (\bar{a} + \bar{b}) = \alpha\bar{a} + \alpha\bar{b}$.
-            \item $(\alpha \beta)\bar{a} = \alpha (\beta \bar{a})$.
-            \item $(\alpha + \beta)\bar{a} = \alpha \bar{a} + \beta \bar{a}$.
-            \item $1 \cdot \bar{a} = \bar{a}$.
-        \end{enumerate}
-    \end{frame} 
-
-    \subsection{Vector Functions}
-    \begin{frame}[t]{Vector Functions}
-        \begin{block}
-            \par \textcolor{yy}{Definition.} A \textcolor{yy}{vector-valued function} pr \textcolor{yy}{vector function} is a function whose domain is a subset of the reals and range is a set of vectors, \textit{i.e.}, we say that $\bar{r}$ is a \textcolor{yy}{vector function} if $\bar{r}: A \to \mathbb{R}^3$ where $A \subseteq \mathbb{R}$.
-        \end{block}
-
-        \phantom{zjy}
         
-        \par For $\bar{r} (t) = f(t) \bar{i} + g(t) \bar{j} + h(t) \bar{k}$, we introduce the parametric equations 
-        \begin{equation*}
-            x = f(t),\ y = g(t),\ z = h(t) 
-        \end{equation*}
+        \vspace{1em}
+        The volume $V$ is given by the integral:
+        $$ V = \iiint_T dV $$
+    \end{column}
 
-        \begin{block}{Limit of a Vector Function}
-            \par \textcolor{yy}{Definition.} Let $\bar{r}(t) = f(t) \bar{i} + g(t) \bar{j} + h(t) \bar{k}$ be a vector function and $a \in \mathbb{R}$. If the limits $\lim\limits_{t \to a}f(t)$, $\lim\limits_{t \to a}g(t)$ and $\lim\limits_{t \to a}h(t)$ exist, then $\lim\limits_{t \to a} \bar{r} (t)$ exists and 
-            \begin{equation*}
-                \lim _{t \rightarrow a} \bar{r}(t)=\left(\lim _{t \rightarrow a} f(t)\right) \bar{i}+\left(\lim _{t \rightarrow a} g(t)\right) \bar{j}+\left(\lim _{t \rightarrow a} h(t)\right) \bar{k} .
-            \end{equation*}
-        \end{block}
-    \end{frame}
+    % --- 右侧栏：放置 TikZ 图片 ---
+    \begin{column}{0.55\textwidth}
+        \centering
+        
+        % 关键步骤 1: 在绘制前，先设置3D视角
+        \tdplotsetmaincoords{70}{120}
+        
+        \resizebox{0.65\linewidth}{!}{%
+            \begin{tikzpicture}
+                % 关键步骤 2: 在一个 scope 环境中使用定义好的3D坐标系
+                % 这样可以确保3D变换只作用于内部的图形
+                \begin{scope}[tdplot_main_coords]
+                    %--- 坐标轴 ---
+                    \draw[->, thick] (0,0,0) -- (1.5,0,0) node[anchor=north east]{$x$};
+                    \draw[->, thick] (0,0,0) -- (0,1.5,0) node[anchor=north west]{$y$};
+                    \draw[->, thick] (0,0,0) -- (0,0,2.5) node[anchor=south]{$z$};
+                
+                    %--- 顶点 ---
+                    \coordinate (V1) at (0,0,0);
+                    \coordinate (V2) at (1,0.5,0);
+                    \coordinate (V3) at (0,1,0);
+                    \coordinate (V4) at (0,0,2);
+                    
+                    %--- 填充表面 ---
+                    \fill[cyan!30, opacity=0.7] (V2) -- (V3) -- (V4) -- cycle;
+                    \fill[cyan!15, opacity=0.5] (V1) -- (V2) -- (V3) -- cycle;
+                    \fill[gray!20, opacity=0.5] (V1) -- (V4) -- (V3) -- cycle;
+                
+                    %--- 边 ---
+                    \draw[thick, blue] (V2) -- (V3) -- (V4) -- cycle;
+                    \draw[thick, blue] (V1) -- (V2);
+                    \draw[thick, blue] (V1) -- (V3);
+                    \draw[thick, blue] (V1) -- (V4);
+                    
+                    %--- 最终调整好的顶点标签 ---
+                    \node[above right=3pt] at (V2) {\scriptsize(1, 1/2, 0)};
+                    \node[below left=2pt] at (V3) {\scriptsize(0,1,0)};
+                    \node[right=1pt] at (V4) {\scriptsize(0,0,2)};
+                    \node[above left] at (V1) {\scriptsize O};
+                \end{scope}
+            \end{tikzpicture}%
+        }
+    \end{column}
 
-    \begin{frame}[t]{Vector Functions}
-        \begin{block}{Continuity of a Vector Function}
-            \par \textcolor{yy}{Definition.} Let $A \subseteq \mathbb{R}$. A vector function $\bar{r}: A \to \mathbb{R}^3$ is \textcolor{yy}{continuous} at a point $a \in \mathbb{R}$ if $a \in A$ and 
-            \begin{equation*}
-                \lim\limits_{t \to a}\bar{r} (t) = \bar{r} (a).
-            \end{equation*}
+\end{columns}
+\end{frame}
 
-            \phantom{zjy}
+\begin{frame}
+\frametitle{Strategy: Project the Solid onto 2D Planes}
+The key to setting up the integral is to understand the solid's "shadow" on the three coordinate planes. The complexity of these 2D regions often determines the difficulty of the integral.
 
-            \par We say that $\bar{r}: A \to \mathbb{R}^3$ is \textcolor{yy}{continuous on an interval} $I$ if $\bar{r}$ is continuous at all points $a \in I$.
-            \par The continuity of $\bar{r}$ is equivalent to the continuity of $f(t)$, $g(t)$ and $h(t)$.
-        \end{block}
-    \end{frame}
+\begin{columns}[T]
 
-    \begin{frame}[t]{Vector Functions}
-        \begin{block}{Differentiability}
-            \par \textcolor{yy}{Definition.} Let $A \subseteq \mathbb{R}$ and $\bar{r}: A \to \mathbb{R}^3$. Let $t \in A$. If the limit
-            \begin{equation*}
-                \dfrac{d \bar{r}}{dt} = \bar{r}'(t) = \lim\limits_{h \to 0} \dfrac{\bar{r}(t+h) - \bar{r}(t)}{h}
-            \end{equation*}
-            exists, then we say that $\bar{r}$ is \textcolor{yy}{differentiable} at $t$.
-        \end{block}
+    % --- 第 1 栏：xy 平面投影 ---
+    \begin{column}{0.33\textwidth}
+        \textbf{On xy-plane ($R_{xy}$)}
+        \centering
+        \resizebox{\linewidth}{!}{%
+            \begin{tikzpicture}[every node/.style={font=\small}]
+                \fill[cyan!10] (0,0) -- (1,0.5) -- (0,1) -- cycle;
+                \draw[->] (-0.2,0) -- (1.3,0) node[below]{$x$};
+                \draw[->] (0,-0.2) -- (0,1.3) node[left]{$y$};
+                \draw[blue] (0,0) -- (1,0.5) node[below right, black, font=\scriptsize]{$y=x/2$};
+                \draw[blue] (1,0.5) -- (0,1) node[above right, black, font=\scriptsize]{$x+2y=2$};
+                \draw[blue] (0,1) -- (0,0);
+                \node at (0.2,0.6) {$R_{xy}$};
+            \end{tikzpicture}%
+        }
+    \end{column}
 
-        \begin{block}{Criteria for Differentiability}
-            \par \textcolor{yy}{Theorem.} If $\bar{r} = f(t) \bar{i} + g(t) \bar{j} + h(t) \bar{k}$ where $f$, $g$ and $h$ are functions differentiable on an interval $I$, then $\bar{r}$ is differentiable at every point in $I$ and 
-            \begin{equation*}
-                \bar{r}'(t) = f'(t) \bar{i} + g'(t) \bar{j} + h'(t) \bar{k} .
-            \end{equation*}
-        \end{block}
-    \end{frame}
+    % --- 第 2 栏：xz 平面投影 ---
+    \begin{column}{0.33\textwidth}
+        \textbf{On xz-plane ($R_{xz}$)}
+        \centering
+        \resizebox{\linewidth}{!}{%
+            \begin{tikzpicture}[every node/.style={font=\small}]
+                \fill[cyan!10] (1,0) -- (0,2) -- (0,0) -- cycle;
+                \draw[->] (-0.2,0) -- (1.3,0) node[below]{$x$};
+                \draw[->] (0,-0.2) -- (0,2.5) node[left]{$z$};
+                \draw[blue] (1,0) -- (0,2) node[above left, black, font=\scriptsize]{$2x+z=2$};
+                \draw[blue] (0,2) -- (0,0) -- (1,0);
+                \node at (0.3,0.5) {$R_{xz}$};
+            \end{tikzpicture}%
+        }
+    \end{column}
 
-    \begin{frame}[t]{Vector Functions}
-        \begin{block}{Integration}
-            \par \textcolor{yy}{Definition.} Let $\bar{r}(t) = f(t) \bar{i} + g(t) \bar{j} + h(t) \bar{k}$ where $f$, $g$ and $h$ are functions that are integrable on $[a,b]$. Then
-            \begin{equation*}
-                \int_{a}^{b} \bar{r}(t) d t=\left(\int_{a}^{b} f(t) d t\right) \bar{i}+\left(\int_{a}^{b} g(t) d t\right) \bar{j}+\left(\int_{a}^{b} h(t) d t\right) \bar{k}
-            \end{equation*}
-            \begin{equation*}
-                \int \bar{r}(t) d t=\left(\int f(t) d t\right) \bar{i}+\left(\int g(t) d t\right) \bar{j}+\left(\int h(t) d t\right) \bar{k}
-            \end{equation*}
-        \end{block}
-    \end{frame}
+    % --- 第 3 栏：yz 平面投影 ---
+    \begin{column}{0.33\textwidth}
+        \textbf{On yz-plane ($R_{yz}$)}
+        \centering
+        \resizebox{\linewidth}{!}{%
+            \begin{tikzpicture}[every node/.style={font=\small}]
+                \fill[cyan!10] (1,0) -- (0,2) -- (0,0) -- cycle;
+                \draw[->] (-0.2,0) -- (1.3,0) node[below]{$y$};
+                \draw[->] (0,-0.2) -- (0,2.5) node[left]{$z$};
+                \draw[blue] (1,0) -- (0,2) node[above left, black, font=\scriptsize]{$2y+z=2$};
+                \draw[blue] (0,2) -- (0,0) -- (1,0);
+                \node at (0.3,0.5) {$R_{yz}$};
+            \end{tikzpicture}%
+        }
+    \end{column}
 
-    \begin{frame}[t]{Vector Functions}
-        \par Let $\bar{r}: A \to \mathbb{R}^3$ be a vector function and $t \in A$. Let $P$ be the point described by the vector $\bar{r}(t)$.
-        \begin{block}{Tangent Vector and Tangent Line}
-            \par \textcolor{yy}{Definition.} If $\bar{r}'(t)$ exists and $\bar{r}'(t) \neq 0$, then $\bar{r}'(t)$ is called the \textcolor{yy}{tangent vector} to the curve defined by $\bar{r}$ at the point $P$.
+\end{columns}
 
-            \phantom{zjy}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Orders based on $dz$ (Projection on $R_{xy}$)}
+The inner integral is $\int_0^{2-x-2y} dz$. The outer double integral is over $R_{xy}$.
+
+\begin{columns}[T]
+    \begin{column}{0.5\textwidth}
+        \alert<1>{Order $dz\,dy\,dx$ (No Split)}
+        \begin{center}
+        \begin{tikzpicture}[scale=1.1, every node/.style={font=\small}]
+            \fill[cyan!10] (0,0) -- (1,0.5) -- (0,1) -- cycle;
+            \draw[->, semithick, red] (0.5, 0.25) -- (0.5, 0.75); % Vertical strip
+            \draw[->] (-0.2,0) -- (1.5,0) node[below]{$x$};
+            \draw[->] (0,-0.2) -- (0,1.3) node[left]{$y$};
+            \draw (0,0) -- (1,0.5) node[below right, black]{$y=x/2$};
+            \draw (1,0.5) -- (0,1) node[above right, black]{$x+2y=2$};
+        \end{tikzpicture}
+        \end{center}
+        $$ \int_0^1 \int_{x/2}^{(2-x)/2} \int_0^{2-x-2y} dz\,dy\,dx $$
+    \end{column}
+    \begin{column}{0.5\textwidth}
+        \alert<1>{Order $dz\,dx\,dy$ (Requires Split)}
+        \begin{center}
+        \begin{tikzpicture}[scale=1.1, every node/.style={font=\small}]
+            \fill[orange!10] (0,0) -- (1,0.5) -- (0,0.5) -- cycle;
+            \fill[cyan!10] (0,0.5) -- (1,0.5) -- (0,1) -- cycle;
+            \draw[->, semithick, red] (0, 0.25) -- (0.5, 0.25);
+            \draw[->, semithick, red] (0, 0.75) -- (0.5, 0.75);
+            \draw[dashed] (0,0.5) -- (1,0.5) node[right, black]{$y=1/2$};
+            \draw[->] (-0.2,0) -- (1.5,0) node[below]{$x$};
+            \draw[->] (0,-0.2) -- (0,1.3) node[left]{$y$};
+            \draw (0,0) -- (1,0.5) node[below right, black]{$x=2y$};
+            \draw (1,0.5) -- (0,1) node[above right, black]{$x=2-2y$};
+        \end{tikzpicture}
+        \end{center}
+        $$ \int_0^{1/2} \int_0^{2y}\int_0^{2-x-2y} dz\,dx\,dy $$ \\
+        $$ + \int_{1/2}^1 \int_0^{2-2y} \int_0^{2-x-2y} dz\,dx\,dy $$
+    \end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}
+\frametitle{Orders based on $dy$ (Projection on $R_{xz}$)}
+The inner integral is $\int_{x/2}^{(2-x-z)/2} dy$. The outer double integral is over $R_{xz}$.
+
+\begin{columns}[T]
+    \begin{column}{0.5\textwidth}
+        \alert<1>{Order $dy\,dz\,dx$ (No Split, Easiest)}
+        \begin{center}
+        \begin{tikzpicture}[scale=1.1, every node/.style={font=\small}]
+            \fill[cyan!10] (1,0) -- (0,2) -- (0,0) -- cycle;
+            \draw[->, semithick, red] (0.5, 0) -- (0.5, 1);
+            \draw[->] (-0.2,0) -- (1.5,0) node[below]{$x$};
+            \draw[->] (0,-0.2) -- (0,2.5) node[left]{$z$};
+            \draw (1,0) -- (0,2) node[above left, black]{$z=2-2x$};
+        \end{tikzpicture}
+        \end{center}
+        $$ \int_0^1 \int_0^{2-2x} \int_{x/2}^{(2-x-z)/2} dy\,dz\,dx $$
+    \end{column}
+    \begin{column}{0.5\textwidth}
+        \alert<1>{Order $dy\,dx\,dz$ (No Split)}
+        \begin{center}
+        \begin{tikzpicture}[scale=1.1, every node/.style={font=\small}]
+            \fill[cyan!10] (1,0) -- (0,2) -- (0,0) -- cycle;
+            \draw[->, semithick, red] (0, 1) -- (0.5, 1);
+            \draw[->] (-0.2,0) -- (1.5,0) node[below]{$x$};
+            \draw[->] (0,-0.2) -- (0,2.5) node[left]{$z$};
+            \draw (1,0) -- (0,2) node[above right, black]{$x=(2-z)/2$};
+        \end{tikzpicture}
+        \end{center}
+        $$ \int_0^2 \int_0^{(2-z)/2} \int_{x/2}^{(2-x-z)/2} dy\,dx\,dz $$
+    \end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}
+\frametitle{Complex Setup 1: Order $dx\,dy\,dz$}
+
+\begin{columns}[T]
+    % --- 左栏：图例和说明 ---
+    \begin{column}{0.5\textwidth}
+        Integrating with respect to $x$ first is complicated. Its upper bound is $\min(2y, 2-2y-z)$, forcing a split.
+        \vspace{1em}
+        
+        The projection on the yz-plane, $R_{yz}$, is split by the line $\mathbf{4y+z=2}$.
+        
+        \begin{center}
+        \begin{tikzpicture}[scale=1.1, every node/.style={font=\small}]
+            \fill[orange!20] (0,0) -- (0.5,0) -- (0,2) -- (0,0);
+            \fill[cyan!20] (0.5,0) -- (1,0) -- (0,2) -- (0.5,0);
+
+            % Horizontal strips for dy-integration
+            \draw[->, semithick, red] (0, 1) -- (0.25, 1);
+            \draw[->, semithick, red] (0.25, 1) -- (0.5, 1);
             
-            \par \textcolor{yy}{Definition.} The \textcolor{yy}{tangent line} to the curve described by $\bar{r}$ at the point $P$ is the line that is parallel to the vector $\bar{r}'(t)$.
+            \draw[->] (-0.2,0) -- (1.3,0) node[below]{$y$};
+            \draw[->] (0,-0.2) -- (0,2.5) node[left]{$z$};
+            
+            \draw[blue, thick] (1,0) -- (0,2);
+            \draw[red, dashed] (0.5,0) -- (0,2) node[above left, black, font=\scriptsize]{$4y+z=2$};
+            
+            \node at (0.2,1.5) {$R_1$};
+            \node at (0.65,0.5) {$R_2$};
+        \end{tikzpicture}
+        \end{center}
+        
+    \end{column}
+    
+    % --- 右栏：积分形式 ---
+    \begin{column}{0.5\textwidth}
+        \textbf{Setup for $dx\,dy\,dz$}
+        \vspace{1em}
+        
+        This order splits the integral into two parts based on the horizontal integration strips.
+        \vspace{1em}
+        
+        {\small
+        $$ V = \underbrace{\int_0^2 \int_0^{(2-z)/4} \int_0^{2y} dx\,dy\,dz}_{\text{Volume over } R_1} $$
+        $$ + \underbrace{\int_0^2 \int_{(2-z)/4}^{(2-z)/2} \int_0^{2-2y-z} dx\,dy\,dz}_{\text{Volume over } R_2} $$
+        }
+        
+        
+        
+    \end{column}
+
+\end{columns}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Complex Setup 2: Order $dx\,dz\,dy$}
+
+\begin{columns}[T]
+    % --- 左栏：图例和说明 ---
+    \begin{column}{0.5\textwidth}
+        This order is even more complex, requiring the region to be broken into three separate triple integrals.
+        \vspace{1em}
+        
+        The vertical integration strips for $dz$ cross over the splitting line $\mathbf{4y+z=2}$.
+        
+        \begin{center}
+        \begin{tikzpicture}[scale=1.1, every node/.style={font=\small}]
+            \fill[orange!20] (0,0) -- (0.5,0) -- (0,2) -- cycle;
+            \fill[cyan!20] (0.5,0) -- (1,0) -- (0,2) -- cycle;
+
+            % Vertical strips for dz-integration
+            \draw[->, semithick, red] (0.25, 0) -- (0.25, 1);
+            \draw[->, semithick, red] (0.25, 1) -- (0.25, 2-2*0.25);
+            
+            \draw[->] (-0.2,0) -- (1.3,0) node[below]{$y$};
+            \draw[->] (0,-0.2) -- (0,2.5) node[left]{$z$};
+            
+            \draw[blue, thick] (1,0) -- (0,2);
+            \draw[red, dashed] (0.5,0) -- (0,2) node[above left, black, font=\scriptsize]{$4y+z=2$};
+            
+            \node at (0.2,1.5) {$R_1$};
+            \node at (0.65,0.5) {$R_2$};
+        \end{tikzpicture}
+        \end{center}
+        
+    \end{column}
+    
+    % --- 右栏：积分形式 ---
+    \begin{column}{0.5\textwidth}
+        \textbf{Setup for $dx\,dz\,dy$}
+        \vspace{1em}
+        
+        {\small
+        $$ V = \underbrace{\int_0^{1/2} \int_0^{2-4y} \int_0^{2y} dx\,dz\,dy}_{\text{Bottom part of region}} $$
+        $$ + \underbrace{\int_0^{1/2} \int_{2-4y}^{2-2y} \int_0^{2-2y-z} dx\,dz\,dy}_{\text{Middle part of region}} $$
+        $$ + \underbrace{\int_{1/2}^1 \int_0^{2-2y} \int_0^{2-2y-z} dx\,dz\,dy}_{\text{Top part of region}} $$
+        }
+        
+        
+    \end{column}
+
+\end{columns}
+\end{frame}
+\begin{frame}{Cylindrical Coordinates}
+    \frametitle{Cylindrical Coordinates}
+\begin{columns}
+    % --- 左栏 ---
+    \begin{column}{0.3\textwidth}
+        \textbf{Cylindrical Coordinates} \\
+        $\begin{cases}
+            r &= \sqrt{x^2 + y^2} \\
+            \theta &= \tan^{-1}\left(\frac{y}{x}\right) \\
+            z &= z
+        \end{cases}$
+        \\
+        $\begin{cases}
+            x &= r\cos\theta \\
+            y &= r\sin\theta \\
+            z &= z
+        \end{cases}$
+    \end{column}
+    
+    % --- 右栏 ---
+    \begin{column}{0.7\textwidth}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.45\linewidth]{cc_1.png}
+        \end{figure}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.45\linewidth]{cc_2.png}
+        \end{figure}
+    \end{column}
+\end{columns}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Example: Volume Using Cylindrical Coordinates}
+
+\begin{block}{Problem}
+    Calculate the volume of the solid enclosed by the paraboloid $z = x^2 + y^2$ and the plane $z = 4$.
+\end{block}
+
+\begin{columns}[T]
+    % Left Column
+    \begin{column}{0.5\textwidth}
+        \begin{block}{1. Coordinate Transformation}
+            This solid is rotationally symmetric, making it ideal for cylindrical coordinates.
+            \begin{align*}
+                x^2 + y^2 &= r^2 \\
+                z &= z \\
+                dV &= r \, dz \, dr \, d\theta
+            \end{align*}
         \end{block}
-
-        \par The \textcolor{yy}{unit tangent vector}, sometimes denoted $\bar{T}(t)$, is the unit vector of $\bar{r}'(t)$
-        \begin{equation*}
-            \bar{T} (t) = \dfrac{\bar{r}'(t)}{|\bar{r}'(t)|} .
-        \end{equation*}
-    \end{frame}
-
-    \begin{frame}[t]{Vector Functions}
-        \par Let $\bar{u}$ and $\bar{v}$ be differentiable vector functions. Let $c \in \mathbb{R}$ and $f: \mathbb{R} \to \mathbb{R}$ be a differentiable function.
-        \begin{block}{Properties of Differentiability}
-            \begin{enumerate}
-                \item $\dfrac{d}{dt} [\bar{u} (t) \pm \bar{v} (t)] = \bar{u}'(t) + \bar{v}'(t)$.
-                \item $\dfrac{d}{dt} [c \bar{u}(t)] = c \bar{u}'(t)$.
-                \item $\dfrac{d}{dt} [ f(t) \bar{u} (t)] = f'(t) \bar{u}(t) + f(t) \bar{u}'(t)$.
-                \item $\dfrac{d}{dt} [\bar{u} (t) \cdot \bar{v} (t)] = \bar{u}'(t) \cdot \bar{v}(t) + \bar{u} (t) \cdot \bar{v}'(t)$.
-                \item $\dfrac{d}{dt} [\bar{u} (t) \times \bar{v} (t)] = \bar{u}'(t) \times \bar{v}(t) + \bar{u} (t) \times \bar{v}'(t)$.
-                \item $\dfrac{d}{dt} [\bar{u} (f(t))] = \bar{u}'(f(t)) f'(t)$ (Chain Rule).
-            \end{enumerate}
+    \end{column}
+    
+    % Right Column
+    \begin{column}{0.5\textwidth}
+        \begin{block}{2. Determine the Limits of Integration}
+            \begin{itemize}
+                \item \textbf{Range of $z$}: \\ $r^2 \le z \le 4$
+                \item \textbf{Range of $r$}: \\ $0 \le r \le 2$
+                \item \textbf{Range of $\theta$}: \\ $0 \le \theta \le 2\pi$
+            \end{itemize}
         \end{block}
-    \end{frame}
+    \end{column}
+\end{columns}
 
-    \begin{frame}[t]{Vector Functions}
-        \begin{block}{Property of the Tangent Vector}
-            \par \textcolor{yy}{Theorem.} Let $\bar{r} (t)$ be a vector function that is differentiable on an interval $I$. If for all $t \in I$, $|\bar{r} (t) |$ is constant, then for all $t \in I$, $\bar{r}(t)$ and $\bar{r}'(t)$ are perpendicular. 
+\begin{alertblock}{Next Step}
+    With the coordinate system and limits defined, we can now set up the integral.
+\end{alertblock}
+\end{frame}
+
+
+% --- Slide 2: Calculation ---
+\begin{frame}
+\frametitle{Example: Volume Using Cylindrical Coordinates (Cont.)}
+
+\begin{block}{3. Set Up and Evaluate the Integral}
+    The volume $V$ is given by the triple integral:
+    \begin{align*}
+        V &= \int_{0}^{2\pi} \int_{0}^{2} \int_{r^2}^{4} r \, dz \, dr \, d\theta \\
+          &= \int_{0}^{2\pi} \int_{0}^{2} r [z]_{r^2}^{4} \, dr \, d\theta \\
+          &= \int_{0}^{2\pi} \int_{0}^{2} r(4 - r^2) \, dr \, d\theta \\
+          &= \int_{0}^{2\pi} \left[ 2r^2 - \frac{1}{4}r^4 \right]_{0}^{2} \, d\theta \\
+          &= \int_{0}^{2\pi} 4 \, d\theta = 4[\theta]_{0}^{2\pi} = 8\pi
+    \end{align*}
+\end{block}
+
+\end{frame}
+\begin{frame}{Spherical Coordinates}
+    \frametitle{Spherical Coordinates}
+\begin{columns}
+    % --- 左栏 ---
+    \begin{column}{0.3\textwidth}
+        \textbf{Spherical Coordinates} \\
+$
+\begin{cases}
+    \rho &= \sqrt{x^2 + y^2 + z^2} \\
+    \theta &= \tan^{-1}\left(\frac{y}{x}\right) \\
+    \phi &= \cos^{-1}\left(\frac{z}{\rho}\right)
+\end{cases}
+$
+\\
+$
+\begin{cases}
+    x &= \rho\sin\phi\cos\theta \\
+    y &= \rho\sin\phi\sin\theta \\
+    z &= \rho\cos\phi
+\end{cases}
+$
+    \end{column}
+    
+    % --- 右栏 ---
+    \begin{column}{0.35\textwidth}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.8\linewidth]{sc_1.png}
+        \end{figure}
+    \end{column}
+    \begin{column}{0.35\textwidth}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.8\linewidth]{sc_2.png}
+        \end{figure}
+    \end{column}
+\end{columns}
+
+\end{frame}
+\begin{frame}
+\frametitle{Example: Volume Using Spherical Coordinates}
+
+\begin{block}{Problem}
+    Calculate the volume of the part of the unit sphere $x^2+y^2+z^2 \le 1$ that lies in the first octant ($x\ge0, y\ge0, z\ge0$).
+\end{block}
+
+\begin{columns}[T]
+    % Left Column
+    \begin{column}{0.5\textwidth}
+        \begin{block}{1. Coordinate Transformation}
+            This problem involves a sphere, a perfect scenario for spherical coordinates.
+            \begin{align*}
+                 x^2+y^2+z^2 &= \rho^2 \\
+                 dV &= \rho^2 \sin\phi \, d\rho \, d\phi \, d\theta
+            \end{align*}
         \end{block}
+    \end{column}
+    
+    % Right Column
+    \begin{column}{0.5\textwidth}
+        \begin{block}{2. Determine the Limits of Integration}
+            \begin{itemize}
+                \item \textbf{Range of $\rho$}: \\ $0 \le \rho \le 1$
+                \item \textbf{Range of $\phi$}: \\ $0 \le \phi \le \pi/2$
+                \item \textbf{Range of $\theta$}: \\ $0 \le \theta \le \pi/2$
+            \end{itemize}
+        \end{block}
+    \end{column}
+\end{columns}
 
-        \phantom{zjy}
+\begin{alertblock}{Next Step}
+    With the spherical limits defined, we can proceed to the integration.
+\end{alertblock}
 
-        \par \textcolor{yy}{Proof.} 
-        \par Suppose that for all $t \in I$, $|\bar{r} (t)| = c$. Therefore 
-        \begin{equation*}
-            2\left(\bar{r}^{\prime}(t) \cdot \bar{r}(t)\right)=\frac{d}{d t}[\bar{r}(t) \cdot \bar{r}(t)]=\frac{d}{d t}\left[|\bar{r}(t)|^{2}\right]=\frac{d}{d t}\left[c^{2}\right]=0 .
-        \end{equation*}
-    \end{frame}
+\end{frame}
+
+
+% --- Slide 2: Calculation ---
+\begin{frame}
+\frametitle{Example: Volume Using Spherical Coordinates (Cont.)}
+
+\begin{block}{3. Set Up and Evaluate the Integral}
+    The volume $V$ is given by the triple integral:
+    \begin{align*}
+        V &= \int_{0}^{\pi/2} \int_{0}^{\pi/2} \int_{0}^{1} \rho^2 \sin\phi \, d\rho \, d\phi \, d\theta \\
+          &= \int_{0}^{\pi/2} \int_{0}^{\pi/2} \sin\phi \left[ \frac{1}{3}\rho^3 \right]_{0}^{1} \, d\phi \, d\theta \\
+          &= \frac{1}{3} \int_{0}^{\pi/2} \int_{0}^{\pi/2} \sin\phi \, d\phi \, d\theta \\
+          &= \frac{1}{3} \int_{0}^{\pi/2} [-\cos\phi]_{0}^{\pi/2} \, d\theta \\
+          &= \frac{1}{3} [\theta]_{0}^{\pi/2} = \frac{1}{3} \cdot \frac{\pi}{2} = \frac{\pi}{6}
+    \end{align*}
+\end{block}
+
+\end{frame}
+
+% \begin{frame}{Change of Variables}
+%     \begin{block}{Theorem}
+%         Let $\mathcal{R}$ and $\mathcal{S}$ be bounded regions in $\mathbb{R}^3$ that contain all of their boundary points. Let $T : \mathcal{D} \rightarrow \mathbb{R}^3$ where $\mathcal{D} \subset \mathbb{R}^3$ be an injective map that is onto and maps $\mathcal{S}$ in the $uvw$-plane to $\mathcal{R}$ in the $xyz$-plane. If $f(x, y, z)$ is continuous on $\mathcal{R}$, all of the components of $T$ have continuous partial derivatives and the Jacobian $JT(u, v, w)$ is never $0$ on $\mathcal{S}$, then
+% \[
+% \iiint_{\mathcal{R}} f(x, y, z) \, dx \, dy \, dz = \iiint_{\mathcal{S}} f(T(u, v, w)) \, \left| JT(u, v, w) \right| \, du \, dv \, dw.
+% \]
+%     \end{block}
+% \end{frame}
+% \begin{frame}{Frame Title}
+%     The transformation \(T\) from cylindrical coordinates to rectangular coordinates is given by:
+% \[ T(r, \theta,s) = \begin{bmatrix} r \cos \theta \\ r \sin \theta \\ s \end{bmatrix}^T. \]
+
+% The transformation \(T\) from spherical coordinates to rectangular coordinates is given by:
+% \[ T(\rho, \theta, \phi) = \begin{bmatrix} \rho \sin \phi \cos \theta \\ \rho \sin \phi \sin \theta \\ \rho \cos \phi \end{bmatrix}^T. \]
+% \end{frame}
+
+% \begin{frame}{Remark}
+%     The Jacobian \( J \) of the transformation from cylindrical to rectangular coordinates is:
+% \[ J(r, \theta, s) = r. \]
+
+% The Jacobian \( J \) of the transformation from spherical to rectangular coordinates is:
+% \[ J(\rho, \theta, \phi) = -\rho^2 \sin \phi. \]
+% \end{frame}
+\begin{frame}{Exercise}
+    \textbf{Exercise 6.6} Find the mass of the pyramid with base in the plane $z = -6$ and sides
+formed by the three planes $y = 0$, $y - x = 4$ and $2x + y + z = 4$
+if the density of the solid is given by $\delta(x, y, z) = y$. \\
+    \textbf{Exercise 6.7} Find the volume of the region bounded by $z = x + y$, $x + y = 5$,
+where $(x, y) \in [0, 5] \times [0, 5]$, and the planes $x = 0$, $y = 0$, and $z = 0$. \\
+
+    \textbf{Exercise 6.8} Evaluate the integral
+\[
+\int_{-\sqrt{3}}^{\sqrt{3}} \int_{-\sqrt{3-x^2}}^{\sqrt{3-x^2}} \int_{1}^{4-x^2-y^2} \frac{1}{z^2} \, dz \, dy \, dx.
+\] 
+\end{frame}
+\begin{frame}{Answers - 6.6}
+    We calculate the triple integral by
+\[
+\int_{0}^{6} \int_{y-4}^{5-\frac{y}{2}} \int_{-6}^{4-2x-y} y \, dz \, dx \, dy = 243.
+\]
+\end{frame}
+\begin{frame}{Answers - 6.7}
+    Here we calculate the volume $V$ of the region $E$ using a triple integral:
+\[
+V = \iiint_E \, dV = \int_0^5 \int_0^{5-x} \int_0^{x+y} \, dz \, dy \, dx = \frac{125}{3}.
+\]
+
+\end{frame}
+\begin{frame}{Answers - 6.8}
+    Use cylindrical coordinates. The transformation is given by:
+\begin{align*}
+\begin{cases}
+x = r \cos \theta \\
+y = r \sin \theta \\
+z = z
+\end{cases}
+\Rightarrow
+\begin{cases}
+0 \leq r \leq \sqrt{3} \\
+0 \leq \theta \leq 2\pi \\
+1 \leq z \leq 4 - r^2
+\end{cases}
+\end{align*}
+and $|J(r, \theta, z)| = r$.
+
+Therefore, the integral
+\[
+\int_{-\sqrt{3}}^{\sqrt{3}} \int_{-\sqrt{3-x^2}}^{\sqrt{3-x^2}} \int_{1}^{4-x^2-y^2} \frac{1}{z^2} \, dz \, dy \, dx
+\]
+becomes
+\[
+\int_{0}^{2\pi} \int_{0}^{\sqrt{3}} \int_{1}^{4-r^2} \frac{1}{z^2} r \, dz \, dr \, d\theta 
+\]
+\[ 
+= 2\pi \int_{0}^{\sqrt{3}} \left( r - \frac{r}{4 - r^2} \right) dr =(3-ln 4) \pi.
+\]
+\end{frame}
+% \section{Vector Field}
+    
+% \begin{frame}[label=3]{Vector Field}
+%     \begin{block}{Definition}
+%         A vector field on two (or three) dimensional space is a function $\boldsymbol{F}$ that assigns to each point $(x, y)$ (or $(x, y, z)$) a two (or three) dimensional vector given by $\boldsymbol{F}(x, y)$ (or $\boldsymbol{F}(x, y, z)$).
+%     \end{block}
+%     The standard notation for the function $\boldsymbol{F}$ is,
+% \[
+% \boldsymbol{F}(x, y) = P(x, y) \boldsymbol{i} + Q(x, y) \boldsymbol{j}
+% \]
+% \[
+% \boldsymbol{F}(x, y, z) = P(x, y, z) \boldsymbol{i} + Q(x, y, z) \boldsymbol{j} + R(x, y, z) \boldsymbol{k}
+% \]
+% \end{frame}
+% \begin{frame}{Gradient Fields}
+% \begin{block}{Definition}
+%     If $f$ is a scalar function of two variables, then its gradient $\nabla f$(or grad $f$) is defined by
+%     \begin{equation*}
+%         \nabla f(x,y)=f_x(x,y)\boldsymbol{i}+f_y(x,y)\boldsymbol{j}
+%     \end{equation*}
+% \end{block}
+    
+% \end{frame}
+
+% \begin{frame}{Exercise}
+%     \textbf{Ex 6.9} Find the gradient vector field of following functions.
+%     \begin{enumerate}
+%         \item $f(x,y,z)=\sqrt{x^2+y^2+z^2}$
+%         \item $f(x,y)=ln(1+x^2+y^2)$
+%     \end{enumerate}
+% \end{frame}
+
+\begin{frame}{\textcolor{green!30!black}{end}}
+    \begin{center}
+        \LARGE Thank you!
+    \end{center}
+\end{frame}
 
 
 
 \end{document}
+
+\begin{frame}{Integral Domain}
+    \begin{block}{Definition}
+         Let $\mathcal{R} = [a, b] \times [c, d]$ and $u_1 : \mathcal{R} \rightarrow \mathbb{R}$, $u_2 : \mathcal{R} \rightarrow \mathbb{R}$ be continuous functions. Let $D$ be a region in $\mathbb{R}^2$ that is contained in $\mathcal{R}$ ($D \subset \mathcal{R}$). Let $\mathcal{R}$ be the solid region whose projection onto the $xy$-plane is $D$ and that is bounded on the $z$-axis by functions $u_1(x, y)$ and $u_2(x, y)$, i.e., 
+\[
+\mathcal{R} = \{(x, y, z) \in \mathbb{R}^3 \mid (x, y) \in D \text{ and } u_1(x, y) \leq z \leq u_2(x, y)\}.
+\]
+A region of this form is said to be a \emph{Type I solid region}.
+    \end{block}
+    Let $\mathcal{R} = [a, b] \times [c, d]$ and $u_1 : \mathcal{R} \rightarrow \mathbb{R}$, $u_2 : \mathcal{R} \rightarrow \mathbb{R}$ be continuous functions. Let $D$ be a region in $\mathbb{R}^2$ that is contained in $\mathcal{R}$ ($D \subset \mathcal{R}$). Let $\mathcal{R}$ be the solid region whose projection onto the $xy$-plane is $D$ and that is bounded on the $z$-axis by functions $u_1(x, y)$ and $u_2(x, y)$, i.e., 
+\[
+\mathcal{R} = \{(x, y, z) \in \mathbb{R}^3 \mid (x, y) \in D \text{ and } u_1(x, y) \leq z \leq u_2(x, y)\}.
+\]
+A region of this form is said to be a \emph{Type I solid region}.
+\end{frame}
