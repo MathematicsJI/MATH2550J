@@ -34,3 +34,5 @@ Thumbs.db
 _build/
 # LaTeX project files
 *.latexmkrc
+
+._wordcount_selection.tex
