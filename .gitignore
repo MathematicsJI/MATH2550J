@@ -11,6 +11,7 @@
 *.fls
 *.fdb_latexmk
 *.synctex.gz
+*.synctex(busy)
 *.nav
 *.snm
 *.dvi
@@ -35,4 +36,4 @@ _build/
 # LaTeX project files
 *.latexmkrc
 
-._wordcount_selection.tex
+*._wordcount_selection.tex
