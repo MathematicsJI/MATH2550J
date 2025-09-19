@@ -1,4 +1,4 @@
-\documentclass[aspectratio=169, UTF8]{ctexbeamer}
+\documentclass[aspectratio=169]{beamer}
 \usepackage{math214}
 \usepackage{babel}
 
@@ -6,8 +6,8 @@
 % Then, after \begin{document}, you can begin your frames/slides
 
 \title{\LARGE 255RC6}
-\author{ Li Mingrui, Xia Yiwei, Zhang Haoran, Huang Jiayue}
-\date{Summer 2024}
+\author{Shi Chengyang, Deng Ruizhi, Shen Haoran, Tang Jingfan}
+\date{Summer 2025}
 
 \definecolor{darkblue}{HTML}{6666dd} 
 \colortheme{green!30!black}
@@ -27,244 +27,243 @@
 
 \begin{frame}{Contents}
     \begin{enumerate}
-        \item \hyperlink{1}{Double Integrals}
-        \item \hyperlink{2}{Triple Integrals}
-        \item \hyperlink{3}{Vector Field}
+        \item \hyperlink{1}{Curl and Divergence}
+        \item \hyperlink{2}{Parametric Surfaces and Areas}
+        \item \hyperlink{3}{Surface Integrals}
     \end{enumerate}
        
 \end{frame}
 
     
 
-\section{Double Integrals}
-\begin{frame}[label=1]{Double Integrals}
-    \frametitle{Double Integrals}
+\section{Curl and Divergence}
+\begin{frame}{Curl}
+
     \begin{block}{Definition}
-        The \textbf{double integral} of $f$ over the rectangle $R$ is
-        \begin{equation*}
-            \iint_Rf(x,y)dA=\lim_{m,n\rightarrow\infty}\sum_{i=1}^m\sum_{j=1}^nf(x_i,y_j)\Delta A
-        \end{equation*}
+$\boldsymbol{F}=P\boldsymbol{i}+Q\boldsymbol{j}+R\boldsymbol{k}$ is a vector field on $\mathbb{R}^3$ and the partial derivatives of $P$,$Q$, and $R$ all exist, then the $\boldsymbol{curl}$ of $\boldsymbol{F}$ is the vector field on defined by
+    \begin{align*}
+        \nabla\times \boldsymbol{F} = &
+        \left|
+        \begin{array}{ccc}
+            \boldsymbol{i}& \boldsymbol{j}& \boldsymbol{k}\\
+            \frac{\partial}{\partial x}& \frac{\partial}{\partial y}&\frac{\partial}{\partial z}\\
+            P&Q&R
+        \end{array}
+        \right| \\
+        =& (\frac{\partial R}{\partial y}-\frac{\partial Q}{\partial z})\boldsymbol{i}+(\frac{\partial P}{\partial z}-\frac{\partial R}{\partial x})\boldsymbol{j}+(\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y})\boldsymbol{k}\\
+        =&\text{curl } \boldsymbol{F}
+    \end{align*}
     \end{block}
-    \begin{block}{Remark}
-        A function $f$ is called \textbf{integrable} if the limit in the above Definition exists, which means $\forall \varepsilon>0$ there is an integer $N$ such that 
+
+    \begin{block}{Theorem}
+        If $f$ is a function of three variables that has continuous second-order partial derivatives, then
         \begin{equation*}
-            \Big|\iint_Rf(x,y)dA-\sum_{i=1}^m\sum_{j=1}^nf(x_i,y_j)\Delta A\Big |<\varepsilon,\quad \forall m>N, \forall n>N
+            curl(\nabla f)=\boldsymbol{0}
         \end{equation*}
     \end{block}
 \end{frame}
+
+\begin{frame}{Divergence}
+    \begin{block}{Definition}
+        $\boldsymbol{F}=P\boldsymbol{i}+Q\boldsymbol{j}+R\boldsymbol{k}$ is a vector field on $\mathbb{R}^3$ and $\partial P/\partial x$,$\partial Q/\partial y$, and $\partial R/\partial z$ exist, then the $\boldsymbol{divergence}$ of $\boldsymbol{F}$ is the  function of three variables defined by
+        \begin{equation*}
+            \nabla \cdot \boldsymbol{F} = \frac{\partial P}{\partial x}+\frac{\partial Q}{\partial y}+\frac{\partial R}{\partial z}
+        \end{equation*}
+    \end{block}
+
+    \begin{block}{Theorem}
+        If $\boldsymbol{F}=P\boldsymbol{i}+Q\boldsymbol{j}+R\boldsymbol{k}$ is a vector field on $\mathbb{R}^3$ and $P$, $Q$ , and $R$ have continuous second-order partial derivatives, then
+        \begin{equation*}
+        \text{div curl }\boldsymbol{F}=0
+        \end{equation*}
+    \end{block}
+\end{frame}
+
+\begin{frame}{Exercises}
+    \textbf{Ex 8.1} Vector field $\boldsymbol{F}=(x^2y,y^2z,z^2x)$, evaluate the divergence of  the vector field at point (2,1,-2).\\
+    \par
+    \textbf{Ex 8.2} Given a rigid body rotating about the z-axis with angular velocity $\boldsymbol{\omega}=(0,0,\omega)$, find the curl of the linear velocity $\boldsymbol{\nu}$ at any point M on the rigid body.\\
+    \par
+\end{frame}
+
+\begin{frame}{Solutions}
+    \textbf{Solution 8.1} -8\\
+    \par
+    \textbf{Solution 8.2} $\nabla\times \boldsymbol{\nu}=2\boldsymbol{w}$
+\end{frame}
+
+\begin{frame}{Exercises}
+    \textbf{Ex 8.3} Prove the following identities. Assuming that the appropriate partial derivatives exist and are continuous. $f$ is a scalar field and $\boldsymbol{F}$, $\boldsymbol{G}$ are vector fields.\\
+    \begin{enumerate}
+        \item div($f\boldsymbol{F}$)=$f$ div $\boldsymbol{F}$+$\boldsymbol{F}\cdot \nabla f$
+         \item curl($f\boldsymbol{F}$)=$f$ curl $\boldsymbol{F}$+$(\nabla f)\times\boldsymbol{F}$
+         \item div($\boldsymbol{F}\times\boldsymbol{G}$)=$\boldsymbol{G}\cdot$ curl $\boldsymbol{F}$-$\boldsymbol{F}\cdot$ curl $\boldsymbol{G}$
+    \end{enumerate}
+    
+\end{frame}
+
+\begin{frame}{Solution}
+    If $f$ is a scalar field and $\boldsymbol{F}$, $\boldsymbol{G}$ are vector fields, then $f\boldsymbol{F}$,$\boldsymbol{F}\cdot\boldsymbol{G}$, and $\boldsymbol{F}\times\boldsymbol{G}$ are defined by
+    \begin{align*}
+        (f\boldsymbol{F})(x,y,z)&=f(x,y,z)\boldsymbol{F}(x,y,z)\\
+        (\boldsymbol{F}\cdot\boldsymbol{G})(x,y,z)&=\boldsymbol{F}(x,y,z)\cdot\boldsymbol{G}(x,y,z)\\
+        (\boldsymbol{F}\times\boldsymbol{G})(x,y,z)&=\boldsymbol{F}(x,y,z)\times\boldsymbol{G}(x,y,z)
+    \end{align*}
+\end{frame}
+
+\section{Parametric Surfaces and Areas}
+
+\begin{frame}{Parametric Surfaces}
+    \begin{block}{Definition}
+        We suppose that 
+        \begin{equation*}
+            \boldsymbol{r}(u,v)=x(u,v)\boldsymbol{i}+y(u,v)\boldsymbol{j}+z(u,v)\boldsymbol{k}
+        \end{equation*}
+        is a vector-valued function defined on a region $D$ in the $uv$-plane. The set of all points (x,y,z) in $\mathbb{R}^3$ is called a \textbf{parametric surface} $S$. Equations
+        \begin{equation*}
+            x=x(u,v)\qquad y=y(u,v) \qquad z=z(u,v)
+        \end{equation*}
+        .are called \textbf{parametric equations} of $S$.
+    \end{block}
+\end{frame}
+
+
+\begin{frame}{Surface Areas}
+    \begin{block}{Definition}
+        If a smooth parametric surface $S$ is given by the equation
+         \begin{equation*}
+            \boldsymbol{r}(u,v)=x(u,v)\boldsymbol{i}+y(u,v)\boldsymbol{j}+z(u,v)\boldsymbol{k} \qquad (u,v)\in D
+        \end{equation*}
+        and $S$ is covered just once as $(u,v)$ ranges throughout the parameter domain $D$, then the \textbf{surface area} of $S$ is
+        \begin{equation*}
+            A=\iint_D \big|\boldsymbol{r}_u\times\boldsymbol{r}_v\big|dA
+        \end{equation*}
+        where
+        \begin{equation*}
+            \boldsymbol{r}_u=\frac{\partial x}{\partial u}\boldsymbol{i}+\frac{\partial y}{\partial u}\boldsymbol{j}+\frac{\partial z}{\partial u}\boldsymbol{k} \quad \qquad \boldsymbol{r}_v=\frac{\partial x}{\partial v}\boldsymbol{i}+\frac{\partial y}{\partial v}\boldsymbol{j}+\frac{\partial z}{\partial v}\boldsymbol{k}
+        \end{equation*}
+    \end{block}
+\end{frame}
+
 \begin{frame}
-    \frametitle{Double Integrals}
-    \begin{block}{Properties}
-        \begin{enumerate}
-            \item $\iint_R[f(x,y)+g(x,y)]dA=\iint_Rf(x,y)dA+\iint_Rg(x,y)dA$
-            \item $\iint_Rcf(x,y)dA=c\iint_Rf(x,y)dA$, c is a constant
-            \item $f(x,y)\geq g(x,y)$ for all $(x,y)$ in $R$, then $\iint_Rf(x,y)dA\geq \iint_Rg(x,y)dA$
-            \item $\Big|\iint_Rf(x,y)dA\Big|\leq\iint_R|f(x,y)|dA$
-        \end{enumerate}
+    \frametitle{Spacial Case}
+    \begin{block}
+        If the surface can be expressed with equation $z=f(x,y)$, let $u=x,v=y$, we have
+        \begin{equation*}
+            x=x \qquad y=y \qquad z=f(x,y)
+        \end{equation*}
+        then
+        \begin{equation*}
+            \boldsymbol{r}_x=\boldsymbol{i}+(\frac{\partial f}{\partial x})\boldsymbol{k} \qquad \qquad \boldsymbol{r}_y=\boldsymbol{j}+(\frac{\partial f}{\partial y})\boldsymbol{k}
+        \end{equation*}
+        We have
+        \begin{equation*}
+            \big|\boldsymbol{r}_x\times\boldsymbol{r}_y\big|=\big|-\frac{\partial f}{\partial x}\boldsymbol{i}-\frac{\partial f}{\partial y}\boldsymbol{j}+\boldsymbol{k}\big|=\sqrt{1+(\frac{\partial z}{\partial x})^2+(\frac{\partial z}{\partial y})^2}
+        \end{equation*}
     \end{block}
     
 \end{frame}
-\begin{frame}{Iterated Integral}
-    \begin{block}{Definition}
-        The \textbf{iterated integral}
-        \begin{equation*}
-            \int_a^b\int_c^df(x,y)dydx=\int_a^b\Big[\int_c^df(x,y)dy\Big]dx
-        \end{equation*}
-        is the integral of $\Big[\int_c^df(x,y)dy\Big]$ between $x=a$ and $x=b$.
-    \end{block}
-    \begin{block}{Fubini's Theorem}
-        If $f$ is continuous on the rectangle $R=\{(x,y)|a\leq x\leq b,c\leq y\leq d\}$, then
-        \begin{equation*}
-            \iint_Rf(x,y)dA=\int_a^b\int_c^df(x,y)dydx=\int_c^d\int_a^bf(x,y)dxdy
-        \end{equation*}
-    \end{block}
-\end{frame}
-\begin{frame}{Types of Plane}
-    \begin{block}{Definition}
-        A plane region is said to be of \textbf{type I} if it lies between the graphs of two continuous functions of $x$ , that is
-        \begin{equation*}
-            D=\{(x,y)|a\leq x\leq b, g_1(x)\leq y\leq g_2(x)\}
-        \end{equation*}
-        If $f$ is continuous on a type I region D, then
-        \begin{equation*}
-            \iint_Df(x,y)dA=\int_a^b\int_{g_1(x)}^{g_2(x)}f(x,y)dydx
-        \end{equation*}
-        A plane region is said to be of \textbf{type II} if
-        \begin{equation*}
-            D=\{(x,y)|c\leq y\leq d, h_1(y)\leq x\leq h_2(y)\}
-        \end{equation*}
-        \begin{equation*}
-            \iint_Df(x,y)dA=\int_c^d\int_{h_1(y)}^{h_2(y)}f(x,y)dxdy
-        \end{equation*}
-    \end{block}
-\end{frame}
-\begin{frame}{Change of Variables}
-    \begin{block}{Definition}
-        The \textbf{Jacobian} of the transformation $T$ given by $x=g(u,v)$ and $y=h(u,v)$ is 
-        \begin{equation*}
-            \dfrac{\partial(x,y)}{\partial(u,v)}=
-            \left|\begin{array}{cc}
-                \frac{\partial x}{\partial u} & \frac{\partial x}{\partial v} \\
-                \frac{\partial y}{\partial u} & \frac{\partial y}{\partial v}
-            \end{array}\right|
-            =\frac{\partial x}{\partial u}\frac{\partial y}{\partial v}-\frac{\partial x}{\partial v}\frac{\partial y}{\partial u}
-        \end{equation*}
-        Suppose that $T$ is a transformation whose \textbf{Jacobian} is \textbf{nonzero} and that maps a region $S$in the uv-plane onto a region $R$ in the xy-plane. $f$ is continuous on $R$ and that $R$ and $S$ are type I or type II plane regions. Suppose also that $T$ is one-to-one, except perhaps on the
-boundary of $S$. Then
-        \begin{equation*}
-            \iint_Rf(x,y)dA=\iint_Sf\big[x(u,v),y(u,v)\big]\Big| \dfrac{\partial(x,y)}{\partial(u,v)}\Big|dudv
-        \end{equation*}
-    \end{block}
-\end{frame}
-\begin{frame}{Exercise}
-    \textbf{Ex 6.1 }Evaluate$\iint_R(5-x)dA$, $R=\{(x,y)|0\leq x
-    \leq 8,0\leq y\leq2\}$\\
-    \par
-    \textbf{Ex 6.2 }Evaluate $\iint_DxydA$, where $D$ is the region bounded by the line $y=x-1$ and the parabola $y^2=2x+6$.\\
-    \textbf{Ex 6.3 }Express $D$ as a union of regions of type I or type II and evaluate the integral$\iint_D ydA$., where $D$ is the region bounded by the line $x=-1,y=-1,y=(x+1)^2,x=y-y^3$.\\
-    \textbf{Ex 6.4} Use polar coordinates to combine the sum
-    $\int_{1/\sqrt{2}}^1\int_{\sqrt{1-x^2}}^xxydydx+\int_1^{\sqrt{2}}\int_0^xxydydx+\int_{\sqrt{2}}^2\int_0^{\sqrt{4-x^2}}xydydx$ into one double integral. Then evaluate the double integral.\\
-    \textbf{Ex 6.5} Evaluate $\iint_R(x+y)e^{x^2-y^2}dA$ by making an appropriate change of variables. $R$ is enclosed by the lines $x-y=0,x-y=2,x+y=0,x+y=3$.
-\end{frame}
-\begin{frame}{Answers}
-    \textbf{6.1} 16\\
-    \textbf{6.2} 36\\
-    \textbf{6.3} $-\frac{2}{15}$\\
-    \textbf{6.4} $\frac{15}{16}$\\
-    \textbf{6.5} $\frac{1}{4}(e^6-7)$
+
+\begin{frame}{Exercises}
+    \textbf{Ex 8.4} Find the area of the following surfaces
+    \begin{itemize}
+        \item The part of the plane $3x+2y+z=6$ that lies in the first octant.
+        \item The helicoid (or spiral ramp) with vector equation $\boldsymbol{r}(u,v)=u\cos{v}\boldsymbol{i}+u\sin{v}\boldsymbol{j}+v\boldsymbol{k},0\leq u\leq 1,0\leq v\leq\pi$
+    \end{itemize}
+    
 \end{frame}
 
+\begin{frame}{Solutions}
+\textbf{Solution 8.4}
+\begin{itemize}
+    \item $3\sqrt{14}$
+    \item $\frac{\pi}{2}[\sqrt{2}+ln(1+\sqrt{2})]$
+\end{itemize}
+    
+\end{frame}
 
-\section{Triple Integrals}
-\begin{frame}[label=2]{Triple Integrals}
+\section{Surface Integrals}
+
+\begin{frame}{Surface Integrals}
+    \begin{block}{Types}
+        \begin{enumerate}
+            \item surface integral of $f$ over the surface $S$
+            \begin{equation*}
+                \iint_Sf(x,y,z)dS=\iint_D f(\boldsymbol{r}(u,v))\big|\boldsymbol{r}_U\times\boldsymbol{r}_v\big|dA
+            \end{equation*}
+            \item surface integral of $\boldsymbol{F}$ over an oriented surface $S$ is
+            \begin{equation*}
+                \iint_S \boldsymbol{F}\cdot d\boldsymbol{S}=\iint_S \boldsymbol{F}\cdot\boldsymbol{n}dS
+            \end{equation*}
+            This integral is also called the \textbf{flux} of $\boldsymbol{F}$ across $S$.
+        \end{enumerate}
+        
+    \end{block}
+    
+\end{frame}
+\begin{frame}{Surface Integrals}
+    \frametitle{urface Integrals}
+    \begin{block}{Oriented Surface Integral}
+        Suppose the surface is parametrized by $r(u,v)$ and the unit normal is given by $\hat{n} = \frac{r_u \times r_v}{||r_u \times r_v||}$.
+
+    Then $\iint_S F \cdot dS = \iint_S (F \cdot \hat{n}) \,d\sigma$
+    $= \iint_D F \cdot \frac{r_u \times r_v}{||r_u \times r_v||} ||r_u \times r_v|| \,dA$
+    $= \iint_D F \cdot (r_u \times r_v) \,dA$.
+    \end{block}
+\end{frame}
+\begin{frame}{Exercises}
+\textbf{Ex 8.5} Evaluate the following surface integrals.
     \begin{enumerate}
-  \item \textbf{Domain:}
-  $$\mathcal{R} = [a, b] \times [c, d] \times [r,s].$$
-
-  \item \textbf{Partial Integral:}
-  $$\int_a^b f(x, y, z) \, dx$$
-
-  \item \textbf{Iterated Integral:}
-  $$\int_a^b \int_c^d \int_r^s f(x, y, z) \, dz \, dy \, dx = \int_a^b \left(\int_c^d \left(\int_r^s f(x, y, z) \, dz\right) \, dy\right) \, dx.$$
-
-  \item \textbf{Theorem (Fubini’s Theorem):} The order of integration can be rearranged if $f$ is integrable over the region $\mathcal{R}$:
-  $$\int \int \int_{\mathcal{R}} f \, dV = \int_a^b \int_c^d \int_r^s f(x, y, z) \, dz \, dy \, dx.$$
+    \item
+Calculate the surface integral
+\[
+\iint_S (x + y^2) \, dS,
+\]
+where \( S \) is the surface of the cylinder given by \( x^2 + y^2 = 4 \) and \( 0 \leq z \leq 3 \).
+\item 
+Calculate the surface integral:
+\[
+\iint_S (x^2 - z) \, dS,
+\]
+where \( S \) is the surface with parameterization
+\[
+\mathbf{r}(u,v) = \langle v, u^2 + v^2, 1 \rangle, \quad 0 \leq u \leq 2, \quad 0 \leq v \leq 3.
+\]
 
 \end{enumerate}
-
 \end{frame}
 
-
-
-
-
-\begin{frame}{Change of Variables}
-    \begin{block}{Theorem}
-        Let $\mathcal{R}$ and $\mathcal{S}$ be bounded regions in $\mathbb{R}^3$ that contain all of their boundary points. Let $T : \mathcal{D} \rightarrow \mathbb{R}^3$ where $\mathcal{D} \subset \mathbb{R}^3$ be an injective map that is onto and maps $\mathcal{S}$ in the $uvw$-plane to $\mathcal{R}$ in the $xyz$-plane. If $f(x, y, z)$ is continuous on $\mathcal{R}$, all of the components of $T$ have continuous partial derivatives and the Jacobian $JT(u, v, w)$ is never $0$ on $\mathcal{S}$, then
-\[
-\iiint_{\mathcal{R}} f(x, y, z) \, dx \, dy \, dz = \iiint_{\mathcal{S}} f(T(u, v, w)) \, \left| JT(u, v, w) \right| \, du \, dv \, dw.
-\]
-    \end{block}
-\end{frame}
-\begin{frame}{Frame Title}
-    The transformation \(T\) from cylindrical coordinates to rectangular coordinates is given by:
-\[ T(r, \theta,s) = \begin{bmatrix} r \cos \theta \\ r \sin \theta \\ s \end{bmatrix}^T. \]
-
-The transformation \(T\) from spherical coordinates to rectangular coordinates is given by:
-\[ T(\rho, \theta, \phi) = \begin{bmatrix} \rho \sin \phi \cos \theta \\ \rho \sin \phi \sin \theta \\ \rho \cos \phi \end{bmatrix}^T. \]
-\end{frame}
-
-\begin{frame}{Remark}
-    The Jacobian \( J \) of the transformation from cylindrical to rectangular coordinates is:
-\[ J(r, \theta, s) = r. \]
-
-The Jacobian \( J \) of the transformation from spherical to rectangular coordinates is:
-\[ J(\rho, \theta, \phi) = -\rho^2 \sin \phi. \]
-\end{frame}
-\begin{frame}{Exercise}
-    \textbf{Exercise 6.6} Find the mass of the pyramid with base in the plane $z = -6$ and sides
-formed by the three planes $y = 0$, $y - x = 4$ and $2x + y + z = 4$
-if the density of the solid is given by $\delta(x, y, z) = y$.
-    \textbf{Exercise 6.7} Find the volume of the region bounded by $z = x + y$, $x + y = 5$,
-where $(x, y) \in [0, 5] \times [0, 5]$, and the planes $x = 0$, $y = 0$, and $z = 0$.
-
-    \textbf{Exercise 6.8} Evaluate the integral
-\[
-\int_{-\sqrt{3}}^{\sqrt{3}} \int_{-\sqrt{3-x^2}}^{\sqrt{3-x^2}} \int_{1}^{4-x^2-y^2} \frac{1}{z^2} \, dz \, dy \, dx.
-\]
-\end{frame}
-\begin{frame}{Answers - 6.6}
-    We calculate the triple integral by
-\[
-\int_{0}^{6} \int_{y-4}^{5-\frac{y}{2}} \int_{-6}^{4-2x-y} y \, dz \, dx \, dy = 243.
-\]
-\end{frame}
-\begin{frame}{Answers - 6.7}
-    Here we calculate the volume $V$ of the region $E$ using a triple integral:
-\[
-V = \iiint_E \, dV = \int_0^5 \int_0^{5-x} \int_0^{x+y} \, dz \, dy \, dx = \frac{125}{3}.
-\]
-
-\end{frame}
-\begin{frame}{Answers - 6.8}
-    Use cylindrical coordinates. The transformation is given by:
-\begin{align*}
-\begin{cases}
-x = r \cos \theta \\
-y = r \sin \theta \\
-z = z
-\end{cases}
-\Rightarrow
-\begin{cases}
-0 \leq r \leq \sqrt{3} \\
-0 \leq \theta \leq 2\pi \\
-1 \leq z \leq 4 - r^2
-\end{cases}
-\end{align*}
-and $|J(r, \theta, z)| = r$.
-
-Therefore, the integral
-\[
-\int_{-\sqrt{3}}^{\sqrt{3}} \int_{-\sqrt{3-x^2}}^{\sqrt{3-x^2}} \int_{1}^{4-x^2-y^2} \frac{1}{z^2} \, dz \, dy \, dx
-\]
-becomes
-\[
-\int_{0}^{2\pi} \int_{0}^{\sqrt{3}} \int_{1}^{4-r^2} \frac{1}{z^2} r \, dz \, dr \, d\theta 
-\]
-\[ 
-= 2\pi \int_{0}^{\sqrt{3}} \left( r - \frac{r}{4 - r^2} \right) dr =(3-ln 4) \pi.
-\]
-\end{frame}
-\section{Vector Field}
-    
-\begin{frame}[label=3]{Vector Field}
-    \begin{block}{Definition}
-        A vector field on two (or three) dimensional space is a function $\boldsymbol{F}$ that assigns to each point $(x, y)$ (or $(x, y, z)$) a two (or three) dimensional vector given by $\boldsymbol{F}(x, y)$ (or $\boldsymbol{F}(x, y, z)$).
-    \end{block}
-    The standard notation for the function $\boldsymbol{F}$ is,
-\[
-\boldsymbol{F}(x, y) = P(x, y) \boldsymbol{i} + Q(x, y) \boldsymbol{j}
-\]
-\[
-\boldsymbol{F}(x, y, z) = P(x, y, z) \boldsymbol{i} + Q(x, y, z) \boldsymbol{j} + R(x, y, z) \boldsymbol{k}
-\]
-\end{frame}
-\begin{frame}{Gradient Fields}
-\begin{block}{Definition}
-    If $f$ is a scalar function of two variables, then its gradient $\nabla f$(or grad $f$) is defined by
-    \begin{equation*}
-        \nabla f(x,y)=f_x(x,y)\boldsymbol{i}+f_y(x,y)\boldsymbol{j}
-    \end{equation*}
-\end{block}
-    
-\end{frame}
-
-\begin{frame}{Exercise}
-    \textbf{Ex 6.9} Find the gradient vector field of following functions.
+\begin{frame}{Exercises}
+    \frametitle{Exercises}
     \begin{enumerate}
-        \item $f(x,y,z)=\sqrt{x^2+y^2+z^2}$
-        \item $f(x,y)=ln(1+x^2+y^2)$
+        \item $\mathbf{F}(x, y, z) = xy\,\mathbf{i} + 4x^2\,\mathbf{j} + yz\,\mathbf{k}, \quad S \text{ is the surface } z = xe^y, \quad 0 \le x \le 1, 0 \le y \le 1, \text{ with upward orientation}$
+        \item $\mathbf{F}(x, y, z) = xz\,\mathbf{i} + x\,\mathbf{j} + y\,\mathbf{k}, \quad S \text{ is the hemisphere } x^2 + y^2 + z^2 = 25, y \ge 0, \text{ oriented in the direction of the positive y-axis}$
     \end{enumerate}
+\end{frame}
+
+\begin{frame}{Answers}
+    \begin{enumerate}
+        \item $24 \pi$
+        \item $24$
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Answers}
+    $\mathbf{F}(x, y, z) = xy\,\mathbf{i} + 4x^2\,\mathbf{j} + yz\,\mathbf{k}, \quad z = g(x, y) = xe^y, \text{ and } D \text{ is the square } [0, 1] \times [0, 1], \text{ so by Equation 10}$
+                \begin{align*}
+                    \iint_S \mathbf{F} \cdot d\mathbf{S} &= \iint_D [-xy(e^y) - 4x^2(xe^y) + yz] \, dA \\
+                    &= \int_0^1 \int_0^1 (-xye^y - 4x^3 e^y + xye^y) \, dy \, dx \\
+                    &= \int_0^1 \left[-4x^3 e^y\right]_{y=0}^{y=1} \, dx = (e-1) \int_0^1 (-4x^3) \, dx = 1-e
+                \end{align*}
+\end{frame}
+
+\begin{frame}{Answers}
+   \begin{figure}
+            \centering
+            \includegraphics[width=1\linewidth]{ans.png}
+            \label{fig:enter-label}
+        \end{figure}
+
 \end{frame}
 
 \begin{frame}{\textcolor{green!30!black}{end}}
@@ -277,17 +276,3 @@ becomes
 
 \end{document}
 
-\begin{frame}{Integral Domain}
-    \begin{block}{Definition}
-         Let $\mathcal{R} = [a, b] \times [c, d]$ and $u_1 : \mathcal{R} \rightarrow \mathbb{R}$, $u_2 : \mathcal{R} \rightarrow \mathbb{R}$ be continuous functions. Let $D$ be a region in $\mathbb{R}^2$ that is contained in $\mathcal{R}$ ($D \subset \mathcal{R}$). Let $\mathcal{R}$ be the solid region whose projection onto the $xy$-plane is $D$ and that is bounded on the $z$-axis by functions $u_1(x, y)$ and $u_2(x, y)$, i.e., 
-\[
-\mathcal{R} = \{(x, y, z) \in \mathbb{R}^3 \mid (x, y) \in D \text{ and } u_1(x, y) \leq z \leq u_2(x, y)\}.
-\]
-A region of this form is said to be a \emph{Type I solid region}.
-    \end{block}
-    Let $\mathcal{R} = [a, b] \times [c, d]$ and $u_1 : \mathcal{R} \rightarrow \mathbb{R}$, $u_2 : \mathcal{R} \rightarrow \mathbb{R}$ be continuous functions. Let $D$ be a region in $\mathbb{R}^2$ that is contained in $\mathcal{R}$ ($D \subset \mathcal{R}$). Let $\mathcal{R}$ be the solid region whose projection onto the $xy$-plane is $D$ and that is bounded on the $z$-axis by functions $u_1(x, y)$ and $u_2(x, y)$, i.e., 
-\[
-\mathcal{R} = \{(x, y, z) \in \mathbb{R}^3 \mid (x, y) \in D \text{ and } u_1(x, y) \leq z \leq u_2(x, y)\}.
-\]
-A region of this form is said to be a \emph{Type I solid region}.
-\end{frame}
