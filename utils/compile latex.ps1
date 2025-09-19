@@ -1,27 +1,27 @@
-# ÉèÖÃ»ã×ÜÈÕÖ¾ÎÄ¼şÃû
+# è®¾ç½®æ±‡æ€»æ—¥å¿—æ–‡ä»¶å
 $summaryLog = "compile_summary.log"
 if (Test-Path $summaryLog) {
     Remove-Item $summaryLog -Force
 }
 
-# »ñÈ¡ËùÓĞ .tex ÎÄ¼ş
+# è·å–æ‰€æœ‰ .tex æ–‡ä»¶
 $texFiles = Get-ChildItem -Filter *.tex
-Write-Host "ÕÒµ½ $($texFiles.Count) ¸ö .tex ÎÄ¼ş¡£"
-Add-Content $summaryLog "ÕÒµ½ $($texFiles.Count) ¸ö .tex ÎÄ¼ş¡£`n"
+Write-Host "æ‰¾åˆ° $($texFiles.Count) ä¸ª .tex æ–‡ä»¶ã€‚"
+Add-Content $summaryLog "æ‰¾åˆ° $($texFiles.Count) ä¸ª .tex æ–‡ä»¶ã€‚`n"
 
-# ´´½¨Ò»¸öÊı×éÓÃÓÚ´æ´¢³ö´íÎÄ¼şÃû
+# åˆ›å»ºä¸€ä¸ªæ•°ç»„ç”¨äºå­˜å‚¨å‡ºé”™æ–‡ä»¶å
 $failedFiles = @()
 
-# ±àÒëÃ¿¸ö .tex ÎÄ¼ş
+# ç¼–è¯‘æ¯ä¸ª .tex æ–‡ä»¶
 foreach ($file in $texFiles) {
-    $msg = "ÕıÔÚ±àÒë: $($file.Name)..."
+    $msg = "æ­£åœ¨ç¼–è¯‘: $($file.Name)..."
     Write-Host $msg
     Add-Content $summaryLog $msg
 
-    # Ö´ĞĞ pdflatex£¬Ñ¹ÖÆÊä³ö
+    # æ‰§è¡Œ pdflatexï¼Œå‹åˆ¶è¾“å‡º
     pdflatex -interaction=nonstopmode $file.FullName > $null 2>&1
 
-    # ¼ì²éÊÇ·ñ°üº¬ Fatal error
+    # æ£€æŸ¥æ˜¯å¦åŒ…å« Fatal error
     $logFile = "$($file.BaseName).log"
     $hasError = $false
     if (Test-Path $logFile) {
@@ -29,34 +29,34 @@ foreach ($file in $texFiles) {
     }
 
     if ($hasError) {
-        $msg = "±àÒëÊ§°Ü: $($file.Name)"
+        $msg = "ç¼–è¯‘å¤±è´¥: $($file.Name)"
         Write-Host $msg -ForegroundColor Red
         Add-Content $summaryLog $msg
         $failedFiles += $file.Name
 
-        # É¾³ı²¿·ÖÖĞ¼äÎÄ¼ş
+        # åˆ é™¤éƒ¨åˆ†ä¸­é—´æ–‡ä»¶
         Remove-Item "$($file.BaseName).out", "$($file.BaseName).toc" -Force -ErrorAction SilentlyContinue
     }
     else {
-        $msg = "±àÒë³É¹¦: $($file.Name)"
+        $msg = "ç¼–è¯‘æˆåŠŸ: $($file.Name)"
         Write-Host $msg -ForegroundColor Green
         Add-Content $summaryLog $msg
 
-        # É¾³ıÖĞ¼äÎÄ¼ş
+        # åˆ é™¤ä¸­é—´æ–‡ä»¶
         Remove-Item "$($file.BaseName).aux", "$($file.BaseName).log", "$($file.BaseName).out", "$($file.BaseName).toc" -Force -ErrorAction SilentlyContinue
     }
 
     Add-Content $summaryLog ""
 }
 
-# ×îÖÕ±¨¸æ
+# æœ€ç»ˆæŠ¥å‘Š
 if ($failedFiles.Count -eq 0) {
-    $msg = "`nËùÓĞÎÄ¼ş±àÒë³É¹¦¡£"
+    $msg = "`næ‰€æœ‰æ–‡ä»¶ç¼–è¯‘æˆåŠŸã€‚"
     Write-Host $msg
     Add-Content $summaryLog $msg
 }
 else {
-    $msg = "`nÒÔÏÂÎÄ¼şÔÚ±àÒëÊ±³ö´í(ÈÕÖ¾ÎÄ¼ş .log ÒÑ±£Áô£©£º"
+    $msg = "`nä»¥ä¸‹æ–‡ä»¶åœ¨ç¼–è¯‘æ—¶å‡ºé”™(æ—¥å¿—æ–‡ä»¶ .log å·²ä¿ç•™ï¼‰ï¼š"
     Write-Host $msg -ForegroundColor Yellow
     Add-Content $summaryLog $msg
 
